@@ -1,0 +1,81 @@
+contactFile:
+
+    path: src/test/resources/TestAddRemoveSendersEndToEnd/Contacts.xlsx
+
+    addressSheets:
+        - name:         Contract
+          columnHeader:     E-mail Address
+
+    exclusionSheets:
+        - name:         Perm
+          type:             ADDRESS
+          columnHeader:     E-mail Address
+        - name:         Unsubscribed
+          type:             ADDRESS
+          columnHeader:     E-mail Address
+        - name:         Blacklisted
+          type:             DOMAIN
+          columnHeader:     Domain
+        - name:         Ignored
+          type:             DOMAIN
+          columnHeader:     Domain
+        - name:         Ignored Patterns
+          type:             PATTERN
+          columnHeader:     Pattern
+
+    flagSheets:
+        - name:         Personal Domains
+          type:             DOMAIN
+          columnHeader:     Domain
+
+exclusionMessageFiles:
+    - path: src/test/resources/TestAddRemoveSendersEndToEnd/To Be Unsubscribed.csv
+      columnHeaders:
+          from:    "From: (Address)"
+          subject: Subject
+          body:    Body
+      extractBodyAddresses: true
+
+flagMessageFiles:
+    - path: src/test/resources/TestAddRemoveSendersEndToEnd/Colleagues.csv
+      columnHeaders:
+          from:    "From: (Address)"
+          subject: Subject
+          body:    Body
+      extractBodyAddresses: true
+
+messageFile:
+
+    type: REMOVE_SENDERS
+    path: src/test/resources/TestAddRemoveSendersEndToEnd/Recent Messages To Remove.csv
+
+    columnHeaders:
+        from:    "From: (Address)"
+        subject: Subject
+        body:    Body
+
+outputFile:
+
+    # Not used by this in-memory test
+    path: src/test/resources/TestAddRemoveSendersEndToEnd/Contacts REMOVED.xlsx
+
+    addressSheet:
+        name:                   Contract
+        columnHeader:               E-mail Address
+
+    messageFlagSheet:
+        name:                   Flagged Messages
+        columnHeaders:
+            messageIndex:           Index
+            extractedAddresses:     Extracted Addresses
+            matchedRule:            Matched Rule
+            reason:                 Reason
+
+    addressLogSheet:
+        name:                   Address Log
+        columnHeaders:
+            messageIndex:           Message Index
+            action:                 Action
+            address:                E-mail Address
+            extractedAddresses:     Extracted Addresses
+            matchedRule:            Matched Rule

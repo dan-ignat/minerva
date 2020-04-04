@@ -1,0 +1,8 @@
+From: (Address),Subject,Body,Based on TestRuleEngine case,Comments
+/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE…,Undeliverable: Rolling off in September,Delivery has failed to these recipients or distribution lists: a@b.com,// FlagAutoReplyRule - DeliveryFailureRule,
+a@g.com,Awesome opportunity,Hi.  Please let me know if you'd be interested in the JD below.  -Alice (a@b.com),// AddSenderRule with address in body,Changed From address to be one from Blacklisted tab
+hit-reply@linkedin.com,Hello,Hi.  Please let me know if you'd be interested in the JD below.  -Carl (c@b.com),NONE,Unique case to test exclusion patterns
+d@gmail.com,Long time no see!,"Hey man, how's it going?  Don't forget to also email Earl at e@outlook.com.",NONE,Unique case to test flag domains
+f@k.com,Perm opportunity,Hi.  Please let me know if you'd be interested in the JD below.  -Frank (g@k.com),NONE,Unique case to test an exclusion message file
+h@m.com,Been 10 years since our last email,"Wow, now it's an even longer time no see.  Where you at these days?  You can also reach me at i@m.com.",NONE,Unique case to test an flag message file
+j@b.com,Hi,Hi.  Please let me know if you'd be interested in the JD below.  -John,NONE,Unique case to test a simple add

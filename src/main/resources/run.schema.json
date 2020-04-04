@@ -1,0 +1,178 @@
+{
+    "$id": "https://ignat.name/minerva/run",
+
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+
+    "title": "Minerva Run Config",
+    "description": "Schema for a Minerva run configuration",
+
+    "$defs":
+    {
+        "path":         { "type": "string" },
+        "name":         { "type": "string" },
+        "columnHeader": { "type": "string" },
+        "singleColumnSheet":
+        {
+            "type": "object",
+            "properties":
+            {
+                "name":         { "$ref": "#/$defs/name" },
+                "columnHeader": { "$ref": "#/$defs/columnHeader" }
+            },
+            "required": ["name", "columnHeader"],
+            "additionalProperties": false
+        },
+        "singleColumnSheets": { "type": "array", "items": { "$ref": "#/$defs/singleColumnSheet" }, "minItems": 1 },
+        "addressMatcherSheet":
+        {
+            "type": "object",
+            "properties":
+            {
+                "name":         { "$ref": "#/$defs/name" },
+                "type":         { "type": "string", "enum": ["ADDRESS", "DOMAIN", "PATTERN"] },
+                "columnHeader": { "$ref": "#/$defs/columnHeader" }
+            },
+            "required": ["name", "type", "columnHeader"],
+            "additionalProperties": false
+        },
+        "addressMatcherSheets": { "type": "array", "items": { "$ref": "#/$defs/addressMatcherSheet" }, "minItems": 1 },
+        "addressMessageFile":
+        {
+            "type": "object",
+            "properties":
+            {
+                "path": { "$ref": "#/$defs/path" },
+                "columnHeaders":
+                {
+                    "type": "object",
+                    "properties":
+                    {
+                        "from":    { "$ref": "#/$defs/columnHeader" },
+                        "subject": { "$ref": "#/$defs/columnHeader" },
+                        "body":    { "$ref": "#/$defs/columnHeader" }
+                    },
+                    "required": ["from", "subject", "body"],
+                    "additionalProperties": false
+                },
+                "extractBodyAddresses": { "type": "boolean" }
+            },
+            "required": ["path", "columnHeaders"],
+            "additionalProperties": false
+        },
+        "addressMessageFiles": {"type": "array", "items": { "$ref": "#/$defs/addressMessageFile" }, "minItems": 1 }
+    },
+
+    "type": "object",
+
+    "properties":
+    {
+        "contactFile":
+        {
+            "type": "object",
+            "properties":
+            {
+                "path":            { "$ref": "#/$defs/path" },
+                "addressSheets":   { "$ref": "#/$defs/singleColumnSheets" },
+                "exclusionSheets": { "$ref": "#/$defs/addressMatcherSheets" },
+                "flagSheets":      { "$ref": "#/$defs/addressMatcherSheets" }
+            },
+            "allOf":
+            [
+                { "required": ["path"] },
+                { "anyOf":
+                    [
+                        { "required": ["addressSheets"] },
+                        { "required": ["exclusionSheets"] },
+                        { "required": ["flagSheets"] }
+                    ]
+                }
+            ],
+            "additionalProperties": false
+        },
+        "exclusionMessageFiles": { "$ref": "#/$defs/addressMessageFiles" },
+        "flagMessageFiles":      { "$ref": "#/$defs/addressMessageFiles" },
+        "messageFile":
+        {
+            "type": "object",
+            "properties":
+            {
+                "type": { "type": "string", "enum": ["ADD_SENDERS", "AUTO_REPLIES", "REMOVE_SENDERS"] },
+                "path": { "$ref": "#/$defs/path" },
+                "columnHeaders":
+                {
+                    "type": "object",
+                    "properties":
+                    {
+                        "from":    { "$ref": "#/$defs/columnHeader" },
+                        "subject": { "$ref": "#/$defs/columnHeader" },
+                        "body":    { "$ref": "#/$defs/columnHeader" }
+                    },
+                    "required": ["from", "subject", "body"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["type", "path", "columnHeaders"],
+            "additionalProperties": false
+        },
+        "outputFile":
+        {
+            "type": "object",
+            "properties":
+            {
+                "path":         { "$ref": "#/$defs/path" },
+                "addressSheet": { "$ref": "#/$defs/singleColumnSheet" },
+                "messageFlagSheet":
+                {
+                    "type": "object",
+                    "properties":
+                    {
+                        "name": { "$ref": "#/$defs/name" },
+                        "columnHeaders":
+                        {
+                            "type": "object",
+                            "properties":
+                            {
+                                "messageIndex":       { "$ref": "#/$defs/columnHeader" },
+                                "extractedAddresses": { "$ref": "#/$defs/columnHeader" },
+                                "matchedRule":        { "$ref": "#/$defs/columnHeader" },
+                                "reason":             { "$ref": "#/$defs/columnHeader" }
+                            },
+                            "required": ["messageIndex", "extractedAddresses", "matchedRule", "reason"],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": ["name", "columnHeaders"],
+                    "additionalProperties": false
+                },
+                "addressLogSheet":
+                {
+                    "type": "object",
+                    "properties":
+                    {
+                        "name": { "$ref": "#/$defs/name" },
+                        "columnHeaders":
+                        {
+                            "type": "object",
+                            "properties":
+                            {
+                                "messageIndex":       { "$ref": "#/$defs/columnHeader" },
+                                "action":             { "$ref": "#/$defs/columnHeader" },
+                                "address":            { "$ref": "#/$defs/columnHeader" },
+                                "extractedAddresses": { "$ref": "#/$defs/columnHeader" },
+                                "matchedRule":        { "$ref": "#/$defs/columnHeader" }
+                            },
+                            "required": ["messageIndex", "action", "address", "extractedAddresses", "matchedRule"],
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": ["name", "columnHeaders"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["path", "addressSheet", "messageFlagSheet", "addressLogSheet"],
+            "additionalProperties": false
+        }
+    },
+    "required": ["messageFile", "outputFile"],
+    "additionalProperties": false
+}

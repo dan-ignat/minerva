@@ -1,0 +1,4 @@
+From: (Address),Subject,Body,Based on TestRuleEngine case,Comments
+/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE…,Undeliverable: Rolling off in September,Delivery has failed to these recipients or distribution lists: a@b.com,// DeliveryFailureRule,
+b@b.com,Automatic reply: Rolling off in September,"Bob is no longer with the company.  Instead, please contact Carl (c@b.com).",// NoLongerHereRule,Changed Alice/Bob to Bob/Carl
+c@b.com,Out of Office: Rolling off in September,"Carl is on vacation.  In his absence, you may contact Don (d@b.com).",// OutOfOfficeRule,Changed Alice/Bob to Carl/Don

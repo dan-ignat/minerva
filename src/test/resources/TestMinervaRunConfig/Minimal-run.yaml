@@ -1,0 +1,34 @@
+messageFile:
+
+    type: ADD_SENDERS
+    path: /path/to/New Messages.csv
+
+    columnHeaders:
+        from:    "From: (Address)"
+        subject: Subject
+        body:    Body
+
+outputFile:
+
+    path: /path/to/Contacts UPDATED {dateTime}.xlsx
+
+    addressSheet:
+        name:                   Contract
+        columnHeader:               E-mail Address
+
+    messageFlagSheet:
+        name:                   Flagged Messages
+        columnHeaders:
+            messageIndex:           Index
+            extractedAddresses:     Extracted Addresses
+            matchedRule:            Matched Rule
+            reason:                 Reason
+
+    addressLogSheet:
+        name:                   Address Log
+        columnHeaders:
+            messageIndex:           Message Index
+            action:                 Action
+            address:                E-mail Address
+            extractedAddresses:     Extracted Addresses
+            matchedRule:            Matched Rule

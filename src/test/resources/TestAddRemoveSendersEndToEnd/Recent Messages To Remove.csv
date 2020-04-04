@@ -1,0 +1,3 @@
+From: (Address),Subject,Body,Based on TestRuleEngine case,Comments
+/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE…,Undeliverable: Rolling off in September,Delivery has failed to these recipients or distribution lists: a@b.com,// FlagAutoReplyRule - DeliveryFailureRule,
+a@b.com,RE: Contract opportunity,Thanks for your résumé!  I'll submit it to my client and let you know what they say.  You can also reach me at a2@b.com.,NONE,Unique case to test a simple remove
