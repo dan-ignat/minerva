@@ -99,7 +99,7 @@ public class AddressFilters
         {
             return
                 addresses.contains(address) ||
-                domains.stream().anyMatch(domain -> address.getDomain().isSubdomainOf(domain)) ||
+                domains.stream().anyMatch(address::belongsTo) ||
                 patterns.stream().anyMatch(pattern -> pattern.matcher(address.toCanonical()).find());
         }
 
