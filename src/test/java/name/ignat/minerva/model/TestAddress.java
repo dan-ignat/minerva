@@ -142,9 +142,19 @@ public class TestAddress
     private static Stream<Arguments> belongsToCases()
     {
         return Stream.of(
-            Arguments.of("a@b.com", "b.com", true),
-            Arguments.of("a@b.com", "c.com", false),
-            Arguments.of("a@b.com", "b.org", false)
+            Arguments.of("a@b.com",     "b.com",     true),
+            Arguments.of("a@b.com",     "c.com",     false),
+            Arguments.of("a@b.com",     "b.org",     false),
+            Arguments.of("a@c.b.com",   "b.com",     true),
+            Arguments.of("a@c.b.com",   "c.com",     false),
+            Arguments.of("a@c.b.com",   "c.b.com",   true),
+            Arguments.of("a@c.b.com",   "b.b.com",   false),
+            Arguments.of("a@c.b.com",   "c.c.com",   false),
+            Arguments.of("a@d.c.b.com", "c.b.com",   true),
+            Arguments.of("a@d.c.b.com", "d.b.com",   false),
+            Arguments.of("a@d.c.b.com", "d.c.b.com", true),
+            Arguments.of("a@d.c.b.com", "c.c.b.com", false),
+            Arguments.of("a@d.c.b.com", "d.d.b.com", false)
         );
     }
 
