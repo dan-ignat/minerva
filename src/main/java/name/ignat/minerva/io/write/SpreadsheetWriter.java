@@ -12,13 +12,12 @@ public abstract class SpreadsheetWriter<S> implements AutoCloseable
 {
     public final <O> void write(String[] columnHeaders, Collection<O> objects, Class<O> objectClass)
     {
-        WriteMapper<O> objectMapper = WriteMappers.forClass(objectClass);
-
         S sheet = getSheet();
 
         HeaderRowWriter<S> headerRowWriter = getHeaderRowWriter();
         headerRowWriter.accept(columnHeaders, sheet);
 
+        WriteMapper<O> objectMapper = WriteMappers.forClass(objectClass);
         ContentRowWriter<O, S> contentRowWriter = getContentRowWriter(objectMapper, columnHeaders.length);
         objects.stream().forEach(o -> contentRowWriter.accept(o, sheet));
 
