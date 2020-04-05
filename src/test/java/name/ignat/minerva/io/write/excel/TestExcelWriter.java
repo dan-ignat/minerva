@@ -6,7 +6,7 @@ import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVED;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_BODY_ADDRESSES;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.UNEXPECTED_RULE_MATCHED;
 import static name.ignat.minerva.util.PoiUtils.sheetToStrings;
-import static name.ignat.minerva.util.Streams.forFirst;
+import static name.ignat.minerva.util.StreamNextRest.streamNextRest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -15,7 +15,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.apache.poi.ss.usermodel.Sheet;
@@ -36,6 +35,7 @@ import name.ignat.minerva.model.Domain;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.rule.impl.AddSenderRule;
 import name.ignat.minerva.rule.impl.NoLongerHereRule;
+import name.ignat.minerva.util.StreamNextRest;
 
 public class TestExcelWriter
 {
@@ -128,10 +128,14 @@ public class TestExcelWriter
 
         }
 
-        Stream<String[]> contentRowStream = forFirst(rows.stream(),
-            (Consumer<String[]>) headerRow -> assertThat(headerRow, is(columnHeaders.toArray(new String[0]))));
+        StreamNextRest<String[]> rowsNextRest = streamNextRest(rows.stream());
+
+        rowsNextRest.consumeNext(headerRow -> assertThat(headerRow, is(columnHeaders.toArray(new String[0]))));
+
+        Stream<String[]> contentRowStream = rowsNextRest.getRest();
 
         WriteMapper<O> mapper = WriteMappers.forClass(objectClass);
+
         forEachPair(contentRowStream, objects.stream(),
             (contentRow, object) -> assertThat(contentRow, is(mapper.apply(object))));
     }

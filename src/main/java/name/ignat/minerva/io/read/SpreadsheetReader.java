@@ -1,12 +1,12 @@
 package name.ignat.minerva.io.read;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
-import static name.ignat.minerva.util.Streams.forFirst;
+import static name.ignat.minerva.util.StreamNextRest.streamNextRest;
 
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.tuple.Pair;
+import name.ignat.minerva.util.StreamNextRest;
 
 /**
  * @param <R> the row type (input)
@@ -20,15 +20,15 @@ public abstract class SpreadsheetReader<R extends Iterable<C>, C> implements Aut
     public final <O> List<O> read(String[] columnHeaders, Class<O> objectClass)
     {
         Stream<R> rowStream = getRowStream();
-        HeaderRowReader<R, C> headerRowReader = getHeaderRowReader(columnHeaders);
-        Pair<Integer[], Stream<R>> firstResultAndRest = forFirst(rowStream, headerRowReader);
+        StreamNextRest<R> rowsNextRest = streamNextRest(rowStream);
 
-        Integer[] columnIndexes = firstResultAndRest.getLeft();
+        HeaderRowReader<R, C> headerRowReader = getHeaderRowReader(columnHeaders);
+        Integer[] columnIndexes = rowsNextRest.transformNext(headerRowReader);
+
         ReadMapper<O> objectMapper = ReadMappers.forClass(objectClass);
         ContentRowReader<R, C, O> contentRowReader = getContentRowReader(columnIndexes, objectMapper);
 
-        Stream<R> contentRowStream = firstResultAndRest.getRight();
-
+        Stream<R> contentRowStream = rowsNextRest.getRest();
         return contentRowStream.map(contentRowReader).collect(toImmutableList());
     }
 

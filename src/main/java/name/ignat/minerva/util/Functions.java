@@ -6,11 +6,6 @@ import org.apache.commons.collections4.Transformer;
 
 public final class Functions
 {
-    public static <T, R> FunctionalConsumer<T, R> asConsumer(Function<T, R> function)
-    {
-        return new FunctionalConsumer<>(function);
-    }
-
     public static <T, R> org.apache.commons.collections4.Transformer<T, R> toApacheTransformer(Function<T, R> function)
     {
         return function::apply;
