@@ -52,11 +52,6 @@ public class Domain extends Addressable<Domain>
         return strings.stream().map(Domain::new).collect(toImmutableList());
     }
 
-    public static List<Domain> fromValidStrings(List<String> strings)
-    {
-        return strings.stream().filter(Domain::isValid).map(Domain::new).collect(toImmutableList());
-    }
-
     private final String domain;
 
     @Getter(NONE)
@@ -97,6 +92,12 @@ public class Domain extends Addressable<Domain>
         {
             return false;
         }
+    }
+
+    @Override
+    public boolean matches(Address address)
+    {
+        return address.getDomain().isSubdomainOf(this);
     }
 
     @Override

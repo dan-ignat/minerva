@@ -39,7 +39,7 @@ public class Message
         {
             fromAddress = new Address(from);
         }
-        catch (Address.ValidationException e)
+        catch (ValidationException e)
         {
             fromAddress = null;
         }

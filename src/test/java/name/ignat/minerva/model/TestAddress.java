@@ -14,8 +14,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.google.common.collect.ImmutableSet;
+
 import name.ignat.commons.exception.UnexpectedCaseException;
-import name.ignat.minerva.model.Addressable.ValidationException;
 
 public class TestAddress
 {
@@ -47,7 +48,7 @@ public class TestAddress
                 "a@b.com  <a href=\"mailto:b@b.com\">  c@b.com",
                 List.of("a@b.com", "b@b.com", "c@b.com")
             ),
-            // Proper usage of TopLevelDomains.isValidAddressable()
+            // Proper usage of TopLevelDomains.hasValidTLD()
             Arguments.of(
                 "a@b.com  cid:image005.png@01CA0496.D9F07360  c@b.com",
                 List.of("a@b.com", "c@b.com")
@@ -100,7 +101,7 @@ public class TestAddress
     {
         Set<Address> addresses = Address.extractAll(string);
 
-        Set<Address> expectedAddresses = Address.fromStringsAsSet(expectedAddressStrings);
+        Set<Address> expectedAddresses = ImmutableSet.copyOf(Address.fromStrings(expectedAddressStrings));
 
         assertThat(addresses, is(expectedAddresses));
     }
@@ -137,37 +138,6 @@ public class TestAddress
         {
             Assertions.assertThrows(expectedExceptionClass, () -> new Address(addressString));
         }
-    }
-
-    private static Stream<Arguments> belongsToCases()
-    {
-        return Stream.of(
-            Arguments.of("a@b.com",     "b.com",     true),
-            Arguments.of("a@b.com",     "c.com",     false),
-            Arguments.of("a@b.com",     "b.org",     false),
-            Arguments.of("a@c.b.com",   "b.com",     true),
-            Arguments.of("a@c.b.com",   "c.com",     false),
-            Arguments.of("a@c.b.com",   "c.b.com",   true),
-            Arguments.of("a@c.b.com",   "b.b.com",   false),
-            Arguments.of("a@c.b.com",   "c.c.com",   false),
-            Arguments.of("a@d.c.b.com", "c.b.com",   true),
-            Arguments.of("a@d.c.b.com", "d.b.com",   false),
-            Arguments.of("a@d.c.b.com", "d.c.b.com", true),
-            Arguments.of("a@d.c.b.com", "c.c.b.com", false),
-            Arguments.of("a@d.c.b.com", "d.d.b.com", false)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("belongsToCases")
-    public void belongsTo(String addressString, String domainString, boolean expectedResult)
-    {
-        Address address = new Address(addressString);
-        Domain domain = new Domain(domainString);
-
-        boolean result = address.belongsTo(domain);
-
-        assertThat(result, is(expectedResult));
     }
 
     private static Stream<Arguments> compareToCases()

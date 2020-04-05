@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,8 @@ import name.ignat.minerva.io.read.excel.ExcelReader;
 import name.ignat.minerva.model.Address;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.AddressFilters;
-import name.ignat.minerva.model.AddressFilters.AddressMatchers;
+import name.ignat.minerva.model.AddressMatchers;
+import name.ignat.minerva.model.AddressPattern;
 import name.ignat.minerva.model.Domain;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.util.Array;
@@ -85,7 +85,7 @@ public class MinervaReader
     {
         Set<Address> addresses = new LinkedHashSet<>();
         Set<Domain> domains = new LinkedHashSet<>();
-        Set<Pattern> patterns = new LinkedHashSet<>();
+        Set<AddressPattern> patterns = new LinkedHashSet<>();
 
         if (sheetConfigs != null)
         {
@@ -104,7 +104,7 @@ public class MinervaReader
                         domains.addAll(contactsReader.read(columnHeaders, Domain.class));
                         break;
                     case PATTERN:
-                        patterns.addAll(contactsReader.read(columnHeaders, Pattern.class));
+                        patterns.addAll(contactsReader.read(columnHeaders, AddressPattern.class));
                         break;
                     default:
                         throw new UnexpectedCaseException(sheetConfig.getType());

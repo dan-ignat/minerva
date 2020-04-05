@@ -45,20 +45,10 @@ public class Address extends Addressable<Address>
         return strings.stream().map(Address::new).collect(toImmutableList());
     }
 
-    public static Set<Address> fromStringsAsSet(List<String> strings)
-    {
-        return strings.stream().map(Address::new).collect(toImmutableSet());
-    }
-
-    public static List<Address> fromValidStrings(List<String> strings)
-    {
-        return strings.stream().filter(Address::isValid).map(Address::new).collect(toImmutableList());
-    }
-
     public static Set<Address> extractAll(String string)
     {
         return findAllMatches(PATTERN, string).stream()
-            .filter(TopLevelDomains::isValidAddressable)
+            .filter(TopLevelDomains::hasValidTLD)
             .map(Address::new)
             .collect(toImmutableSet());
     }
@@ -74,9 +64,10 @@ public class Address extends Addressable<Address>
         this.domain = new Domain(substringAfter(address, "@"));
     }
 
-    public boolean belongsTo(Domain other)
+    @Override
+    public boolean matches(Address address)
     {
-        return domain.isSubdomainOf(other);
+        return equals(address);
     }
 
     /**

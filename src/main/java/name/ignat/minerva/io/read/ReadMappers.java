@@ -6,19 +6,18 @@ import static org.hamcrest.Matchers.arrayWithSize;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.model.Address;
+import name.ignat.minerva.model.AddressPattern;
 import name.ignat.minerva.model.Domain;
 import name.ignat.minerva.model.Message;
-import name.ignat.minerva.util.Patterns;
 
 public final class ReadMappers
 {
     /*
-     * Wish we could use actual type variables for these, but there's no way to do so, since they have to vary for each
-     * call to register() and registerFactory()
+     * Can't use actual type variables for these, since they have to vary for each call to register() and
+     * registerFactory().
      */
     private static Map<Class<?>, ReadMapper<?>> registry = new LinkedHashMap<>();
 
@@ -30,9 +29,10 @@ public final class ReadMappers
 
     static
     {
-        register(Address.class, ReadMappers::toAddress);
-        register(Domain.class,  ReadMappers::toDomain);
-        register(Pattern.class,  ReadMappers::toPattern);
+        register(Address.class,        ReadMappers::toAddress);
+        register(Domain.class,         ReadMappers::toDomain);
+        register(AddressPattern.class, ReadMappers::toAddressPattern);
+
         registerFactory(Message.class, MessageMapper::new);
     }
 
@@ -95,11 +95,11 @@ public final class ReadMappers
         return new Domain(args[0]);
     }
 
-    public static Pattern toPattern(String[] args)
+    public static AddressPattern toAddressPattern(String[] args)
     {
         assertThat(args, arrayWithSize(1));
 
-        return Patterns.fromDelimitedString(args[0]);
+        return new AddressPattern(args[0]);
     }
 
     public static class MessageMapper implements ReadMapper<Message>

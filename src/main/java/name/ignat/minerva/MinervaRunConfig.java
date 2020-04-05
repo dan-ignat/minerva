@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.NonFinal;
-import name.ignat.minerva.model.AddressFilters.AddressMatchers.AddressMatcherType;
+import name.ignat.minerva.model.AddressMatcher;
 
 /**
  * Value classes that correspond to the run configuration file (YAML, validated with JSON Schema).
@@ -69,12 +69,12 @@ class SingleColumnSheetConfig
 //@AllArgsConstructor @NoArgsConstructor(force = true, access = PRIVATE)
 class AddressMatcherSheetConfig extends SingleColumnSheetConfig
 {
-    private AddressMatcherType type;
+    private AddressMatcher.Type type;
 
     @SuppressWarnings("unused")
     private AddressMatcherSheetConfig() { this(null, null, null); }
 
-    public AddressMatcherSheetConfig(String name, String columnHeader, AddressMatcherType type)
+    public AddressMatcherSheetConfig(String name, String columnHeader, AddressMatcher.Type type)
     {
         super(name, columnHeader);
         this.type = type;
@@ -133,7 +133,7 @@ class MainMessageFileConfig extends MessageFileConfig
         this.type = type;
     }
 
-    enum Type { ADD_SENDERS, AUTO_REPLIES, REMOVE_SENDERS }
+    enum Type { AUTO_REPLIES, ADD_SENDERS, REMOVE_SENDERS }
 }
 
 @Value

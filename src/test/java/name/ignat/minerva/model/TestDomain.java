@@ -13,7 +13,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
-import name.ignat.minerva.model.Addressable.ValidationException;
 
 public class TestDomain
 {
@@ -67,6 +66,39 @@ public class TestDomain
         Domain domain2 = new Domain(domain2String);
 
         boolean result = domain1.isSubdomainOf(domain2);
+
+        assertThat(result, is(expectedResult));
+    }
+
+    private static Stream<Arguments> matchesCases()
+    {
+        return Stream.of(
+            Arguments.of("b.com",     "a@b.com",     true),
+            Arguments.of("c.com",     "a@b.com",     false),
+            Arguments.of("b.org",     "a@b.com",     false),
+            Arguments.of("b.com",     "a@c.b.com",   true),
+            Arguments.of("c.com",     "a@c.b.com",   false),
+            Arguments.of("c.b.com",   "a@c.b.com",   true),
+            Arguments.of("b.b.com",   "a@c.b.com",   false),
+            Arguments.of("c.c.com",   "a@c.b.com",   false),
+            Arguments.of("c.b.org",   "a@c.b.com",   false),
+            Arguments.of("c.b.com",   "a@d.c.b.com", true),
+            Arguments.of("d.b.com",   "a@d.c.b.com", false),
+            Arguments.of("d.c.b.com", "a@d.c.b.com", true),
+            Arguments.of("c.c.b.com", "a@d.c.b.com", false),
+            Arguments.of("d.d.b.com", "a@d.c.b.com", false),
+            Arguments.of("d.c.b.org", "a@d.c.b.com", false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("matchesCases")
+    public void matches(String domainString, String addressString, boolean expectedResult)
+    {
+        Domain domain = new Domain(domainString);
+        Address address = new Address(addressString);
+
+        boolean result = domain.matches(address);
 
         assertThat(result, is(expectedResult));
     }

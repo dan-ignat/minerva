@@ -17,7 +17,6 @@ import com.google.common.collect.SetMultimap;
 import lombok.Getter;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
 import name.ignat.minerva.rule.Rule;
-import name.ignat.minerva.util.Patterns;
 
 public class AddressBook
 {
@@ -58,7 +57,6 @@ public class AddressBook
             {
                 auditLog.onAddressFlagged(address, sourceMessage, matchedRule);
 
-                // Only flag if there's a sourceMessage to flag
                 if (sourceMessage != null)
                 {
                     auditLog.onMessageFlagged(sourceMessage, matchedRule, ADDRESS_FILTERS);
@@ -198,9 +196,9 @@ public class AddressBook
         {
             AddressBook addressBook = new AddressBook(new AddressFilters(
                 Address.fromStrings(exclusionAddressStrings), Domain.fromStrings(exclusionDomainStrings),
-                Patterns.fromDelimitedStrings(exclusionPatternStrings),
+                AddressPattern.fromStrings(exclusionPatternStrings),
                 Address.fromStrings(flagAddressStrings), Domain.fromStrings(flagDomainStrings),
-                Patterns.fromDelimitedStrings(flagPatternStrings)));
+                AddressPattern.fromStrings(flagPatternStrings)));
 
             addressBook.init(Address.fromStrings(initialAddressStrings));
 

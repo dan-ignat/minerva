@@ -2,9 +2,9 @@ package name.ignat.minerva;
 
 import static name.ignat.commons.utils.IoUtils.getClassPathResource;
 import static name.ignat.minerva.MainMessageFileConfig.Type.ADD_SENDERS;
-import static name.ignat.minerva.model.AddressFilters.AddressMatchers.AddressMatcherType.ADDRESS;
-import static name.ignat.minerva.model.AddressFilters.AddressMatchers.AddressMatcherType.DOMAIN;
-import static name.ignat.minerva.model.AddressFilters.AddressMatchers.AddressMatcherType.PATTERN;
+import static name.ignat.minerva.model.AddressMatcher.Type.ADDRESS;
+import static name.ignat.minerva.model.AddressMatcher.Type.DOMAIN;
+import static name.ignat.minerva.model.AddressMatcher.Type.PATTERN;
 import static name.ignat.minerva.util.JacksonUtils.parseYaml;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

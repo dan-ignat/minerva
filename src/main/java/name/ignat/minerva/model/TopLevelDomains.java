@@ -33,7 +33,7 @@ public final class TopLevelDomains
         }
     }
 
-    public static boolean isValidAddressable(String addressable)
+    public static boolean hasValidTLD(String addressable)
     {
         String tld = substringAfterLast(addressable.toLowerCase(), ".");
 

@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class TestTopLevelDomains
 {
-    private static Stream<Arguments> isValidAddressableCases()
+    private static Stream<Arguments> hasValidTLDCases()
     {
         return Stream.of(
             Arguments.of("a@b.com",       true),
@@ -34,10 +34,10 @@ public class TestTopLevelDomains
     }
 
     @ParameterizedTest
-    @MethodSource("isValidAddressableCases")
-    public void isValidAddressable(String addressableString, boolean expectedResult)
+    @MethodSource("hasValidTLDCases")
+    public void hasValidTLD(String addressableString, boolean expectedResult)
     {
-        boolean result = TopLevelDomains.isValidAddressable(addressableString);
+        boolean result = TopLevelDomains.hasValidTLD(addressableString);
 
         assertThat(result, is(expectedResult));
     }

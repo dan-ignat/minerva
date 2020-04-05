@@ -26,7 +26,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.collect.ImmutableList;
 
-import name.ignat.minerva.model.AddressFilters.AddressMatchers;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
