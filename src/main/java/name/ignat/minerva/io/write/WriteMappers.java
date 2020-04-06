@@ -60,7 +60,7 @@ public final class WriteMappers
     {
         return Array.of(
             message.getIndex().toString(),
-            message.getFrom().toCanonical(),
+            ifNotNull(message.getFrom(), f -> f.toCanonical()),
             message.getSubject(),
             message.getBody());
     }

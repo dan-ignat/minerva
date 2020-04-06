@@ -131,7 +131,10 @@ public class MinervaReader
 
             for (Message addressMessage : addressMessages)
             {
-                messageAddresses.add(addressMessage.getFrom());
+                if (addressMessage.getFrom() != null)
+                {
+                    messageAddresses.add(addressMessage.getFrom());
+                }
 
                 if (addressMessageFileConfig.isExtractBodyAddresses())
                 {
