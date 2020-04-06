@@ -41,6 +41,8 @@ public class AddressPattern extends AddressMatcher
     {
         checkNotNull(patternString);
 
+        patternString = patternString.trim();
+
         if (!isWrapped(patternString, WRAP_TOKEN))
         {
             throw new ValidationException(patternString);

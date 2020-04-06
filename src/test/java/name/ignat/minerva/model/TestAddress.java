@@ -4,12 +4,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -130,13 +132,15 @@ public class TestAddress
     @MethodSource("constructorCases")
     public void constructor(String addressString, Class<? extends Throwable> expectedExceptionClass)
     {
+        Executable executable = () -> new Address(addressString);
+
         if (expectedExceptionClass == null)
         {
-            new Address(addressString);
+            assertDoesNotThrow(executable);
         }
         else
         {
-            Assertions.assertThrows(expectedExceptionClass, () -> new Address(addressString));
+            assertThrows(expectedExceptionClass, executable);
         }
     }
 
@@ -184,9 +188,10 @@ public class TestAddress
     private static Stream<Arguments> toCanonicalCases()
     {
         return Stream.of(
-            Arguments.of("a@b.com", "a@b.com"),
-
-            Arguments.of("A@B.COM", "a@b.com")
+            Arguments.of("a@b.com",   "a@b.com"),
+            Arguments.of("A@B.COM",   "a@b.com"),
+            // Trimming
+            Arguments.of(" a@b.com ", "a@b.com")
         );
     }
 

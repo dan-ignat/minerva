@@ -4,10 +4,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,13 +38,15 @@ public class TestDomain
     @MethodSource("constructorCases")
     public void constructor(String domainString, Class<? extends Throwable> expectedExceptionClass)
     {
+        Executable executable = () -> new Domain(domainString);
+
         if (expectedExceptionClass == null)
         {
-            new Domain(domainString);
+            assertDoesNotThrow(executable);
         }
         else
         {
-            Assertions.assertThrows(expectedExceptionClass, () -> new Domain(domainString));
+            assertThrows(expectedExceptionClass, executable);
         }
     }
 
@@ -150,8 +154,10 @@ public class TestDomain
     private static Stream<Arguments> toCanonicalCases()
     {
         return Stream.of(
-            Arguments.of("b.com", "b.com"),
-            Arguments.of("B.COM", "b.com")
+            Arguments.of("b.com",   "b.com"),
+            Arguments.of("B.COM",   "b.com"),
+            // Trimming
+            Arguments.of(" b.com ", "b.com")
         );
     }
 

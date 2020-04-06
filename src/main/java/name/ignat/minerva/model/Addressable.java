@@ -33,7 +33,7 @@ public abstract class Addressable<T> extends AddressMatcher implements Comparabl
     {
         checkNotNull(addressable);
 
-        addressable = addressable.toLowerCase();
+        addressable = addressable.trim().toLowerCase();
 
         if (!pattern.matcher(addressable).matches())
         {
