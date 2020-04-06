@@ -8,6 +8,8 @@ import static java.lang.String.format;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+
 import name.ignat.minerva.MinervaException;
 
 /**
@@ -29,7 +31,7 @@ public abstract class HeaderRowReader<R extends Iterable<C>, C> implements Funct
     public Integer[] apply(R headerRow)
     {
         Map<String, Integer> headerIndexMap = zipWithIndex(stream(headerRow))
-            .collect(toImmutableMap(i -> getCellValue(i.getValue()), i -> (int) i.getIndex()));
+            .collect(toImmutableMap(zip -> getCellValue(zip.getValue()), zip -> (int) zip.getIndex()));
 
         Integer[] desiredColumnIndexes = new Integer[desiredColumnHeaders.length];
 
@@ -50,5 +52,5 @@ public abstract class HeaderRowReader<R extends Iterable<C>, C> implements Funct
         return desiredColumnIndexes;
     }
 
-    protected abstract String getCellValue(C headerCell);
+    protected abstract String getCellValue(@Nonnull C headerCell);
 }

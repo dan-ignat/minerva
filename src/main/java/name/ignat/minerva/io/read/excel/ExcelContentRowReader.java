@@ -1,10 +1,12 @@
 package name.ignat.minerva.io.read.excel;
 
+import javax.annotation.Nonnull;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-import name.ignat.minerva.io.read.ReadMapper;
 import name.ignat.minerva.io.read.ContentRowReader;
+import name.ignat.minerva.io.read.ReadMapper;
 
 class ExcelContentRowReader<O> extends ContentRowReader<Row, Cell, O>
 {
@@ -14,13 +16,13 @@ class ExcelContentRowReader<O> extends ContentRowReader<Row, Cell, O>
     }
 
     @Override
-    protected Cell getCell(Row row, int index)
+    protected Cell getCell(@Nonnull Row row, int index)
     {
         return row.getCell(index);
     }
 
     @Override
-    protected String getCellValue(Cell cell)
+    protected String getCellValue(@Nonnull Cell cell)
     {
         return cell.getStringCellValue();
     }

@@ -2,6 +2,7 @@ package name.ignat.minerva.io.read;
 
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -46,7 +47,7 @@ public abstract class ContentRowReader<R extends Iterable<C>, C, O> implements F
      * @return null if {@code index} is for a cell that doesn't exist
      */
     @Nullable
-    protected abstract C getCell(R row, int index);
+    protected abstract C getCell(@Nonnull R row, int index);
 
-    protected abstract String getCellValue(C cell);
+    protected abstract String getCellValue(@Nonnull C cell);
 }

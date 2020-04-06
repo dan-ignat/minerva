@@ -2,6 +2,8 @@ package name.ignat.minerva.io.read.csv;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import name.ignat.minerva.io.read.ContentRowReader;
 import name.ignat.minerva.io.read.ReadMapper;
 
@@ -13,7 +15,7 @@ class CsvContentRowReader<O> extends ContentRowReader<List<String>, String, O>
     }
 
     @Override
-    protected String getCell(List<String> row, int index)
+    protected String getCell(@Nonnull List<String> row, int index)
     {
         if (index < row.size())
         {
@@ -26,7 +28,7 @@ class CsvContentRowReader<O> extends ContentRowReader<List<String>, String, O>
     }
 
     @Override
-    protected String getCellValue(String cell)
+    protected String getCellValue(@Nonnull String cell)
     {
         return cell;
     }

@@ -2,6 +2,8 @@ package name.ignat.minerva.io.read.csv;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import name.ignat.minerva.io.read.HeaderRowReader;
 
 class CsvHeaderRowReader extends HeaderRowReader<List<String>, String>
@@ -12,7 +14,7 @@ class CsvHeaderRowReader extends HeaderRowReader<List<String>, String>
     }
 
     @Override
-    protected String getCellValue(String headerCell)
+    protected String getCellValue(@Nonnull String headerCell)
     {
         return headerCell;
     }
