@@ -44,10 +44,10 @@ public class MinervaApp
     public static void main(String[] args)
     {
         // FIXME: Delete this when we're all done coding
-        args = new String[] { "files/run.yaml" };
+        //args = new String[] { "files/run.yaml" };
 
         System.setProperty("spring.profiles.active", PROD);
-        System.setProperty("spring.main.banner-mode", OFF.name()/*.toLowerCase()*/);
+        System.setProperty("spring.main.banner-mode", OFF.name());
 
         checkUsage(args);
 
