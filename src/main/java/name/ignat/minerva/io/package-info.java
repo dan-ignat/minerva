@@ -4,7 +4,7 @@
  * <pre>
  *                  ┌───────────────────────────────────────────┐
  *                  │                                           │
- *   SpreadsheetReader ────────────> HeaderRowReader            └────────> ContentRowReader
+ *   SpreadsheetReader ─────────────> HeaderRowReader           └──────────> ContentRowReader
  *     Δ          Δ                    Δ          Δ                            Δ          Δ
  *     │          │                    │          │                            │          │
  * CsvReader ExcelReader  CsvHeaderRowReader ExcelHeaderRowReader  CsvContentRowReader ExcelContentRowReader
@@ -13,7 +13,7 @@
  * 
  *                  ┌───────────────────────────────────────────┐
  *                  │                                           │
- *   SpreadsheetWriter ────────────> HeaderRowWriter            └────────> ContentRowWriter
+ *   SpreadsheetWriter ─────────────> HeaderRowWriter           └──────────> ContentRowWriter
  *     Δ          Δ                    Δ          Δ                            Δ          Δ
  *     │          │                    │          │                            │          │
  * CsvWriter ExcelWriter  CsvHeaderRowWriter ExcelHeaderRowWriter  CsvContentRowWriter ExcelContentRowWriter
