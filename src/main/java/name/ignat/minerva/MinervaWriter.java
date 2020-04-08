@@ -68,6 +68,8 @@ public class MinervaWriter
 
         if (outputFile != null)
         {
+            outputFile.setReadOnly();
+
             logger.atInfo().log("Output file written to %s", outputFile.getCanonicalPath());
         }
     }
