@@ -33,7 +33,7 @@ public class AddressFilters
 
     public boolean shouldExclude(Address address)
     {
-        return exclusionMatchers.match(address) || shouldFlag(address);
+        return exclusionMatchers.match(address);
     }
 
     public boolean shouldFlag(Address address)

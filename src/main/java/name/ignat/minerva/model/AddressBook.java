@@ -2,7 +2,7 @@ package name.ignat.minerva.model;
 
 import static java.util.Collections.unmodifiableCollection;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,24 +48,27 @@ public class AddressBook
         return add(address, null, null);
     }
 
+    /**
+     * Filter checks are done in order of increasing severity (DUPLICATE, EXCLUDED, FLAGGED), to minimize how many
+     * high-severity filter actions must be manually analyzed in the output file.
+     */
     public boolean add(@Nonnull Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
     {
-        if (addressFilters.shouldExclude(address))
+        if (addressesByDomain.containsEntry(address.getDomain(), address))
         {
-            if (addressFilters.shouldFlag(address))
-            {
-                auditLog.onAddressFlagged(address, sourceMessage, matchedRule);
-            }
-            else
-            {
-                auditLog.onAddressExcluded(address, sourceMessage, matchedRule);
-            }
+            auditLog.onAddressDuplicate(address, sourceMessage, matchedRule);
 
             return false;
         }
-        else if (addressesByDomain.containsEntry(address.getDomain(), address))
+        else if (addressFilters.shouldExclude(address))
         {
-            auditLog.onAddressDuplicate(address, sourceMessage, matchedRule);
+            auditLog.onAddressExcluded(address, sourceMessage, matchedRule);
+
+            return false;
+        }
+        else if (addressFilters.shouldFlag(address))
+        {
+            auditLog.onAddressFlagged(address, sourceMessage, matchedRule);
 
             return false;
         }
@@ -73,7 +76,7 @@ public class AddressBook
         {
             boolean changed = addressesByDomain.put(address.getDomain(), address);
 
-            assertThat(changed, equalTo(true));
+            assertThat(changed, is(true));
 
             auditLog.onAddressAdded(address, sourceMessage, matchedRule);
 

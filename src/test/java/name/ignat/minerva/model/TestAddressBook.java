@@ -60,7 +60,8 @@ public class TestAddressBook
             Arguments.of(List.of(),          List.of("a@b.com"), List.of("a@b.com"),            List.of(),                     List.of(FLAGGED)),
 
             // Exclusions and Flags
-            Arguments.of(List.of("a@b.com"), List.of("a@b.com"), List.of("a@b.com"),            List.of(),                     List.of(FLAGGED))
+            Arguments.of(List.of("a@b.com"), List.of("a@b.com"), List.of("a@b.com"),            List.of(),                     List.of(EXCLUDED)),
+            Arguments.of(List.of("a@b.com"), List.of("b@b.com"), List.of("b@b.com"),            List.of(),                     List.of(FLAGGED))
         );
     }
 
