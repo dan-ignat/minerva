@@ -9,7 +9,6 @@ import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.EXCLUDED;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.FLAGGED;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVED;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVE_NA;
-import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.ADDRESS_FILTERS;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_FROM_ADDRESS;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_RULE_MATCHED;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -104,19 +103,19 @@ public class TestAddressBook
     {
         return Stream.of(
             // Basic
-            Arguments.of(List.of(),          List.of(),          List.of(),          "b@b.com", List.of("b@b.com"),            ADDED,     null),
+            Arguments.of(List.of(),          List.of(),          List.of(),          "b@b.com", List.of("b@b.com"),            ADDED),
 
             // Initial addresses
-            Arguments.of(List.of(),          List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com", "b@b.com"), ADDED,     null),
-            Arguments.of(List.of(),          List.of(),          List.of("b@b.com"), "b@b.com", List.of("b@b.com"),            DUPLICATE, null),
+            Arguments.of(List.of(),          List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com", "b@b.com"), ADDED),
+            Arguments.of(List.of(),          List.of(),          List.of("b@b.com"), "b@b.com", List.of("b@b.com"),            DUPLICATE),
 
             // Exclusions
-            Arguments.of(List.of("a@b.com"), List.of(),          List.of(),          "b@b.com", List.of("b@b.com"),            ADDED,     null),
-            Arguments.of(List.of("b@b.com"), List.of(),          List.of(),          "b@b.com", List.of(),                     EXCLUDED,  null),
+            Arguments.of(List.of("a@b.com"), List.of(),          List.of(),          "b@b.com", List.of("b@b.com"),            ADDED),
+            Arguments.of(List.of("b@b.com"), List.of(),          List.of(),          "b@b.com", List.of(),                     EXCLUDED),
 
             // Flags
-            Arguments.of(List.of(),          List.of("a@b.com"), List.of(),          "b@b.com", List.of("b@b.com"),            ADDED,     null),
-            Arguments.of(List.of(),          List.of("b@b.com"), List.of(),          "b@b.com", List.of(),                     FLAGGED,   ADDRESS_FILTERS)
+            Arguments.of(List.of(),          List.of("a@b.com"), List.of(),          "b@b.com", List.of("b@b.com"),            ADDED),
+            Arguments.of(List.of(),          List.of("b@b.com"), List.of(),          "b@b.com", List.of(),                     FLAGGED)
         );
     }
 
@@ -125,8 +124,7 @@ public class TestAddressBook
     public void add(
         List<String> exclusionStrings, List<String> flagStrings,
         List<String> initialAddressStrings, String addressToAddString,
-        List<String> expectedAddressStrings,
-        AddressEntry.Type expectedAddressEntryType, MessageFlag.Reason expectedMessageFlagReason)
+        List<String> expectedAddressStrings, AddressEntry.Type expectedAddressEntryType)
     {
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
@@ -140,28 +138,26 @@ public class TestAddressBook
         boolean changed = addressBook.add(new Address(addressToAddString), sourceMessage, matchedRule);
 
         doAddRemoveAsserts(exclusionStrings, flagStrings, initialAddressStrings, addressToAddString,
-            sourceMessage, matchedRule, addressBook, changed,
-            expectedAddressStrings,
-            expectedAddressEntryType, expectedMessageFlagReason);
+            sourceMessage, matchedRule, addressBook, changed, expectedAddressStrings, expectedAddressEntryType);
     }
 
     private static Stream<Arguments> removeCases()
     {
         return Stream.of(
             // Basic
-            Arguments.of(List.of(),          List.of(),          List.of(),          "b@b.com", List.of(),          REMOVE_NA, null),
+            Arguments.of(List.of(),          List.of(),          List.of(),          "b@b.com", List.of(),          REMOVE_NA),
 
             // Initial addresses
-            Arguments.of(List.of(),          List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA, null),
-            Arguments.of(List.of(),          List.of(),          List.of("b@b.com"), "b@b.com", List.of(),          REMOVED,   null),
+            Arguments.of(List.of(),          List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
+            Arguments.of(List.of(),          List.of(),          List.of("b@b.com"), "b@b.com", List.of(),          REMOVED),
 
             // Non-matching exclusions don't affect removal
-            Arguments.of(List.of("c@b.com"), List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA, null),
-            Arguments.of(List.of("c@b.com"), List.of(),          List.of("b@b.com"), "b@b.com", List.of(),          REMOVED,   null),
+            Arguments.of(List.of("c@b.com"), List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
+            Arguments.of(List.of("c@b.com"), List.of(),          List.of("b@b.com"), "b@b.com", List.of(),          REMOVED),
 
             // Non-matching flags don't affect removal
-            Arguments.of(List.of(),          List.of("c@b.com"), List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA, null),
-            Arguments.of(List.of(),          List.of("c@b.com"), List.of("b@b.com"), "b@b.com", List.of(),          REMOVED,   null)
+            Arguments.of(List.of(),          List.of("c@b.com"), List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
+            Arguments.of(List.of(),          List.of("c@b.com"), List.of("b@b.com"), "b@b.com", List.of(),          REMOVED)
         );
     }
 
@@ -170,8 +166,7 @@ public class TestAddressBook
     public void remove(
         List<String> exclusionStrings, List<String> flagStrings,
         List<String> initialAddressStrings, String addressToRemoveString,
-        List<String> expectedAddressStrings,
-        AddressEntry.Type expectedAddressEntryType, MessageFlag.Reason expectedMessageFlagReason)
+        List<String> expectedAddressStrings, AddressEntry.Type expectedAddressEntryType)
     {
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
@@ -184,20 +179,15 @@ public class TestAddressBook
         // CALL UNDER TEST
         boolean changed = addressBook.remove(new Address(addressToRemoveString), sourceMessage, matchedRule);
 
-        doAddRemoveAsserts(
-            exclusionStrings, flagStrings,
-            initialAddressStrings, addressToRemoveString,
-            sourceMessage, matchedRule, addressBook, changed,
-            expectedAddressStrings,
-            expectedAddressEntryType, expectedMessageFlagReason);
+        doAddRemoveAsserts(exclusionStrings, flagStrings, initialAddressStrings, addressToRemoveString,
+            sourceMessage, matchedRule, addressBook, changed, expectedAddressStrings, expectedAddressEntryType);
     }
 
     private void doAddRemoveAsserts(
         List<String> exclusionStrings, List<String> flagStrings,
         List<String> initialAddressStrings, String addressToTestString,
         Message sourceMessage, Rule matchedRule, AddressBook addressBook, boolean changed,
-        List<String> expectedAddressStrings,
-        AddressEntry.Type expectedAddressEntryType, MessageFlag.Reason expectedMessageFlagReason)
+        List<String> expectedAddressStrings, AddressEntry.Type expectedAddressEntryType)
     {
         // Assert addresses
         {
@@ -226,8 +216,7 @@ public class TestAddressBook
 
         // Assert messageFlags
         {
-            List<MessageFlag> expectedMessageFlags = expectedMessageFlagReason == null ? List.of() :
-                List.of(new MessageFlag(sourceMessage, matchedRule, expectedMessageFlagReason));
+            List<MessageFlag> expectedMessageFlags = List.of();
 
             List<MessageFlag> messageFlags = addressBook.getAuditLog().getMessageFlags();
 

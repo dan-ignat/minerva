@@ -107,7 +107,6 @@ public class AuditLog
         @Nonnull
         private Reason reason;
 
-        public enum Reason { NO_FROM_ADDRESS, NO_BODY_ADDRESSES, UNEXPECTED_RULE_MATCHED, NO_RULE_MATCHED,
-            ADDRESS_FILTERS }
+        public enum Reason { NO_FROM_ADDRESS, NO_BODY_ADDRESSES, UNEXPECTED_RULE_MATCHED, NO_RULE_MATCHED }
     }
 }

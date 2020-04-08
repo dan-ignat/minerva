@@ -1,7 +1,6 @@
 package name.ignat.minerva.model;
 
 import static java.util.Collections.unmodifiableCollection;
-import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.ADDRESS_FILTERS;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -56,11 +55,6 @@ public class AddressBook
             if (addressFilters.shouldFlag(address))
             {
                 auditLog.onAddressFlagged(address, sourceMessage, matchedRule);
-
-                if (sourceMessage != null)
-                {
-                    auditLog.onMessageFlagged(sourceMessage, matchedRule, ADDRESS_FILTERS);
-                }
             }
             else
             {
