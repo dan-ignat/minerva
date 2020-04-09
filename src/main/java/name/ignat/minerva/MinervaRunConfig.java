@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.NonFinal;
+import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.model.AddressMatcher;
 
 /**
@@ -89,17 +90,44 @@ class InitialAddressSheetConfig extends SingleColumnSheetConfig
 @Value @EqualsAndHashCode(callSuper = true) @ToString(callSuper = true)
 class AddressMatcherSheetConfig extends SingleColumnSheetConfig
 {
-    private static final String DEFAULT_COLUMN_HEADER = "Address/Domain/Pattern";
+    private static final String DEFAULT_COLUMN_HEADER_ADDRESS = "Address";
+    private static final String DEFAULT_COLUMN_HEADER_DOMAIN = "Domain";
+    private static final String DEFAULT_COLUMN_HEADER_PATTERN = "Pattern";
 
     private AddressMatcher.Type type;
 
+    // Unlike other Config classes, this one needs a dynamic default based on {@code type}, so it has to do the
+    // defaulting below in {@code getColumnHeader()}
     @SuppressWarnings("unused")
-    private AddressMatcherSheetConfig() { this(null, DEFAULT_COLUMN_HEADER, null); }
+    private AddressMatcherSheetConfig() { this(null, null, null); }
 
     public AddressMatcherSheetConfig(String name, String columnHeader, AddressMatcher.Type type)
     {
         super(name, columnHeader);
         this.type = type;
+    }
+
+    // Dynamic defaulting based on {@code type}
+    @Override
+    public String getColumnHeader()
+    {
+        String columnHeader = super.getColumnHeader();
+
+        if (columnHeader != null)
+        {
+            return columnHeader;
+        }
+
+        @SuppressWarnings("preview")
+        String defaultColumnHeader = switch (type)
+        {
+            case ADDRESS: yield DEFAULT_COLUMN_HEADER_ADDRESS;
+            case DOMAIN:  yield DEFAULT_COLUMN_HEADER_DOMAIN;
+            case PATTERN: yield DEFAULT_COLUMN_HEADER_PATTERN;
+            default: throw new UnexpectedCaseException(type);
+        };
+
+        return defaultColumnHeader;
     }
 }
 
