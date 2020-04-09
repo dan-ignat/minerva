@@ -22,6 +22,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import name.ignat.minerva.OutputFileConfig.AddressLogSheetConfig;
+import name.ignat.minerva.OutputFileConfig.AddressSheetConfig;
 import name.ignat.minerva.OutputFileConfig.MessageFlagSheetConfig;
 import name.ignat.minerva.util.JacksonUtils.ValidationException;
 
@@ -71,11 +72,10 @@ public class TestMinervaRunConfig
                     ),
                     new OutputFileConfig(
                         "/path/to/Contacts UPDATED {dateTime}.xlsx",
-                        new SingleColumnSheetConfig("Contract", "E-mail Address"),
+                        new AddressSheetConfig("Contract", "E-mail Address"),
                         new MessageFlagSheetConfig(
                             "Flagged Messages",
-                            new MessageFlagSheetConfig.ColumnHeadersConfig(
-                                "Index", "Matched Rule", "Reason")
+                            new MessageFlagSheetConfig.ColumnHeadersConfig("Index", "Matched Rule", "Reason")
                         ),
                         new AddressLogSheetConfig(
                             "Address Log",

@@ -11,17 +11,6 @@
         "path":         { "type": "string" },
         "name":         { "type": "string" },
         "columnHeader": { "type": "string" },
-        "singleColumnSheet":
-        {
-            "type": "object",
-            "properties":
-            {
-                "name":         { "$ref": "#/$defs/name" },
-                "columnHeader": { "$ref": "#/$defs/columnHeader" }
-            },
-            "required": ["name", "columnHeader"],
-            "additionalProperties": false
-        },
         "initialAddressSheet":
         {
             "type": "object",
@@ -31,7 +20,7 @@
                 "columnHeader": { "$ref": "#/$defs/columnHeader" },
                 "filter":       { "type": "boolean" }
             },
-            "required": ["name", "columnHeader"],
+            "required": ["name"],
             "additionalProperties": false
         },
         "initialAddressSheets": { "type": "array", "items": { "$ref": "#/$defs/initialAddressSheet" }, "minItems": 1 },
@@ -44,7 +33,7 @@
                 "type":         { "type": "string", "enum": ["ADDRESS", "DOMAIN", "PATTERN"] },
                 "columnHeader": { "$ref": "#/$defs/columnHeader" }
             },
-            "required": ["name", "type", "columnHeader"],
+            "required": ["name", "type"],
             "additionalProperties": false
         },
         "addressMatcherSheets": { "type": "array", "items": { "$ref": "#/$defs/addressMatcherSheet" }, "minItems": 1 },
@@ -63,12 +52,17 @@
                         "subject": { "$ref": "#/$defs/columnHeader" },
                         "body":    { "$ref": "#/$defs/columnHeader" }
                     },
-                    "required": ["from", "subject", "body"],
+                    "anyOf":
+                    [
+                        { "required": ["from"] },
+                        { "required": ["subject"] },
+                        { "required": ["body"] }
+                    ],
                     "additionalProperties": false
                 },
                 "extractBodyAddresses": { "type": "boolean" }
             },
-            "required": ["path", "columnHeaders"],
+            "required": ["path"],
             "additionalProperties": false
         },
         "addressMessageFiles": {"type": "array", "items": { "$ref": "#/$defs/addressMessageFile" }, "minItems": 1 }
@@ -119,11 +113,16 @@
                         "subject": { "$ref": "#/$defs/columnHeader" },
                         "body":    { "$ref": "#/$defs/columnHeader" }
                     },
-                    "required": ["from", "subject", "body"],
+                    "anyOf":
+                    [
+                        { "required": ["from"] },
+                        { "required": ["subject"] },
+                        { "required": ["body"] }
+                    ],
                     "additionalProperties": false
                 }
             },
-            "required": ["type", "path", "columnHeaders"],
+            "required": ["type", "path"],
             "additionalProperties": false
         },
         "outputFile":
@@ -132,7 +131,21 @@
             "properties":
             {
                 "path":         { "$ref": "#/$defs/path" },
-                "addressSheet": { "$ref": "#/$defs/singleColumnSheet" },
+                "addressSheet":
+                {
+                    "type": "object",
+                    "properties":
+                    {
+                        "name":         { "$ref": "#/$defs/name" },
+                        "columnHeader": { "$ref": "#/$defs/columnHeader" }
+                    },
+                    "anyOf":
+                    [
+                        { "required": ["name"] },
+                        { "required": ["columnHeader"] }
+                    ],
+                    "additionalProperties": false
+                },
                 "messageFlagSheet":
                 {
                     "type": "object",
@@ -148,11 +161,20 @@
                                 "matchedRule":        { "$ref": "#/$defs/columnHeader" },
                                 "reason":             { "$ref": "#/$defs/columnHeader" }
                             },
-                            "required": ["messageIndex", "matchedRule", "reason"],
+                            "anyOf":
+                            [
+                                { "required": ["messageIndex"] },
+                                { "required": ["matchedRule"] },
+                                { "required": ["reason"] }
+                            ],
                             "additionalProperties": false
                         }
                     },
-                    "required": ["name", "columnHeaders"],
+                    "anyOf":
+                    [
+                        { "required": ["name"] },
+                        { "required": ["columnHeaders"] }
+                    ],
                     "additionalProperties": false
                 },
                 "addressLogSheet":
@@ -172,15 +194,26 @@
                                 "extractedAddresses": { "$ref": "#/$defs/columnHeader" },
                                 "matchedRule":        { "$ref": "#/$defs/columnHeader" }
                             },
-                            "required": ["messageIndex", "action", "address", "extractedAddresses", "matchedRule"],
+                            "anyOf":
+                            [
+                                { "required": ["messageIndex"] },
+                                { "required": ["action"] },
+                                { "required": ["address"] },
+                                { "required": ["extractedAddresses"] },
+                                { "required": ["matchedRule"] }
+                            ],
                             "additionalProperties": false
                         }
                     },
-                    "required": ["name", "columnHeaders"],
+                    "anyOf":
+                    [
+                        { "required": ["name"] },
+                        { "required": ["columnHeaders"] }
+                    ],
                     "additionalProperties": false
                 }
             },
-            "required": ["path", "addressSheet", "messageFlagSheet", "addressLogSheet"],
+            "required": ["path"],
             "additionalProperties": false
         }
     },
