@@ -50,7 +50,7 @@ public class MinervaRunConfig
 class ContactFileConfig
 {
     private String path;
-    private List<SingleColumnSheetConfig> addressSheets;
+    private List<InitialAddressSheetConfig> addressSheets;
     private List<AddressMatcherSheetConfig> exclusionSheets;
     private List<AddressMatcherSheetConfig> flagSheets;
 }
@@ -61,6 +61,24 @@ class SingleColumnSheetConfig
 {
     private String name;
     private String columnHeader;
+}
+
+@Value @EqualsAndHashCode(callSuper = true) @ToString(callSuper = true)
+//Since I need a custom all-args constructor to call the custom super constructor, I can't use these annotations here,
+//and must instead use a custom no-args constructor too
+//@AllArgsConstructor @NoArgsConstructor(force = true, access = PRIVATE)
+class InitialAddressSheetConfig extends SingleColumnSheetConfig
+{
+    private boolean filter;
+
+    @SuppressWarnings("unused")
+    private InitialAddressSheetConfig() { this(null, null, false); }
+
+    public InitialAddressSheetConfig(String name, String columnHeader, boolean filter)
+    {
+        super(name, columnHeader);
+        this.filter = filter;
+    }
 }
 
 @Value @EqualsAndHashCode(callSuper = true) @ToString(callSuper = true)

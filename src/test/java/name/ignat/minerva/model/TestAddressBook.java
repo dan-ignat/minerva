@@ -48,33 +48,34 @@ public class TestAddressBook
     {
         return Stream.of(
             // Basic
-            Arguments.of(List.of(),          List.of(),          List.of("a@b.com", "b@b.com"), List.of("a@b.com", "b@b.com"), List.of(ADDED, ADDED)),
-            Arguments.of(List.of(),          List.of(),          List.of("a@b.com", "a@b.com"), List.of("a@b.com"),            List.of(ADDED, DUPLICATE)),
+            Arguments.of(List.of(),          List.of(),          List.of("a@b.com", "b@b.com"), false, List.of("a@b.com", "b@b.com"), List.of(ADDED,    ADDED)),
+            Arguments.of(List.of(),          List.of(),          List.of("a@b.com", "a@b.com"), false, List.of("a@b.com"),            List.of(ADDED,    DUPLICATE)),
 
             // Exclusions
-            Arguments.of(List.of("a@b.com"), List.of(),          List.of("b@b.com"),            List.of("b@b.com"),            List.of(ADDED)),
-            Arguments.of(List.of("a@b.com"), List.of(),          List.of("a@b.com"),            List.of(),                     List.of(EXCLUDED)),
+            Arguments.of(List.of("a@b.com"), List.of(),          List.of("a@b.com", "b@b.com"), false, List.of("a@b.com", "b@b.com"), List.of(ADDED,    ADDED)),
+            Arguments.of(List.of("a@b.com"), List.of(),          List.of("a@b.com", "b@b.com"), true,  List.of("b@b.com"),            List.of(EXCLUDED, ADDED)),
 
             // Flags
-            Arguments.of(List.of(),          List.of("a@b.com"), List.of("b@b.com"),            List.of("b@b.com"),            List.of(ADDED)),
-            Arguments.of(List.of(),          List.of("a@b.com"), List.of("a@b.com"),            List.of(),                     List.of(FLAGGED)),
+            Arguments.of(List.of(),          List.of("a@b.com"), List.of("a@b.com", "b@b.com"), false, List.of("a@b.com", "b@b.com"), List.of(ADDED,    ADDED)),
+            Arguments.of(List.of(),          List.of("a@b.com"), List.of("a@b.com", "b@b.com"), true,  List.of("b@b.com"),            List.of(FLAGGED,  ADDED)),
 
             // Exclusions and Flags
-            Arguments.of(List.of("a@b.com"), List.of("a@b.com"), List.of("a@b.com"),            List.of(),                     List.of(EXCLUDED)),
-            Arguments.of(List.of("a@b.com"), List.of("b@b.com"), List.of("b@b.com"),            List.of(),                     List.of(FLAGGED))
+            Arguments.of(List.of("a@b.com"), List.of("a@b.com"), List.of("a@b.com", "a@b.com"), false, List.of("a@b.com"),            List.of(ADDED,    DUPLICATE)),
+            Arguments.of(List.of("a@b.com"), List.of("a@b.com"), List.of("a@b.com", "a@b.com"), true,  List.of(),                     List.of(EXCLUDED, EXCLUDED)),
+            Arguments.of(List.of("a@b.com"), List.of("b@b.com"), List.of("b@b.com", "b@b.com"), true,  List.of(),                     List.of(FLAGGED,  FLAGGED))
         );
     }
 
     @ParameterizedTest
     @MethodSource("initCases")
     public void init(List<String> exclusionStrings, List<String> flagStrings, List<String> initialAddressStrings,
-        List<String> expectedAddressStrings, List<AddressEntry.Type> expectedAddressEntryTypes)
+        boolean filterInitialAddresses, List<String> expectedAddressStrings, List<AddressEntry.Type> expectedAddressEntryTypes)
     {
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
 
         // CALL UNDER TEST
-        addressBook.init(Address.fromStrings(initialAddressStrings));
+        addressBook.init(Address.fromStrings(initialAddressStrings), filterInitialAddresses);
 
         // Assert addresses
         {
@@ -116,7 +117,11 @@ public class TestAddressBook
 
             // Flags
             Arguments.of(List.of(),          List.of("a@b.com"), List.of(),          "b@b.com", List.of("b@b.com"),            ADDED),
-            Arguments.of(List.of(),          List.of("b@b.com"), List.of(),          "b@b.com", List.of(),                     FLAGGED)
+            Arguments.of(List.of(),          List.of("b@b.com"), List.of(),          "b@b.com", List.of(),                     FLAGGED),
+
+            // Exclusions and Flags
+            Arguments.of(List.of("a@b.com"), List.of("a@b.com"), List.of("a@b.com"), "a@b.com", List.of("a@b.com"),            DUPLICATE),
+            Arguments.of(List.of("a@b.com"), List.of("a@b.com"), List.of(),          "a@b.com", List.of(),                     EXCLUDED)
         );
     }
 
@@ -130,7 +135,7 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
 
-        addressBook.init(Address.fromStrings(initialAddressStrings));
+        addressBook.init(Address.fromStrings(initialAddressStrings), false);
 
         Message sourceMessage = new Message(1, addressToAddString, "Hello", "Lorem ipsum dolor");
         Rule matchedRule = new AddSenderRule();
@@ -152,13 +157,13 @@ public class TestAddressBook
             Arguments.of(List.of(),          List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
             Arguments.of(List.of(),          List.of(),          List.of("b@b.com"), "b@b.com", List.of(),          REMOVED),
 
-            // Non-matching exclusions don't affect removal
-            Arguments.of(List.of("c@b.com"), List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
-            Arguments.of(List.of("c@b.com"), List.of(),          List.of("b@b.com"), "b@b.com", List.of(),          REMOVED),
+            // Exclusions don't affect removal
+            Arguments.of(List.of("a@b.com"), List.of(),          List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
+            Arguments.of(List.of("a@b.com"), List.of(),          List.of("a@b.com"), "a@b.com", List.of(),          REMOVED),
 
-            // Non-matching flags don't affect removal
-            Arguments.of(List.of(),          List.of("c@b.com"), List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
-            Arguments.of(List.of(),          List.of("c@b.com"), List.of("b@b.com"), "b@b.com", List.of(),          REMOVED)
+            // Flags don't affect removal
+            Arguments.of(List.of(),          List.of("a@b.com"), List.of("a@b.com"), "b@b.com", List.of("a@b.com"), REMOVE_NA),
+            Arguments.of(List.of(),          List.of("a@b.com"), List.of("a@b.com"), "a@b.com", List.of(),          REMOVED)
         );
     }
 
@@ -172,7 +177,7 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
 
-        addressBook.init(Address.fromStrings(initialAddressStrings));
+        addressBook.init(Address.fromStrings(initialAddressStrings), false);
 
         Message sourceMessage = new Message(1, addressToRemoveString, "Hello", "Lorem ipsum dolor");
         Rule matchedRule = new RemoveSenderRule();

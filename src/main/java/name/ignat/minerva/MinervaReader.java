@@ -49,18 +49,18 @@ public class MinervaReader
 
             AddressBook addressBook = new AddressBook(addressFilters);
 
-            List<SingleColumnSheetConfig> addressSheetConfigs = contactFileConfig.getAddressSheets();
+            List<InitialAddressSheetConfig> addressSheetConfigs = contactFileConfig.getAddressSheets();
 
             if (addressSheetConfigs != null)
             {
-                for (SingleColumnSheetConfig addressSheetConfig : addressSheetConfigs)
+                for (InitialAddressSheetConfig addressSheetConfig : addressSheetConfigs)
                 {
                     contactsReader.setSheetName(addressSheetConfig.getName());
     
                     List<Address> addresses =
                         contactsReader.read(Array.of(addressSheetConfig.getColumnHeader()), Address.class);
     
-                    addressBook.init(addresses);
+                    addressBook.init(addresses, addressSheetConfig.isFilter());
                 }
             }
 

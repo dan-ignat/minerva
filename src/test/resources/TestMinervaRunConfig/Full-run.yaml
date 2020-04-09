@@ -5,6 +5,7 @@ contactFile:
     addressSheets:
         - name:         Contract
           columnHeader:     E-mail Address
+          filter:           true
 
     exclusionSheets:
         - name:         Perm

@@ -43,16 +43,22 @@ public class AddressBook
         this.addressFilters = addressFilters;
     }
 
-    public boolean add(@Nonnull Address address)
+    public boolean add(@Nonnull Address address, boolean filter)
     {
-        return add(address, null, null);
+        return add(address, null, null, filter);
     }
 
-    /**
+    public boolean add(@Nonnull Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    {
+        return add(address, sourceMessage, matchedRule, true);
+    }
+
+    /*
      * Filter checks are done in order of increasing severity (DUPLICATE, EXCLUDED, FLAGGED), to minimize how many
      * high-severity filter actions must be manually analyzed in the output file.
      */
-    public boolean add(@Nonnull Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    private boolean add(@Nonnull Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule,
+        boolean filter)
     {
         if (addressesByDomain.containsEntry(address.getDomain(), address))
         {
@@ -60,13 +66,13 @@ public class AddressBook
 
             return false;
         }
-        else if (addressFilters.shouldExclude(address))
+        else if (filter && addressFilters.shouldExclude(address))
         {
             auditLog.onAddressExcluded(address, sourceMessage, matchedRule);
 
             return false;
         }
-        else if (addressFilters.shouldFlag(address))
+        else if (filter && addressFilters.shouldFlag(address))
         {
             auditLog.onAddressFlagged(address, sourceMessage, matchedRule);
 
@@ -84,9 +90,9 @@ public class AddressBook
         }
     }
 
-    public void init(@Nonnull Collection<Address> addresses)
+    public void init(@Nonnull Collection<Address> addresses, boolean filter)
     {
-        addresses.stream().forEach(this::add);
+        addresses.stream().forEach(address -> add(address, filter));
     }
 
     public boolean remove(@Nonnull Address address)
@@ -197,7 +203,7 @@ public class AddressBook
                 Address.fromStrings(flagAddressStrings), Domain.fromStrings(flagDomainStrings),
                 AddressPattern.fromStrings(flagPatternStrings)));
 
-            addressBook.init(Address.fromStrings(initialAddressStrings));
+            addressBook.init(Address.fromStrings(initialAddressStrings), false);
 
             return addressBook;
         }

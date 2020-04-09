@@ -22,7 +22,19 @@
             "required": ["name", "columnHeader"],
             "additionalProperties": false
         },
-        "singleColumnSheets": { "type": "array", "items": { "$ref": "#/$defs/singleColumnSheet" }, "minItems": 1 },
+        "initialAddressSheet":
+        {
+            "type": "object",
+            "properties":
+            {
+                "name":         { "$ref": "#/$defs/name" },
+                "columnHeader": { "$ref": "#/$defs/columnHeader" },
+                "filter":       { "type": "boolean" }
+            },
+            "required": ["name", "columnHeader"],
+            "additionalProperties": false
+        },
+        "initialAddressSheets": { "type": "array", "items": { "$ref": "#/$defs/initialAddressSheet" }, "minItems": 1 },
         "addressMatcherSheet":
         {
             "type": "object",
@@ -72,7 +84,7 @@
             "properties":
             {
                 "path":            { "$ref": "#/$defs/path" },
-                "addressSheets":   { "$ref": "#/$defs/singleColumnSheets" },
+                "addressSheets":   { "$ref": "#/$defs/initialAddressSheets" },
                 "exclusionSheets": { "$ref": "#/$defs/addressMatcherSheets" },
                 "flagSheets":      { "$ref": "#/$defs/addressMatcherSheets" }
             },

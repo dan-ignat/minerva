@@ -37,7 +37,7 @@ public class TestMinervaRunConfig
                     new ContactFileConfig(
                         "/path/to/Contacts.xlsx",
                         List.of(
-                            new SingleColumnSheetConfig("Contract", "E-mail Address")
+                            new InitialAddressSheetConfig("Contract", "E-mail Address", true)
                         ),
                         List.of(
                             new AddressMatcherSheetConfig("Perm", "E-mail Address", ADDRESS),
