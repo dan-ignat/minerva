@@ -34,8 +34,8 @@ public class TestRemoveSendersEndToEnd extends TestBaseEndToEnd
                     List.of("3",             "REMOVE_NA", "a2@b.com",               "a2@b.com",            "RemoveSenderRule")
                 ),
                 List.of(
-                    List.of("Index", "Extracted Addresses", "Matched Rule",        "Reason"),
-                    List.of("2",     "a@b.com",             "DeliveryFailureRule", "UNEXPECTED_RULE_MATCHED")
+                    List.of("Index", "Matched Rule",        "Reason"),
+                    List.of("2",     "DeliveryFailureRule", "UNEXPECTED_RULE_MATCHED")
                 )
             )
         );

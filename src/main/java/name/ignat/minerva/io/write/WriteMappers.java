@@ -69,7 +69,6 @@ public final class WriteMappers
     {
         return Array.of(
             flag.getMessage().getIndex().toString(),
-            toCanonical(flag.getMessage().getBodyAddresses()),
             ifNotNull(flag.getMatchedRule(), r -> r.getClass().getSimpleName()),
             flag.getReason().toString());
     }

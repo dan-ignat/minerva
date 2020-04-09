@@ -93,7 +93,6 @@ public class MinervaWriter
 
         String[] columnHeaders = Array.of(
             columnHeadersConfig.getMessageIndex(),
-            columnHeadersConfig.getExtractedAddresses(),
             columnHeadersConfig.getMatchedRule(),
             columnHeadersConfig.getReason());
 

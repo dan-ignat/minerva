@@ -37,7 +37,7 @@ public class TestAutoRepliesEndToEnd extends TestBaseEndToEnd
                     List.of("4",             "ADDED",     "d@b.com",         "d@b.com",             "OutOfOfficeRule")
                 ),
                 List.of(
-                    List.of("Index", "Extracted Addresses", "Matched Rule", "Reason")
+                    List.of("Index", "Matched Rule", "Reason")
                 )
             )
         );

@@ -175,7 +175,6 @@ class OutputFileConfig
         static class ColumnHeadersConfig
         {
             private String messageIndex;
-            private String extractedAddresses;
             private String matchedRule;
             private String reason;
         }

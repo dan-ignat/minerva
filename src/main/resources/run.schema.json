@@ -145,11 +145,10 @@
                             "properties":
                             {
                                 "messageIndex":       { "$ref": "#/$defs/columnHeader" },
-                                "extractedAddresses": { "$ref": "#/$defs/columnHeader" },
                                 "matchedRule":        { "$ref": "#/$defs/columnHeader" },
                                 "reason":             { "$ref": "#/$defs/columnHeader" }
                             },
-                            "required": ["messageIndex", "extractedAddresses", "matchedRule", "reason"],
+                            "required": ["messageIndex", "matchedRule", "reason"],
                             "additionalProperties": false
                         }
                     },

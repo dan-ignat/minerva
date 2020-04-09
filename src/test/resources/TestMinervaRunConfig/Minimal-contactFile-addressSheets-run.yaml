@@ -28,7 +28,6 @@ outputFile:
         name:                   Flagged Messages
         columnHeaders:
             messageIndex:           Index
-            extractedAddresses:     Extracted Addresses
             matchedRule:            Matched Rule
             reason:                 Reason
 

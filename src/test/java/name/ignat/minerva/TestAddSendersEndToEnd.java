@@ -46,8 +46,8 @@ public class TestAddSendersEndToEnd extends TestBaseEndToEnd
                     List.of("8",             "ADDED",     "j@b.com",                "",                    "AddSenderRule")
                 ),
                 List.of(
-                    List.of("Index", "Extracted Addresses", "Matched Rule",        "Reason"),
-                    List.of("2",     "a@b.com",             "DeliveryFailureRule", "UNEXPECTED_RULE_MATCHED")
+                    List.of("Index", "Matched Rule",        "Reason"),
+                    List.of("2",     "DeliveryFailureRule", "UNEXPECTED_RULE_MATCHED")
                 )
             )
         );

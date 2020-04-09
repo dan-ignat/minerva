@@ -75,7 +75,7 @@ public class TestMinervaRunConfig
                         new MessageFlagSheetConfig(
                             "Flagged Messages",
                             new MessageFlagSheetConfig.ColumnHeadersConfig(
-                                "Index", "Extracted Addresses", "Matched Rule", "Reason")
+                                "Index", "Matched Rule", "Reason")
                         ),
                         new AddressLogSheetConfig(
                             "Address Log",

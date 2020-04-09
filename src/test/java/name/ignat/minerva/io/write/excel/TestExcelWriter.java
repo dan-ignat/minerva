@@ -54,7 +54,7 @@ public class TestExcelWriter
                 Message.class
             ),
 
-            Arguments.of(List.of("Index", "Extracted Addresses", "Matched Rule", "Reason"),
+            Arguments.of(List.of("Index", "Matched Rule", "Reason"),
                 List.of(
                     new MessageFlag(
                         new Message(2, "a@b.com", "Hello", "How's it going?"),
