@@ -3,47 +3,95 @@ contactFile:
     path: /path/to/Contacts.xlsx
 
     addressSheets:
-        - name:         Contract
-          columnHeader:     E-mail Address
+        - name:         Main
+          columnHeader:     Address
+          filter:           false
+        - name:         MainOverrides
+          columnHeader:     Address2
           filter:           true
+        - name:         MainDefaults
 
     exclusionSheets:
-        - name:         Perm
-          type:             ADDRESS
-          columnHeader:     E-mail Address
         - name:         Unsubscribed
           type:             ADDRESS
-          columnHeader:     E-mail Address
+          columnHeader:     Address
+        - name:         UnsubscribedOverrides
+          type:             ADDRESS
+          columnHeader:     Address2
+        - name:         UnsubscribedDefaults
+          type:             ADDRESS
         - name:         Blacklisted
           type:             DOMAIN
           columnHeader:     Domain
-        - name:         Ignored
+        - name:         BlacklistedOverrides
           type:             DOMAIN
-          columnHeader:     Domain
-        - name:         Ignored Patterns
+          columnHeader:     Domain2
+        - name:         BlacklistedDefaults
+          type:             DOMAIN
+        - name:         Ignored
           type:             PATTERN
           columnHeader:     Pattern
+        - name:         IgnoredOverrides
+          type:             PATTERN
+          columnHeader:     Pattern2
+        - name:         IgnoredDefaults
+          type:             PATTERN
 
     flagSheets:
-        - name:         Personal Domains
+        - name:         Colleagues
+          type:             ADDRESS
+          columnHeader:     Address
+        - name:         ColleaguesOverrides
+          type:             ADDRESS
+          columnHeader:     Address2
+        - name:         ColleaguesDefaults
+          type:             ADDRESS
+        - name:         Personal
           type:             DOMAIN
           columnHeader:     Domain
+        - name:         PersonalOverrides
+          type:             DOMAIN
+          columnHeader:     Domain2
+        - name:         PersonalDefaults
+          type:             DOMAIN
+        - name:         Scam
+          type:             PATTERN
+          columnHeader:     Pattern
+        - name:         ScamOverrides
+          type:             PATTERN
+          columnHeader:     Pattern2
+        - name:         ScamDefaults
+          type:             PATTERN
 
 exclusionMessageFiles:
-    - path: /path/to/To Be Unsubscribed.csv
-      columnHeaders:
-          from:    "From: (Address)"
-          subject: Subject
-          body:    Body
-      extractBodyAddresses: true
-
-flagMessageFiles:
-    - path: /path/to/Colleagues.csv
+    - path: /path/to/Exclusion Messages.csv
       columnHeaders:
           from:    "From: (Address)"
           subject: Subject
           body:    Body
       extractBodyAddresses: false
+    - path: /path/to/Exclusion Messages Overrides.csv
+      columnHeaders:
+          from:    "From: (Address) 2"
+          subject: Subject2
+          body:    Body2
+      extractBodyAddresses: true
+    - path: /path/to/Exclusion Messages Defaults.csv
+
+flagMessageFiles:
+    - path: /path/to/Flag Messages.csv
+      columnHeaders:
+          from:    "From: (Address)"
+          subject: Subject
+          body:    Body
+      extractBodyAddresses: false
+    - path: /path/to/Flag Messages Overrides.csv
+      columnHeaders:
+          from:    "From: (Address) 2"
+          subject: Subject2
+          body:    Body2
+      extractBodyAddresses: true
+    - path: /path/to/Flag Messages Defaults.csv
 
 messageFile:
 
@@ -52,29 +100,29 @@ messageFile:
 
     columnHeaders:
         from:    "From: (Address)"
-        subject: Subject
-        body:    Body
+        subject: Subject2
+        #body:    Body
 
 outputFile:
 
-    path: /path/to/Contacts UPDATED {dateTime}.xlsx
+    path: /path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx
 
     addressSheet:
-        name:                   Contract
-        columnHeader:               E-mail Address
+        name:                   Addresses2
+        columnHeader:               Address2
 
     messageFlagSheet:
-        name:                   Flagged Messages
+        name:                   Message Flags2
         columnHeaders:
             messageIndex:           Index
-            matchedRule:            Matched Rule
-            reason:                 Reason
+            matchedRule:            Matched Rule2
+            #reason:                 Reason
 
     addressLogSheet:
-        name:                   Address Log
+        name:                   Address Log2
         columnHeaders:
             messageIndex:           Message Index
-            action:                 Action
-            address:                E-mail Address
-            extractedAddresses:     Extracted Addresses
-            matchedRule:            Matched Rule
+            action:                 Action2
+            #address:                Address
+            extractedAddresses:     Extracted Addresses2
+            #matchedRule:            Matched Rule

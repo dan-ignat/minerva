@@ -2,8 +2,3 @@ messageFile:
 
     type: ADD_SENDERS
     path: /path/to/New Messages.csv
-
-    columnHeaders:
-        from:    "From: (Address)"
-        subject: Subject
-        body:    Body
