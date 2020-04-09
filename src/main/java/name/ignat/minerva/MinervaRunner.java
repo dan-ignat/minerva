@@ -39,7 +39,7 @@ public class MinervaRunner implements CommandLineRunner
     {
         AddressBook addressBook = reader.initAddressBook();
 
-        List<Message> messages = reader.readMessages(config.getMessageFile().getPath());
+        List<Message> messages = reader.readMessages(config.getMessageFile());
 
         ruleEngine.run(addressBook, messages);
 

@@ -127,7 +127,7 @@ public class MinervaReader
 
         for (AddressMessageFileConfig addressMessageFileConfig : addressMessageFileConfigs)
         {
-            List<Message> addressMessages = readMessages(addressMessageFileConfig.getPath());
+            List<Message> addressMessages = readMessages(addressMessageFileConfig);
 
             for (Message addressMessage : addressMessages)
             {
@@ -146,13 +146,15 @@ public class MinervaReader
         return messageAddresses;
     }
 
-    public List<Message> readMessages(String messagesFilePath) throws IOException
+    public List<Message> readMessages(MessageFileConfig messageFileConfig) throws IOException
     {
+        String messagesFilePath = messageFileConfig.getPath();
+
         File messagesFile = new File(messagesFilePath);
 
         try (CsvReader messagesReader = new CsvReader(messagesFile))
         {
-            AddressMessageFileConfig.ColumnHeadersConfig columnHeadersConfig = config.getMessageFile().getColumnHeaders();
+            MessageFileConfig.ColumnHeadersConfig columnHeadersConfig = messageFileConfig.getColumnHeaders();
 
             String[] columnHeaders = Array.of(
                 columnHeadersConfig.getFrom(), columnHeadersConfig.getSubject(), columnHeadersConfig.getBody());
