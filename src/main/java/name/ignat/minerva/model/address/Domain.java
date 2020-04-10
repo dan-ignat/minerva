@@ -32,7 +32,7 @@ import lombok.Value;
 @Immutable
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class Domain extends Addressable<Domain>
+public class Domain extends AddressMatcher implements Comparable<Domain>
 {
     /*
      * These are the only chars that occur in vast majority of real-world domains.  Includes A-Z to match addresses with
@@ -44,7 +44,7 @@ public class Domain extends Addressable<Domain>
 
     public static boolean isValid(String domain)
     {
-        return Addressable.isValid(domain, PATTERN);
+        return Addressables.isValid(domain, PATTERN);
     }
 
     public static List<Domain> fromStrings(List<String> strings)
@@ -66,7 +66,7 @@ public class Domain extends Addressable<Domain>
 
     public Domain(String domain) throws ValidationException
     {
-        this.domain = normalize(domain, PATTERN);
+        this.domain = Addressables.normalize(domain, PATTERN);
 
         components = split(this.domain, '.');
 

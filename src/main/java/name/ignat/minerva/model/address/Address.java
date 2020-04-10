@@ -25,7 +25,7 @@ import lombok.Value;
 @Immutable
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class Address extends Addressable<Address>
+public class Address extends AddressMatcher implements Comparable<Address>
 {
     /*
      * These are the only chars that occur in vast majority of real-world addresses.  Includes A-Z to match addresses
@@ -37,7 +37,7 @@ public class Address extends Addressable<Address>
 
     public static boolean isValid(String address)
     {
-        return Addressable.isValid(address, PATTERN);
+        return Addressables.isValid(address, PATTERN);
     }
 
     public static List<Address> fromStrings(List<String> strings)
@@ -58,7 +58,7 @@ public class Address extends Addressable<Address>
 
     public Address(String address) throws ValidationException
     {
-        address = normalize(address, PATTERN);
+        address = Addressables.normalize(address, PATTERN);
 
         this.user = substringBefore(address, "@");
         this.domain = new Domain(substringAfter(address, "@"));

@@ -10,12 +10,12 @@ import java.util.regex.Pattern;
  * 
  * @author Dan Ignat <dan@ignat.name>
  */
-public abstract class Addressable<T> extends AddressMatcher implements Comparable<T>
+final class Addressables
 {
     // This is too permissive, and allows some matches that it shouldn't, so I moved it to subclasses
     //protected static final String ATOM = "[A-Za-z0-9~`!#$%^&*_\\-+={}|'?/]+";
 
-    protected static boolean isValid(String addressable, Pattern pattern)
+    public static boolean isValid(String addressable, Pattern pattern)
     {
         try
         {
@@ -29,7 +29,7 @@ public abstract class Addressable<T> extends AddressMatcher implements Comparabl
         }
     }
 
-    protected static String normalize(String addressable, Pattern pattern) throws ValidationException
+    public static String normalize(String addressable, Pattern pattern) throws ValidationException
     {
         checkNotNull(addressable);
 
@@ -42,4 +42,6 @@ public abstract class Addressable<T> extends AddressMatcher implements Comparabl
 
         return addressable;
     }
+
+    private Addressables() { }
 }
