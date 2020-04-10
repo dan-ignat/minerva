@@ -4,6 +4,10 @@ import java.util.Collection;
 
 import javax.annotation.concurrent.Immutable;
 
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.AddressPattern;
+import name.ignat.minerva.model.address.Domain;
+
 @Immutable
 public class AddressFilters
 {

@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.io.read.csv.CsvReader;
 import name.ignat.minerva.io.read.excel.ExcelReader;
-import name.ignat.minerva.model.Address;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.AddressFilters;
 import name.ignat.minerva.model.AddressMatchers;
-import name.ignat.minerva.model.AddressPattern;
-import name.ignat.minerva.model.Domain;
 import name.ignat.minerva.model.Message;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.AddressPattern;
+import name.ignat.minerva.model.address.Domain;
 import name.ignat.minerva.util.Array;
 
 @Component

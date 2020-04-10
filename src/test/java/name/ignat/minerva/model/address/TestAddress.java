@@ -1,4 +1,4 @@
-package name.ignat.minerva.model;
+package name.ignat.minerva.model.address;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -19,6 +19,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.google.common.collect.ImmutableSet;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.ValidationException;
 
 public class TestAddress
 {

@@ -28,6 +28,8 @@ import com.google.common.collect.ImmutableList;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.TestAddressMatchers;
 import name.ignat.minerva.rule.Rule;
 import name.ignat.minerva.rule.impl.AddSenderRule;
 import name.ignat.minerva.rule.impl.RemoveSenderRule;

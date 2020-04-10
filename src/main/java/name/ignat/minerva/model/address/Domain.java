@@ -1,4 +1,4 @@
-package name.ignat.minerva.model;
+package name.ignat.minerva.model.address;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.lang.Math.max;

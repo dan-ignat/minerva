@@ -1,4 +1,4 @@
-package name.ignat.minerva.model;
+package name.ignat.minerva.model.address;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -9,6 +9,9 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import name.ignat.minerva.model.AddressMatchers;
+import name.ignat.minerva.model.address.Address;
 
 public class TestAddressMatchers
 {

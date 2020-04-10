@@ -1,4 +1,4 @@
-package name.ignat.minerva.model;
+package name.ignat.minerva.model.address;
 
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static name.ignat.commons.utils.IoUtils.getClassPathResource;

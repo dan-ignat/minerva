@@ -17,6 +17,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.collect.ImmutableSet;
 
+import name.ignat.minerva.model.address.Address;
+
 public class TestMessage
 {
     private static Stream<Arguments> constructorExceptionCases()

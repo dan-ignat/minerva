@@ -25,10 +25,10 @@ import com.opencsv.exceptions.CsvException;
 
 import name.ignat.minerva.io.write.WriteMapper;
 import name.ignat.minerva.io.write.WriteMappers;
-import name.ignat.minerva.model.Address;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
-import name.ignat.minerva.model.Domain;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.Domain;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.rule.impl.AddSenderRule;
 import name.ignat.minerva.rule.impl.NoLongerHereRule;

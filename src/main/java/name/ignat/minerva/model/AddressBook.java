@@ -15,6 +15,9 @@ import com.google.common.collect.SetMultimap;
 
 import lombok.Getter;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.AddressPattern;
+import name.ignat.minerva.model.address.Domain;
 import name.ignat.minerva.rule.Rule;
 
 public class AddressBook

@@ -23,11 +23,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.collect.ImmutableList;
 
-import name.ignat.minerva.model.Address;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.AddressFilters;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
+import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.TestAddressBook;
 import name.ignat.minerva.rule.impl.AddSenderRule;

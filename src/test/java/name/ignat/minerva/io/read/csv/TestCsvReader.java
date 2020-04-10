@@ -13,9 +13,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import name.ignat.minerva.model.Address;
-import name.ignat.minerva.model.Domain;
 import name.ignat.minerva.model.Message;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.Domain;
 
 public class TestCsvReader
 {

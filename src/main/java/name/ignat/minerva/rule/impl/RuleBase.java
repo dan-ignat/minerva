@@ -6,9 +6,9 @@ import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_FROM_ADDRE
 import java.util.Set;
 
 import lombok.EqualsAndHashCode;
-import name.ignat.minerva.model.Address;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.Message;
+import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.rule.Rule;
 
 @EqualsAndHashCode

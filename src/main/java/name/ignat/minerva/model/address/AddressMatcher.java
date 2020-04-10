@@ -1,4 +1,4 @@
-package name.ignat.minerva.model;
+package name.ignat.minerva.model.address;
 
 import static name.ignat.minerva.util.LombokUtils.toCustomString;
 

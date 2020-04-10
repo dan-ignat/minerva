@@ -16,11 +16,11 @@ import com.google.common.flogger.FluentLogger;
 import name.ignat.minerva.OutputFileConfig.AddressLogSheetConfig;
 import name.ignat.minerva.OutputFileConfig.MessageFlagSheetConfig;
 import name.ignat.minerva.io.write.excel.ExcelWriter;
-import name.ignat.minerva.model.Address;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.AuditLog;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
+import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.util.Array;
 
 @Component

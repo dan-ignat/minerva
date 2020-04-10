@@ -11,6 +11,8 @@ import com.google.common.flogger.FluentLogger;
 
 import lombok.NonNull;
 import lombok.Value;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.ValidationException;
 
 @Immutable
 @Value

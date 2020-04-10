@@ -11,7 +11,7 @@ import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 import name.ignat.commons.exception.UnexpectedCaseException;
-import name.ignat.minerva.model.AddressMatcher;
+import name.ignat.minerva.model.address.AddressMatcher;
 
 /**
  * Value classes that correspond to the run configuration file (YAML, validated with JSON Schema).

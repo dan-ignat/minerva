@@ -17,6 +17,7 @@ import javax.annotation.concurrent.Immutable;
 
 import lombok.Value;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
+import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.rule.Rule;
 
 public class AuditLog

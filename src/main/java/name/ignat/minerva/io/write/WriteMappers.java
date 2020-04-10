@@ -7,10 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
-import name.ignat.minerva.model.Address;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
-import name.ignat.minerva.model.Domain;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.Domain;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.util.Array;
 

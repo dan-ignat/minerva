@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
-import name.ignat.minerva.model.Address;
-import name.ignat.minerva.model.AddressPattern;
-import name.ignat.minerva.model.Domain;
 import name.ignat.minerva.model.Message;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.AddressPattern;
+import name.ignat.minerva.model.address.Domain;
 
 public final class ReadMappers
 {
