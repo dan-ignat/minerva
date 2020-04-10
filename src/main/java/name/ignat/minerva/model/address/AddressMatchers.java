@@ -1,4 +1,4 @@
-package name.ignat.minerva.model;
+package name.ignat.minerva.model.address;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.stream.Collectors.groupingBy;
@@ -15,11 +15,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-
-import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.address.AddressMatcher;
-import name.ignat.minerva.model.address.AddressPattern;
-import name.ignat.minerva.model.address.Domain;
 
 @Immutable
 public class AddressMatchers
