@@ -13,10 +13,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.address.AddressPattern;
-import name.ignat.minerva.model.address.ValidationException;
-
 public class TestAddressPattern
 {
     private static Stream<Arguments> constructorCases()
@@ -91,5 +87,23 @@ public class TestAddressPattern
         String canonical = addressPattern.toCanonical();
 
         assertThat(canonical, is(expectedCanonical));
+    }
+
+    private static Stream<Arguments> toStringCases()
+    {
+        return Stream.of(
+            Arguments.of("/reply/",   "AddressPattern(/reply/)")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("toStringCases")
+    public void toString(String addressPatternString, String expectedString)
+    {
+        AddressPattern addressPattern = new AddressPattern(addressPatternString);
+
+        String string = addressPattern.toString();
+
+        assertThat(string, is(expectedString));
     }
 }

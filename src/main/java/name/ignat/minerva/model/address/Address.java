@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.Getter;
 
 /**
  * An e-mail address.
@@ -23,8 +24,7 @@ import lombok.Value;
  * @author Dan Ignat
  */
 @Immutable
-@Value
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class Address extends AddressMatcher implements Comparable<Address>
 {
     /*
@@ -54,9 +54,11 @@ public class Address extends AddressMatcher implements Comparable<Address>
     }
 
     private final String user;
+
+    @Getter
     private final Domain domain;
 
-    public Address(String address) throws ValidationException
+    public Address(@Nonnull String address) throws ValidationException
     {
         address = Addressables.normalize(address, PATTERN);
 

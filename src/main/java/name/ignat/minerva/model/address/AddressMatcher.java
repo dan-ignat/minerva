@@ -2,9 +2,11 @@ package name.ignat.minerva.model.address;
 
 import static name.ignat.minerva.util.LombokUtils.toCustomString;
 
+import lombok.EqualsAndHashCode;
 import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.util.Canonizable;
 
+@EqualsAndHashCode
 public abstract class AddressMatcher implements Canonizable
 {
     public abstract boolean matches(Address address);

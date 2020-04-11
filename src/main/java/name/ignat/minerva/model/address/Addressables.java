@@ -1,7 +1,5 @@
 package name.ignat.minerva.model.address;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.regex.Pattern;
 
 /**
@@ -31,8 +29,6 @@ final class Addressables
 
     public static String normalize(String addressable, Pattern pattern) throws ValidationException
     {
-        checkNotNull(addressable);
-
         addressable = addressable.trim().toLowerCase();
 
         if (!pattern.matcher(addressable).matches())

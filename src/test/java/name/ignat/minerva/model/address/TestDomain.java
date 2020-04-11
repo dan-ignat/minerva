@@ -15,9 +15,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
-import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.address.Domain;
-import name.ignat.minerva.model.address.ValidationException;
 
 public class TestDomain
 {
@@ -173,5 +170,23 @@ public class TestDomain
         String canonical = domain.toCanonical();
 
         assertThat(canonical, is(expectedCanonical));
+    }
+
+    private static Stream<Arguments> toStringCases()
+    {
+        return Stream.of(
+            Arguments.of("b.com",   "Domain(b.com)")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("toStringCases")
+    public void toString(String domainString, String expectedString)
+    {
+        Domain domain = new Domain(domainString);
+
+        String string = domain.toString();
+
+        assertThat(string, is(expectedString));
     }
 }

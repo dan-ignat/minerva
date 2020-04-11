@@ -2,7 +2,6 @@ package name.ignat.minerva.model.address;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.lang.Math.max;
-import static lombok.AccessLevel.NONE;
 import static org.apache.commons.lang3.ArrayUtils.reverse;
 import static org.apache.commons.lang3.ArrayUtils.swap;
 import static org.apache.commons.lang3.StringUtils.split;
@@ -10,15 +9,14 @@ import static org.apache.commons.lang3.StringUtils.split;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
-import lombok.Value;
 
 /**
  * The domain portion of an e-mail address.
@@ -30,8 +28,7 @@ import lombok.Value;
  * @author Dan Ignat <dan@ignat.name>
  */
 @Immutable
-@Value
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class Domain extends AddressMatcher implements Comparable<Domain>
 {
     /*
@@ -54,17 +51,15 @@ public class Domain extends AddressMatcher implements Comparable<Domain>
 
     private final String domain;
 
-    @Getter(NONE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private final String[] components;
 
-    @Getter(NONE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private final String[] sortingComponents;
 
-    public Domain(String domain) throws ValidationException
+    public Domain(@Nonnull String domain) throws ValidationException
     {
         this.domain = Addressables.normalize(domain, PATTERN);
 

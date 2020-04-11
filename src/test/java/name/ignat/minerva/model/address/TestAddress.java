@@ -19,8 +19,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import com.google.common.collect.ImmutableSet;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
-import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.address.ValidationException;
 
 public class TestAddress
 {
@@ -206,5 +204,23 @@ public class TestAddress
         String canonical = address.toCanonical();
 
         assertThat(canonical, is(expectedCanonical));
+    }
+
+    private static Stream<Arguments> toStringCases()
+    {
+        return Stream.of(
+            Arguments.of("a@b.com",   "Address(a@b.com)")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("toStringCases")
+    public void toString(String addressString, String expectedString)
+    {
+        Address address = new Address(addressString);
+
+        String string = address.toString();
+
+        assertThat(string, is(expectedString));
     }
 }

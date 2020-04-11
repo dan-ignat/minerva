@@ -1,6 +1,5 @@
 package name.ignat.minerva.model.address;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.UNICODE_CASE;
@@ -12,6 +11,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+
+import lombok.EqualsAndHashCode;
+
+@Immutable
+@EqualsAndHashCode(callSuper = true)
 public class AddressPattern extends AddressMatcher
 {
     private static final String WRAP_TOKEN = "/";
@@ -37,10 +43,8 @@ public class AddressPattern extends AddressMatcher
 
     private final Pattern pattern;
 
-    public AddressPattern(String patternString) throws ValidationException
+    public AddressPattern(@Nonnull String patternString) throws ValidationException
     {
-        checkNotNull(patternString);
-
         patternString = patternString.trim();
 
         if (!isWrapped(patternString, WRAP_TOKEN))
