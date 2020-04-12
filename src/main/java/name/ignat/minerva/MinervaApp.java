@@ -113,7 +113,7 @@ public class MinervaApp
         String messageFilePath = config.getMessageFile().getPath();
 
         @SuppressWarnings("preview")
-        RuleEngine ruleEngine = switch(config.getMessageFile().getType())
+        RuleEngine ruleEngine = switch (config.getMessageFile().getType())
         {
             case ADD_SENDERS: yield new AddSendersRuleEngine(messageFilePath);
             case AUTO_REPLIES: yield new AutoRepliesRuleEngine(messageFilePath);
