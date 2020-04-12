@@ -51,44 +51,42 @@ public abstract class TestBaseEndToEnd
         SpringApplication.run(MinervaApp.class, args.getSourceArgs());
 
         File expectedOutputFile = getClassPathResourceFile(expectedOutputFileClassPathResourcePath);
-        Workbook expectedWorkbook = WorkbookFactory.create(expectedOutputFile, null, true);
 
-        assertThat(expectedWorkbook.getNumberOfSheets(), is(3));
-
-        Workbook workbook;
-        try (InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray()))
+        try (Workbook expectedWorkbook = WorkbookFactory.create(expectedOutputFile, null, true);
+            InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            Workbook workbook = WorkbookFactory.create(inputStream))
         {
-            workbook = WorkbookFactory.create(inputStream);
-        }
+            assertThat(expectedWorkbook.getNumberOfSheets(), is(3));
 
-        {
-            Sheet expectedAddressSheet = expectedWorkbook.getSheet(config.getOutputFile().getAddressSheet().getName());
-            List<List<String>> expectedAddressRows = arraysToLists(sheetToStrings(expectedAddressSheet));
+            {
+                Sheet expectedAddressSheet = expectedWorkbook.getSheet(config.getOutputFile().getAddressSheet().getName());
+                List<List<String>> expectedAddressRows = arraysToLists(sheetToStrings(expectedAddressSheet));
 
-            Sheet addressSheet = workbook.getSheet(config.getOutputFile().getAddressSheet().getName());
-            List<List<String>> addressRows = arraysToLists(sheetToStrings(addressSheet));
+                Sheet addressSheet = workbook.getSheet(config.getOutputFile().getAddressSheet().getName());
+                List<List<String>> addressRows = arraysToLists(sheetToStrings(addressSheet));
 
-            assertThat(addressRows, is(expectedAddressRows));
-        }
+                assertThat(addressRows, is(expectedAddressRows));
+            }
 
-        {
-            Sheet expectedAddressLogSheet = expectedWorkbook.getSheet(config.getOutputFile().getAddressLogSheet().getName());
-            List<List<String>> expectedAddressLogRows = arraysToLists(sheetToStrings(expectedAddressLogSheet));
+            {
+                Sheet expectedAddressLogSheet = expectedWorkbook.getSheet(config.getOutputFile().getAddressLogSheet().getName());
+                List<List<String>> expectedAddressLogRows = arraysToLists(sheetToStrings(expectedAddressLogSheet));
 
-            Sheet addressLogSheet = workbook.getSheet(config.getOutputFile().getAddressLogSheet().getName());
-            List<List<String>> addressLogRows = arraysToLists(sheetToStrings(addressLogSheet));
+                Sheet addressLogSheet = workbook.getSheet(config.getOutputFile().getAddressLogSheet().getName());
+                List<List<String>> addressLogRows = arraysToLists(sheetToStrings(addressLogSheet));
 
-            assertThat(addressLogRows, is(expectedAddressLogRows));
-        }
+                assertThat(addressLogRows, is(expectedAddressLogRows));
+            }
 
-        {
-            Sheet expectedMessageFlagSheet = expectedWorkbook.getSheet(config.getOutputFile().getMessageFlagSheet().getName());
-            List<List<String>> expectedMessageFlagRows = arraysToLists(sheetToStrings(expectedMessageFlagSheet));
+            {
+                Sheet expectedMessageFlagSheet = expectedWorkbook.getSheet(config.getOutputFile().getMessageFlagSheet().getName());
+                List<List<String>> expectedMessageFlagRows = arraysToLists(sheetToStrings(expectedMessageFlagSheet));
 
-            Sheet messageFlagSheet = workbook.getSheet(config.getOutputFile().getMessageFlagSheet().getName());
-            List<List<String>> messageFlagRows = arraysToLists(sheetToStrings(messageFlagSheet));
+                Sheet messageFlagSheet = workbook.getSheet(config.getOutputFile().getMessageFlagSheet().getName());
+                List<List<String>> messageFlagRows = arraysToLists(sheetToStrings(messageFlagSheet));
 
-            assertThat(messageFlagRows, is(expectedMessageFlagRows));
+                assertThat(messageFlagRows, is(expectedMessageFlagRows));
+            }
         }
     }
 }
