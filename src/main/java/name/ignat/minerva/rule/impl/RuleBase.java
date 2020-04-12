@@ -2,6 +2,8 @@ package name.ignat.minerva.rule.impl;
 
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_BODY_ADDRESSES;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_FROM_ADDRESS;
+import static name.ignat.minerva.model.source.MainMessageFileSource.MessageField.BODY;
+import static name.ignat.minerva.model.source.MainMessageFileSource.MessageField.FROM;
 
 import java.util.Set;
 
@@ -9,11 +11,20 @@ import lombok.EqualsAndHashCode;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.source.AddressSource;
+import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 
 @EqualsAndHashCode
 abstract class RuleBase implements Rule
 {
+    private final String messageFilePath;
+
+    public RuleBase(String messageFilePath)
+    {
+        this.messageFilePath = messageFilePath;
+    }
+
     protected void addFromAddress(Message message, AddressBook addressBook)
     {
         Address from = message.getFrom();
@@ -24,7 +35,9 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            addressBook.add(from, message, this);
+            AddressSource source = new MainMessageFileSource(messageFilePath, message, FROM);
+
+            addressBook.add(from, source, this);
         }
     }
 
@@ -38,7 +51,9 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            addressBook.remove(from, message, this);
+            AddressSource source = new MainMessageFileSource(messageFilePath, message, FROM);
+
+            addressBook.remove(from, source, this);
         }
     }
 
@@ -55,7 +70,9 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            addresses.stream().forEach(a -> addressBook.add(a, message, this));
+            AddressSource source = new MainMessageFileSource(messageFilePath, message, BODY);
+
+            addresses.stream().forEach(address -> addressBook.add(address, source, this));
         }
     }
 
@@ -72,7 +89,9 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            addresses.stream().forEach(a -> addressBook.remove(a, message, this));
+            AddressSource source = new MainMessageFileSource(messageFilePath, message, BODY);
+
+            addresses.stream().forEach(address -> addressBook.remove(address, source, this));
         }
     }
 }

@@ -260,18 +260,20 @@ class OutputFileConfig
         static class ColumnHeadersConfig
         {
             private static final String DEFAULT_MESSAGE_INDEX       = "Message Index";
-            private static final String DEFAULT_ACTION              = "Action";
             private static final String DEFAULT_ADDRESS             = "Address";
-            private static final String DEFAULT_EXTRACTED_ADDRESSES = "Extracted Addresses";
+            private static final String DEFAULT_ADDRESS_SOURCE      = "Source";
+            private static final String DEFAULT_ACTION              = "Action";
+            private static final String DEFAULT_FILTER_SOURCES      = "Filter Sources";
             private static final String DEFAULT_MATCHED_RULE        = "Matched Rule";
 
-            private ColumnHeadersConfig() { this(DEFAULT_MESSAGE_INDEX, DEFAULT_ACTION, DEFAULT_ADDRESS,
-                DEFAULT_EXTRACTED_ADDRESSES, DEFAULT_MATCHED_RULE); }
+            private ColumnHeadersConfig() { this(DEFAULT_MESSAGE_INDEX, DEFAULT_ADDRESS, DEFAULT_ADDRESS_SOURCE,
+                DEFAULT_ACTION, DEFAULT_FILTER_SOURCES, DEFAULT_MATCHED_RULE); }
 
             private String messageIndex;
-            private String action;
             private String address;
-            private String extractedAddresses;
+            private String addressSource;
+            private String action;
+            private String filterSources;
             private String matchedRule;
         }
     }

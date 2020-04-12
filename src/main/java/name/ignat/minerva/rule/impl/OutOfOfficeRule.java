@@ -12,6 +12,11 @@ public class OutOfOfficeRule extends AutoReplyRule
 {
     private static final String[] keyphrases = { "out of office", "out of the office", "ooo", "ooto", "vacation" };
 
+    public OutOfOfficeRule(String messageFilePath)
+    {
+        super(messageFilePath);
+    }
+
     @Override
     public boolean matches(Message message, AddressBook addressBook)
     {

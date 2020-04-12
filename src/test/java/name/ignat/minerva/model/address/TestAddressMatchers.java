@@ -10,8 +10,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import name.ignat.minerva.model.address.Address;
-
 public class TestAddressMatchers
 {
     private static Stream<Arguments> matchCases()
@@ -36,7 +34,7 @@ public class TestAddressMatchers
     @MethodSource("matchCases")
     public void match(List<String> matcherStrings, String addressToTestString, boolean expectedResult)
     {
-        AddressMatchers matchers = AddressMatchers.fromStrings(matcherStrings);
+        AddressMatchers matchers = AddressMatchersUtils.fromStrings(matcherStrings);
 
         boolean result = matchers.match(new Address(addressToTestString));
 

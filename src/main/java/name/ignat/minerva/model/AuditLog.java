@@ -10,6 +10,7 @@ import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVE_NA;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,6 +19,8 @@ import javax.annotation.concurrent.Immutable;
 import lombok.Value;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
 import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.source.AddressMatcherSource;
+import name.ignat.minerva.model.source.AddressSource;
 import name.ignat.minerva.rule.Rule;
 
 public class AuditLog
@@ -26,34 +29,36 @@ public class AuditLog
 
     private final List<MessageFlag> messageFlags = new ArrayList<>();
 
-    public void onAddressAdded(Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public void onAddressAdded(Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
     {
-        addressEntries.add(new AddressEntry(ADDED, address, sourceMessage, matchedRule));
+        addressEntries.add(new AddressEntry(ADDED, address, source, null, matchedRule));
     }
 
-    public void onAddressDuplicate(Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public void onAddressDuplicate(Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
     {
-        addressEntries.add(new AddressEntry(DUPLICATE, address, sourceMessage, matchedRule));
+        addressEntries.add(new AddressEntry(DUPLICATE, address, source, null, matchedRule));
     }
 
-    public void onAddressExcluded(Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public void onAddressExcluded(Address address, @Nonnull AddressSource source,
+        @Nullable Set<AddressMatcherSource> exclusionSources, @Nullable Rule matchedRule)
     {
-        addressEntries.add(new AddressEntry(EXCLUDED, address, sourceMessage, matchedRule));
+        addressEntries.add(new AddressEntry(EXCLUDED, address, source, exclusionSources, matchedRule));
     }
 
-    public void onAddressFlagged(Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public void onAddressFlagged(Address address, @Nonnull AddressSource source,
+        @Nullable Set<AddressMatcherSource> flagSources, @Nullable Rule matchedRule)
     {
-        addressEntries.add(new AddressEntry(FLAGGED, address, sourceMessage, matchedRule));
+        addressEntries.add(new AddressEntry(FLAGGED, address, source, flagSources, matchedRule));
     }
 
-    public void onAddressRemoved(Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public void onAddressRemoved(Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
     {
-        addressEntries.add(new AddressEntry(REMOVED, address, sourceMessage, matchedRule));
+        addressEntries.add(new AddressEntry(REMOVED, address, source, null, matchedRule));
     }
 
-    public void onAddressRemoveNotApplicable(Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public void onAddressRemoveNotApplicable(Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
     {
-        addressEntries.add(new AddressEntry(REMOVE_NA, address, sourceMessage, matchedRule));
+        addressEntries.add(new AddressEntry(REMOVE_NA, address, source, null, matchedRule));
     }
 
     public void onMessageFlagged(Message message, @Nullable Rule matchedRule, Reason reason)
@@ -81,8 +86,11 @@ public class AuditLog
         @Nonnull
         private Address address;
 
+        @Nonnull
+        private AddressSource addressSource;
+
         @Nullable
-        private Message sourceMessage;
+        private Set<AddressMatcherSource> filterSources;
 
         @Nullable
         private Rule matchedRule;

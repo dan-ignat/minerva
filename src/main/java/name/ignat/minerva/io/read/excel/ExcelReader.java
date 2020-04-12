@@ -30,6 +30,8 @@ public class ExcelReader extends SpreadsheetReader<Row, Cell>
 
     public ExcelReader(File file)
     {
+        super(file);
+
         try
         {
             workbook = WorkbookFactory.create(file, null, true);
@@ -42,6 +44,8 @@ public class ExcelReader extends SpreadsheetReader<Row, Cell>
 
     public ExcelReader(InputStream inputStream)
     {
+        super(null);
+
         try
         {
             workbook = WorkbookFactory.create(inputStream);

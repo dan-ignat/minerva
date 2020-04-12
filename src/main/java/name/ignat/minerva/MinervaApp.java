@@ -43,9 +43,6 @@ public class MinervaApp
 
     public static void main(String[] args)
     {
-        // FIXME: Delete this when we're all done coding
-        //args = new String[] { "files/run.yaml" };
-
         System.setProperty("spring.profiles.active", PROD);
         System.setProperty("spring.main.banner-mode", OFF.name());
 
@@ -113,12 +110,14 @@ public class MinervaApp
     @Bean
     protected RuleEngine ruleEngine(MinervaRunConfig config)
     {
+        String messageFilePath = config.getMessageFile().getPath();
+
         @SuppressWarnings("preview")
         RuleEngine ruleEngine = switch(config.getMessageFile().getType())
         {
-            case ADD_SENDERS: yield new AddSendersRuleEngine();
-            case AUTO_REPLIES: yield new AutoRepliesRuleEngine();
-            case REMOVE_SENDERS: yield new RemoveSendersRuleEngine();
+            case ADD_SENDERS: yield new AddSendersRuleEngine(messageFilePath);
+            case AUTO_REPLIES: yield new AutoRepliesRuleEngine(messageFilePath);
+            case REMOVE_SENDERS: yield new RemoveSendersRuleEngine(messageFilePath);
             default: throw new UnexpectedCaseException(config.getMessageFile().getType());
         };
 

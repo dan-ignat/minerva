@@ -5,6 +5,7 @@ import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.ADDED;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVED;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_BODY_ADDRESSES;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.UNEXPECTED_RULE_MATCHED;
+import static name.ignat.minerva.model.source.MainMessageFileSource.MessageField.FROM;
 import static name.ignat.minerva.util.PoiUtils.sheetToStrings;
 import static name.ignat.minerva.util.StreamNextRest.streamNextRest;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,15 +25,19 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.google.common.collect.ImmutableSet;
 import com.opencsv.exceptions.CsvException;
 
 import name.ignat.minerva.io.write.WriteMapper;
 import name.ignat.minerva.io.write.WriteMappers;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
+import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.Domain;
-import name.ignat.minerva.model.Message;
+import name.ignat.minerva.model.source.ContactFileSource;
+import name.ignat.minerva.model.source.FilterMessageFileSource;
+import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.impl.AddSenderRule;
 import name.ignat.minerva.rule.impl.NoLongerHereRule;
 import name.ignat.minerva.util.StreamNextRest;
@@ -58,31 +63,34 @@ public class TestExcelWriter
                 List.of(
                     new MessageFlag(
                         new Message(2, "a@b.com", "Hello", "How's it going?"),
-                        new AddSenderRule(),
+                        new AddSenderRule(null),
                         NO_BODY_ADDRESSES
                     ),
                     new MessageFlag(
                         new Message(3, "b@b.com", "Hi", "Long time no see!"),
-                        new NoLongerHereRule(),
+                        new NoLongerHereRule(null),
                         UNEXPECTED_RULE_MATCHED
                     )
                 ),
                 MessageFlag.class
             ),
 
-            Arguments.of(List.of("Index", "Action", "E-mail Address", "Extracted Addresses", "Matched Rule"),
+            Arguments.of(List.of("Message Index", "Address", "Source", "Action", "Filter Sources", "Matched Rule"),
                 List.of(
                     new AddressEntry(
                         ADDED,
                         new Address("a@b.com"),
-                        new Message(2, "a@b.com", "Hello", "How's it going?"),
-                        new AddSenderRule()
+                        new ContactFileSource("/path/to/Contacts.xlsx", "Main"),
+                        ImmutableSet.of(new ContactFileSource("/path/to/Contacts.xlsx", "Unsubscribed")),
+                        new AddSenderRule(null)
                     ),
                     new AddressEntry(
                         REMOVED,
                         new Address("b@b.com"),
-                        new Message(3, "b@b.com", "Hi", "Long time no see!"),
-                        new NoLongerHereRule()
+                        new MainMessageFileSource("/path/to/New Messages.csv",
+                            new Message(2, "b@b.com", "Hello", "How's it going?"), FROM),
+                        ImmutableSet.of(new FilterMessageFileSource("/path/to/Exclusion Messages.csv")),
+                        new NoLongerHereRule(null)
                     )
                 ),
                 AddressEntry.class

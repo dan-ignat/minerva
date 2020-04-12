@@ -5,11 +5,11 @@ import name.ignat.minerva.rule.impl.FlagAutoReplyRule;
 
 public class AddSendersRuleEngine extends RuleEngine
 {
-    public AddSendersRuleEngine()
+    public AddSendersRuleEngine(String messageFilePath)
     {
         super(
-            new FlagAutoReplyRule(),
-            new AddSenderRule()
+            new FlagAutoReplyRule(messageFilePath),
+            new AddSenderRule(messageFilePath)
         );
     }
 }

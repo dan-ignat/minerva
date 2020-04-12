@@ -74,7 +74,8 @@ outputFile:
         name:                   Address Log
         columnHeaders:
             messageIndex:           Message Index
+            address:                Address
+            addressSource:          Source
             action:                 Action
-            address:                E-mail Address
-            extractedAddresses:     Extracted Addresses
+            filterSources:          Filter Sources
             matchedRule:            Matched Rule

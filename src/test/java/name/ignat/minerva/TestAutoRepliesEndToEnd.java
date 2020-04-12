@@ -1,4 +1,4 @@
-package name.ignat.minerva;
+package name.ignat.minerva; 
 
 import java.io.IOException;
 import java.util.List;
@@ -28,13 +28,13 @@ public class TestAutoRepliesEndToEnd extends TestBaseEndToEnd
                     List.of("d@b.com")
                 ),
                 List.of(
-                    List.of("Message Index", "Action",    "E-mail Address",  "Extracted Addresses", "Matched Rule"),
-                    List.of("",              "ADDED",     "a@b.com",         "",                    ""),
-                    List.of("",              "ADDED",     "b@b.com",         "",                    ""),
-                    List.of("2",             "REMOVED",   "a@b.com",         "a@b.com",             "DeliveryFailureRule"),
-                    List.of("3",             "REMOVED",   "b@b.com",         "c@b.com",             "NoLongerHereRule"),
-                    List.of("3",             "ADDED",     "c@b.com",         "c@b.com",             "NoLongerHereRule"),
-                    List.of("4",             "ADDED",     "d@b.com",         "d@b.com",             "OutOfOfficeRule")
+                    List.of("Message Index", "Address", "Source",   "Action",  "Filter Sources", "Matched Rule"),
+                    List.of("",              "a@b.com", "Contract", "ADDED",   "",               ""),
+                    List.of("",              "b@b.com", "Contract", "ADDED",   "",               ""),
+                    List.of("2",             "a@b.com", "BODY",     "REMOVED", "",               "DeliveryFailureRule"),
+                    List.of("3",             "b@b.com", "FROM",     "REMOVED", "",               "NoLongerHereRule"),
+                    List.of("3",             "c@b.com", "BODY",     "ADDED",   "",               "NoLongerHereRule"),
+                    List.of("4",             "d@b.com", "BODY",     "ADDED",   "",               "OutOfOfficeRule")
                 ),
                 List.of(
                     List.of("Index", "Matched Rule", "Reason")

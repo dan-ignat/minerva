@@ -9,6 +9,11 @@ import name.ignat.minerva.model.Message;
 @EqualsAndHashCode(callSuper = true)
 public class RemoveSenderRule extends NormalReplyRule
 {
+    public RemoveSenderRule(String messageFilePath)
+    {
+        super(messageFilePath);
+    }
+
     @Override
     public boolean matches(Message message, AddressBook addressBook)
     {

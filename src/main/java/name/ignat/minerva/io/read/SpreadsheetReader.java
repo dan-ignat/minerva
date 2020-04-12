@@ -3,9 +3,12 @@ package name.ignat.minerva.io.read;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static name.ignat.minerva.util.StreamNextRest.streamNextRest;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Stream;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import name.ignat.minerva.util.StreamNextRest;
 
 /**
@@ -15,8 +18,12 @@ import name.ignat.minerva.util.StreamNextRest;
  * 
  * @author Dan Ignat
  */
+@RequiredArgsConstructor
 public abstract class SpreadsheetReader<R extends Iterable<C>, C> implements AutoCloseable
 {
+    @Getter
+    private final File file;
+
     public final <O> List<O> read(String[] columnHeaders, Class<O> objectClass)
     {
         Stream<R> rowStream = getRowStream();

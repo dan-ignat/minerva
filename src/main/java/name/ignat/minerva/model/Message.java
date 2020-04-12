@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 
 import lombok.NonNull;
@@ -51,7 +52,7 @@ public class Message
         this.subject = subject;
         this.body = body;
 
-        this.bodyAddresses = body == null ? Set.of() : Address.extractAll(body);
+        this.bodyAddresses = body == null ? ImmutableSet.of() : Address.extractAll(body);
 
         if (body == null)
         {

@@ -1,6 +1,6 @@
 package name.ignat.minerva.io.write;
 
-import static name.ignat.minerva.util.Canonizable.toCanonical;
+import static name.ignat.minerva.util.Describable.describe;
 import static name.ignat.minerva.util.Objects.ifNotNull;
 
 import java.util.LinkedHashMap;
@@ -9,9 +9,9 @@ import java.util.Map;
 import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
+import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.Domain;
-import name.ignat.minerva.model.Message;
 import name.ignat.minerva.util.Array;
 
 public final class WriteMappers
@@ -75,11 +75,16 @@ public final class WriteMappers
 
     public static String[] fromAddressEntry(AddressEntry entry)
     {
+        Integer messageIndex = entry.getAddressSource().getMessageIndex();
+
         return Array.of(
-            ifNotNull(entry.getSourceMessage(), m -> m.getIndex().toString()),
-            entry.getType().toString(),
+            // This breaks tests, due to assertion expecting null but getting back "" from the read CSV
+            //messageIndex == null ? null : messageIndex.toString(),
+            messageIndex == null ? "" : messageIndex.toString(),
             entry.getAddress().toCanonical(),
-            ifNotNull(entry.getSourceMessage(), m -> toCanonical(m.getBodyAddresses())),
+            entry.getAddressSource().describe(),
+            entry.getType().toString(),
+            ifNotNull(entry.getFilterSources(), fs -> describe(fs)),
             ifNotNull(entry.getMatchedRule(), r -> r.getClass().getSimpleName()));
     }
 

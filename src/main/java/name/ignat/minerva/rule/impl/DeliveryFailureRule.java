@@ -12,6 +12,11 @@ public class DeliveryFailureRule extends AutoReplyRule
 {
     private static final String[] keyphrases = { "undeliverable", "failure" };
 
+    public DeliveryFailureRule(String messageFilePath)
+    {
+        super(messageFilePath);
+    }
+
     @Override
     public boolean matches(Message message, AddressBook addressBook)
     {

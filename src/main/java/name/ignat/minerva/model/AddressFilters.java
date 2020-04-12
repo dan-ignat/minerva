@@ -1,13 +1,12 @@
 package name.ignat.minerva.model;
 
-import java.util.Collection;
+import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
 
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.AddressMatchers;
-import name.ignat.minerva.model.address.AddressPattern;
-import name.ignat.minerva.model.address.Domain;
+import name.ignat.minerva.model.source.AddressMatcherSource;
 
 @Immutable
 public class AddressFilters
@@ -18,16 +17,6 @@ public class AddressFilters
     public AddressFilters()
     {
         this(new AddressMatchers(), new AddressMatchers());
-    }
-
-    public AddressFilters(
-        Collection<Address> exclusionAddresses, Collection<Domain> exclusionDomains,
-        Collection<AddressPattern> exclusionPatterns,
-        Collection<Address> flagAddresses, Collection<Domain> flagDomains, Collection<AddressPattern> flagPatterns)
-    {
-        this(
-            new AddressMatchers(exclusionAddresses, exclusionDomains, exclusionPatterns),
-            new AddressMatchers(flagAddresses, flagDomains, flagPatterns));
     }
 
     public AddressFilters(AddressMatchers exclusionMatchers, AddressMatchers flagMatchers)
@@ -41,8 +30,18 @@ public class AddressFilters
         return exclusionMatchers.match(address);
     }
 
+    public Set<AddressMatcherSource> getExclusionSources(Address address)
+    {
+        return exclusionMatchers.getMatchingSources(address);
+    }
+
     public boolean shouldFlag(Address address)
     {
         return flagMatchers.match(address);
+    }
+
+    public Set<AddressMatcherSource> getFlagSources(Address address)
+    {
+        return flagMatchers.getMatchingSources(address);
     }
 }

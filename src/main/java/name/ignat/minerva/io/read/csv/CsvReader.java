@@ -23,6 +23,8 @@ public class CsvReader extends SpreadsheetReader<List<String>, String>
 
     public CsvReader(File file)
     {
+        super(file);
+
         try
         {
             csvReader = new CSVReader(new FileReader(file));
@@ -35,6 +37,8 @@ public class CsvReader extends SpreadsheetReader<List<String>, String>
 
     public CsvReader(Reader reader)
     {
+        super(null);
+
         csvReader = new CSVReader(reader);
     }
 

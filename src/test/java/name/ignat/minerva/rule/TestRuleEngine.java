@@ -9,27 +9,33 @@ import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVE_NA;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_BODY_ADDRESSES;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_FROM_ADDRESS;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.UNEXPECTED_RULE_MATCHED;
+import static name.ignat.minerva.model.source.MainMessageFileSource.MessageField.BODY;
+import static name.ignat.minerva.model.source.MainMessageFileSource.MessageField.FROM;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.collect.ImmutableList;
 
+import lombok.Value;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.AddressFilters;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
+import name.ignat.minerva.model.AuditLog.AddressEntry.Type;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
-import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.TestAddressBook;
+import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.source.DummyAddressSource;
+import name.ignat.minerva.model.source.MainMessageFileSource;
+import name.ignat.minerva.model.source.MainMessageFileSource.MessageField;
 import name.ignat.minerva.rule.impl.AddSenderRule;
 import name.ignat.minerva.rule.impl.DeliveryFailureRule;
 import name.ignat.minerva.rule.impl.NoLongerHereRule;
@@ -54,19 +60,19 @@ public class TestRuleEngine
              **********************************************************************************************************/
             // DeliveryFailureRule
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE...",
                     "Undeliverable: Rolling off in September",
                     "Delivery has failed to these recipients or distribution lists: a@b.com"
                 ),
                 List.of(),
-                List.of(Triple.of(REMOVED, "a@b.com", new DeliveryFailureRule())),
+                List.of(new AddressEntryTuple(REMOVED, "a@b.com", BODY, new DeliveryFailureRule(null))),
                 List.of()
             ),
             // DeliveryFailureRule flags if no body addresses
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE...",
                     "Undeliverable: Rolling off in September",
@@ -74,11 +80,11 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(),
-                List.of(Pair.of(new DeliveryFailureRule(), NO_BODY_ADDRESSES))
+                List.of(new MessageFlagTuple(new DeliveryFailureRule(null), NO_BODY_ADDRESSES))
             ),
             // NoLongerHereRule
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Automatic reply: Rolling off in September",
@@ -86,37 +92,37 @@ public class TestRuleEngine
                 ),
                 List.of("b@b.com"),
                 List.of(
-                    Triple.of(REMOVED, "a@b.com", new NoLongerHereRule()),
-                    Triple.of(ADDED, "b@b.com", new NoLongerHereRule())),
+                    new AddressEntryTuple(REMOVED, "a@b.com", FROM, new NoLongerHereRule(null)),
+                    new AddressEntryTuple(ADDED, "b@b.com", BODY, new NoLongerHereRule(null))),
                 List.of()
             ),
             // NoLongerHereRule flags if no from address
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "BAD ADDRESS",
                     "Automatic reply: Rolling off in September",
                     "Alice is no longer with the company.  Instead, please contact Bob (b@b.com)."
                 ),
                 List.of("a@b.com", "b@b.com"),
-                List.of(Triple.of(ADDED, "b@b.com", new NoLongerHereRule())),
-                List.of(Pair.of(new NoLongerHereRule(), NO_FROM_ADDRESS))
+                List.of(new AddressEntryTuple(ADDED, "b@b.com", BODY, new NoLongerHereRule(null))),
+                List.of(new MessageFlagTuple(new NoLongerHereRule(null), NO_FROM_ADDRESS))
             ),
             // NoLongerHereRule flags if no body addresses
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Automatic reply: Rolling off in September",
                     "Alice is no longer with the company."
                 ),
                 List.of(),
-                List.of(Triple.of(REMOVED, "a@b.com", new NoLongerHereRule())),
-                List.of(Pair.of(new NoLongerHereRule(), NO_BODY_ADDRESSES))
+                List.of(new AddressEntryTuple(REMOVED, "a@b.com", FROM, new NoLongerHereRule(null))),
+                List.of(new MessageFlagTuple(new NoLongerHereRule(null), NO_BODY_ADDRESSES))
             ),
             // NoLongerHereRule flags if no from address and no body addresses
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "BAD ADDRESS",
                     "Automatic reply: Rolling off in September",
@@ -125,12 +131,12 @@ public class TestRuleEngine
                 List.of("a@b.com"),
                 List.of(),
                 List.of(
-                    Pair.of(new NoLongerHereRule(), NO_FROM_ADDRESS),
-                    Pair.of(new NoLongerHereRule(), NO_BODY_ADDRESSES))
+                    new MessageFlagTuple(new NoLongerHereRule(null), NO_FROM_ADDRESS),
+                    new MessageFlagTuple(new NoLongerHereRule(null), NO_BODY_ADDRESSES))
             ),
             // NoLongerHereRule matches before OutOfOfficeRule, despite "Out of Office" in subject
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Out of Office: Rolling off in September",
@@ -138,37 +144,37 @@ public class TestRuleEngine
                 ),
                 List.of("b@b.com"),
                 List.of(
-                    Triple.of(REMOVED, "a@b.com", new NoLongerHereRule()),
-                    Triple.of(ADDED, "b@b.com", new NoLongerHereRule())),
+                    new AddressEntryTuple(REMOVED, "a@b.com", FROM, new NoLongerHereRule(null)),
+                    new AddressEntryTuple(ADDED, "b@b.com", BODY, new NoLongerHereRule(null))),
                 List.of()
             ),
             // OutOfOfficeRule
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Out of Office: Rolling off in September",
                     "Alice is on vacation.  In her absence, you may contact Bob (b@b.com)."
                 ),
                 List.of("a@b.com", "b@b.com"),
-                List.of(Triple.of(ADDED, "b@b.com", new OutOfOfficeRule())),
+                List.of(new AddressEntryTuple(ADDED, "b@b.com", BODY, new OutOfOfficeRule(null))),
                 List.of()
             ),
             // OutOfOfficeRule with keywords only in body
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Automatic reply: Rolling off in September",
                     "I am out of the office.  In my absence, you may contact Bob (b@b.com)."
                 ),
                 List.of("a@b.com", "b@b.com"),
-                List.of(Triple.of(ADDED, "b@b.com", new OutOfOfficeRule())),
+                List.of(new AddressEntryTuple(ADDED, "b@b.com", BODY, new OutOfOfficeRule(null))),
                 List.of()
             ),
             // OutOfOfficeRule doesn't flag if no body addresses
             Arguments.of(
-                new AutoRepliesRuleEngine(),
+                new AutoRepliesRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Out of Office: Rolling off in September",
@@ -184,7 +190,7 @@ public class TestRuleEngine
              **********************************************************************************************************/
             // FlagAutoReplyRule - DeliveryFailureRule
             Arguments.of(
-                new AddSendersRuleEngine(),
+                new AddSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE...",
                     "Undeliverable: Rolling off in September",
@@ -192,11 +198,11 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(),
-                List.of(Pair.of(new DeliveryFailureRule(), UNEXPECTED_RULE_MATCHED))
+                List.of(new MessageFlagTuple(new DeliveryFailureRule(null), UNEXPECTED_RULE_MATCHED))
             ),
             // FlagAutoReplyRule - NoLongerHereRule
             Arguments.of(
-                new AddSendersRuleEngine(),
+                new AddSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Automatic reply: Rolling off in September",
@@ -204,11 +210,11 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(),
-                List.of(Pair.of(new NoLongerHereRule(), UNEXPECTED_RULE_MATCHED))
+                List.of(new MessageFlagTuple(new NoLongerHereRule(null), UNEXPECTED_RULE_MATCHED))
             ),
             // FlagAutoReplyRule - OutOfOfficeRule
             Arguments.of(
-                new AddSendersRuleEngine(),
+                new AddSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Out of Office: Rolling off in September",
@@ -216,11 +222,11 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(),
-                List.of(Pair.of(new OutOfOfficeRule(), UNEXPECTED_RULE_MATCHED))
+                List.of(new MessageFlagTuple(new OutOfOfficeRule(null), UNEXPECTED_RULE_MATCHED))
             ),
             // AddSenderRule
             Arguments.of(
-                new AddSendersRuleEngine(),
+                new AddSendersRuleEngine(null),
                 List.of(),
                 new Message(1, "a@b.com",
                     "Awesome opportunity",
@@ -228,13 +234,13 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(
-                    Triple.of(ADDED, "a@b.com", new AddSenderRule()),
-                    Triple.of(DUPLICATE, "a@b.com", new AddSenderRule())),
+                    new AddressEntryTuple(ADDED, "a@b.com", FROM, new AddSenderRule(null)),
+                    new AddressEntryTuple(DUPLICATE, "a@b.com", BODY, new AddSenderRule(null))),
                 List.of()
             ),
             // AddSenderRule with address in body
             Arguments.of(
-                new AddSendersRuleEngine(),
+                new AddSendersRuleEngine(null),
                 List.of(),
                 new Message(1, "hit-reply@linkedin.com",
                     "Awesome opportunity",
@@ -242,32 +248,32 @@ public class TestRuleEngine
                 ),
                 List.of("hit-reply@linkedin.com", "a@b.com"),
                 List.of(
-                    Triple.of(ADDED, "hit-reply@linkedin.com", new AddSenderRule()),
-                    Triple.of(ADDED, "a@b.com", new AddSenderRule())),
+                    new AddressEntryTuple(ADDED, "hit-reply@linkedin.com", FROM, new AddSenderRule(null)),
+                    new AddressEntryTuple(ADDED, "a@b.com", BODY, new AddSenderRule(null))),
                 List.of()
             ),
             // AddSenderRule flags if no from address
             Arguments.of(
-                new AddSendersRuleEngine(),
+                new AddSendersRuleEngine(null),
                 List.of(),
                 new Message(1, "BAD ADDRESS",
                     "Awesome opportunity",
                     "Hi.  Please let me know if you'd be interested in the JD below.  -Alice (a@b.com)"
                 ),
                 List.of("a@b.com"),
-                List.of(Triple.of(ADDED, "a@b.com", new AddSenderRule())),
-                List.of(Pair.of(new AddSenderRule(), NO_FROM_ADDRESS))
+                List.of(new AddressEntryTuple(ADDED, "a@b.com", BODY, new AddSenderRule(null))),
+                List.of(new MessageFlagTuple(new AddSenderRule(null), NO_FROM_ADDRESS))
             ),
             // AddSenderRule doesn't flag if no body addresses
             Arguments.of(
-                new AddSendersRuleEngine(),
+                new AddSendersRuleEngine(null),
                 List.of(),
                 new Message(1, "a@b.com",
                     "Awesome opportunity",
                     "Hi.  Please let me know if you'd be interested in the JD below."
                 ),
                 List.of("a@b.com"),
-                List.of(Triple.of(ADDED, "a@b.com", new AddSenderRule())),
+                List.of(new AddressEntryTuple(ADDED, "a@b.com", FROM, new AddSenderRule(null))),
                 List.of()
             ),
 
@@ -276,7 +282,7 @@ public class TestRuleEngine
              **********************************************************************************************************/
             // FlagAutoReplyRule - DeliveryFailureRule
             Arguments.of(
-                new RemoveSendersRuleEngine(),
+                new RemoveSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE...",
                     "Undeliverable: Rolling off in September",
@@ -284,11 +290,11 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(),
-                List.of(Pair.of(new DeliveryFailureRule(), UNEXPECTED_RULE_MATCHED))
+                List.of(new MessageFlagTuple(new DeliveryFailureRule(null), UNEXPECTED_RULE_MATCHED))
             ),
             // FlagAutoReplyRule - NoLongerHereRule
             Arguments.of(
-                new RemoveSendersRuleEngine(),
+                new RemoveSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Automatic reply: Rolling off in September",
@@ -296,11 +302,11 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(),
-                List.of(Pair.of(new NoLongerHereRule(), UNEXPECTED_RULE_MATCHED))
+                List.of(new MessageFlagTuple(new NoLongerHereRule(null), UNEXPECTED_RULE_MATCHED))
             ),
             // FlagAutoReplyRule - OutOfOfficeRule
             Arguments.of(
-                new RemoveSendersRuleEngine(),
+                new RemoveSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Out of Office: Rolling off in September",
@@ -308,11 +314,11 @@ public class TestRuleEngine
                 ),
                 List.of("a@b.com"),
                 List.of(),
-                List.of(Pair.of(new OutOfOfficeRule(), UNEXPECTED_RULE_MATCHED))
+                List.of(new MessageFlagTuple(new OutOfOfficeRule(null), UNEXPECTED_RULE_MATCHED))
             ),
             // RemoveSenderRule
             Arguments.of(
-                new RemoveSendersRuleEngine(),
+                new RemoveSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Awesome opportunity",
@@ -320,13 +326,13 @@ public class TestRuleEngine
                 ),
                 List.of(),
                 List.of(
-                    Triple.of(REMOVED, "a@b.com", new RemoveSenderRule()),
-                    Triple.of(REMOVE_NA, "a@b.com", new RemoveSenderRule())),
+                    new AddressEntryTuple(REMOVED, "a@b.com", FROM, new RemoveSenderRule(null)),
+                    new AddressEntryTuple(REMOVE_NA, "a@b.com", BODY, new RemoveSenderRule(null))),
                 List.of()
             ),
             // RemoveSenderRule with address in body
             Arguments.of(
-                new RemoveSendersRuleEngine(),
+                new RemoveSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "hit-reply@linkedin.com",
                     "Awesome opportunity",
@@ -334,32 +340,32 @@ public class TestRuleEngine
                 ),
                 List.of(),
                 List.of(
-                    Triple.of(REMOVE_NA, "hit-reply@linkedin.com", new RemoveSenderRule()),
-                    Triple.of(REMOVED, "a@b.com", new RemoveSenderRule())),
+                    new AddressEntryTuple(REMOVE_NA, "hit-reply@linkedin.com", FROM, new RemoveSenderRule(null)),
+                    new AddressEntryTuple(REMOVED, "a@b.com", BODY, new RemoveSenderRule(null))),
                 List.of()
             ),
             // RemoveSenderRule flags if no from address
             Arguments.of(
-                new RemoveSendersRuleEngine(),
+                new RemoveSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "BAD ADDRESS",
                     "Awesome opportunity",
                     "Hi.  Please let me know if you'd be interested in the JD below.  -Alice (a@b.com)"
                 ),
                 List.of(),
-                List.of(Triple.of(REMOVED, "a@b.com", new RemoveSenderRule())),
-                List.of(Pair.of(new RemoveSenderRule(), NO_FROM_ADDRESS))
+                List.of(new AddressEntryTuple(REMOVED, "a@b.com", BODY, new RemoveSenderRule(null))),
+                List.of(new MessageFlagTuple(new RemoveSenderRule(null), NO_FROM_ADDRESS))
             ),
             // RemoveSenderRule doesn't flag if no body addresses
             Arguments.of(
-                new RemoveSendersRuleEngine(),
+                new RemoveSendersRuleEngine(null),
                 List.of("a@b.com"),
                 new Message(1, "a@b.com",
                     "Awesome opportunity",
                     "Hi.  Please let me know if you'd be interested in the JD below."
                 ),
                 List.of(),
-                List.of(Triple.of(REMOVED, "a@b.com", new RemoveSenderRule())),
+                List.of(new AddressEntryTuple(REMOVED, "a@b.com", FROM, new RemoveSenderRule(null))),
                 List.of()
             )
         );
@@ -372,10 +378,11 @@ public class TestRuleEngine
         List<String> initialAddressStrings,
         Message message,
         List<String> expectedAddressStrings,
-        List<Triple<AddressEntry.Type, String, Rule>> expectedAddressLogTriples,
-        List<Pair<Rule, MessageFlag.Reason>> expectedMessageFlagPairs)
+        List<AddressEntryTuple> expectedAddressLogTuples,
+        List<MessageFlagTuple> expectedMessageFlagTuples)
     {
-        AddressBook addressBook = AddressBook.builder().initialAddresses(initialAddressStrings).build();
+        AddressBook addressBook = new AddressBook();
+        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
         // CALL UNDER TEST
         ruleEngine.run(addressBook, List.of(message));
@@ -394,10 +401,12 @@ public class TestRuleEngine
             List<AddressEntry> addressEntries = addressBook.getAuditLog().getAddressEntries();
 
             List<AddressEntry> expectedAddressEntries = initialAddressStrings.stream()
-                .map(a -> new AddressEntry(ADDED, new Address(a), null, null)).collect(toList());
+                .map(a -> new AddressEntry(ADDED, new Address(a), new DummyAddressSource(), null, null))
+                .collect(toList());
 
-            expectedAddressEntries.addAll(expectedAddressLogTriples.stream()
-                .map(t -> new AddressEntry(t.getLeft(), new Address(t.getMiddle()), message, t.getRight()))
+            expectedAddressEntries.addAll(expectedAddressLogTuples.stream()
+                .map(t -> new AddressEntry(t.getType(), new Address(t.getAddressString()),
+                    new MainMessageFileSource(null, message, t.getMessageField()), null, t.getMatchedRule()))
                 .collect(toImmutableList()));
 
             assertThat(addressEntries, is(expectedAddressEntries));
@@ -407,10 +416,26 @@ public class TestRuleEngine
         {
             List<MessageFlag> messageFlags = addressBook.getAuditLog().getMessageFlags();
 
-            List<MessageFlag> expectedMessageFlags = expectedMessageFlagPairs.stream()
-                .map(p -> new MessageFlag(message, p.getLeft(), p.getRight())).collect(toImmutableList());
+            List<MessageFlag> expectedMessageFlags = expectedMessageFlagTuples.stream()
+                .map(t -> new MessageFlag(message, t.getMatchedRule(), t.getReason())).collect(toImmutableList());
 
             assertThat(messageFlags, is(expectedMessageFlags));
         }
+    }
+
+    @Value
+    private static class AddressEntryTuple
+    {
+        private Type type;
+        private String addressString;
+        private MessageField messageField;
+        private Rule matchedRule;
+    }
+
+    @Value
+    private static class MessageFlagTuple
+    {
+        private Rule matchedRule;
+        private Reason reason;
     }
 }

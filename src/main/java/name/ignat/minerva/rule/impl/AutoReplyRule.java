@@ -5,4 +5,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public abstract class AutoReplyRule extends RuleBase
 {
+    public AutoReplyRule(String messageFilePath)
+    {
+        super(messageFilePath);
+    }
 }

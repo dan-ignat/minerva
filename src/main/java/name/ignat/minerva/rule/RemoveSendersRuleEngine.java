@@ -5,11 +5,11 @@ import name.ignat.minerva.rule.impl.RemoveSenderRule;
 
 public class RemoveSendersRuleEngine extends RuleEngine
 {
-    public RemoveSendersRuleEngine()
+    public RemoveSendersRuleEngine(String messageFilePath)
     {
         super(
-            new FlagAutoReplyRule(),
-            new RemoveSenderRule()
+            new FlagAutoReplyRule(messageFilePath),
+            new RemoveSenderRule(messageFilePath)
         );
     }
 }

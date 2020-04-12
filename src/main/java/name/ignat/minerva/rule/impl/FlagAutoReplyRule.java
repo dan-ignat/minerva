@@ -5,12 +5,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class FlagAutoReplyRule extends FlagAnyMatchRule
 {
-    public FlagAutoReplyRule()
+    public FlagAutoReplyRule(String messageFilePath)
     {
         super(
-            new DeliveryFailureRule(),
-            new NoLongerHereRule(),
-            new OutOfOfficeRule()
+            new DeliveryFailureRule(messageFilePath),
+            new NoLongerHereRule(messageFilePath),
+            new OutOfOfficeRule(messageFilePath)
         );
     }
 }

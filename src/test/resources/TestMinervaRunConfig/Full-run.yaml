@@ -122,7 +122,8 @@ outputFile:
         name:                   Address Log2
         columnHeaders:
             messageIndex:           Message Index
-            action:                 Action2
-            #address:                Address
-            extractedAddresses:     Extracted Addresses2
+            address:                Address2
+            #addressSource:          Source
+            action:                 Action
+            filterSources:          Filter Sources2
             #matchedRule:            Matched Rule

@@ -15,6 +15,8 @@ public class FlagAnyMatchRule extends RuleBase
 
     public FlagAnyMatchRule(Rule... rules)
     {
+        super(null);
+
         this.rules = rules;
     }
 

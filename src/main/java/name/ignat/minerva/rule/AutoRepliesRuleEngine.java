@@ -6,12 +6,12 @@ import name.ignat.minerva.rule.impl.OutOfOfficeRule;
 
 public class AutoRepliesRuleEngine extends RuleEngine
 {
-    public AutoRepliesRuleEngine()
+    public AutoRepliesRuleEngine(String messageFilePath)
     {
         super(
-            new DeliveryFailureRule(),
-            new NoLongerHereRule(),
-            new OutOfOfficeRule()
+            new DeliveryFailureRule(messageFilePath),
+            new NoLongerHereRule(messageFilePath),
+            new OutOfOfficeRule(messageFilePath)
         );
     }
 }

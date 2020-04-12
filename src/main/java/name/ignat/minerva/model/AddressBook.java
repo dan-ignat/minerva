@@ -5,7 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,17 +16,13 @@ import com.google.common.collect.SetMultimap;
 import lombok.Getter;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
 import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.address.AddressPattern;
 import name.ignat.minerva.model.address.Domain;
+import name.ignat.minerva.model.source.AddressMatcherSource;
+import name.ignat.minerva.model.source.AddressSource;
 import name.ignat.minerva.rule.Rule;
 
 public class AddressBook
 {
-    public static Builder builder()
-    {
-        return new Builder();
-    }
-
     // TODO: Optimize this with expected sizes based on actual incoming data
     private final SetMultimap<Domain, Address> addressesByDomain = LinkedHashMultimap.create(500, 50);
 
@@ -46,38 +42,47 @@ public class AddressBook
         this.addressFilters = addressFilters;
     }
 
-    public boolean add(@Nonnull Address address, boolean filter)
+    public void init(@Nonnull Collection<Address> addresses, @Nonnull AddressSource source, boolean filter)
     {
-        return add(address, null, null, filter);
+        addresses.stream().forEach(address -> add(address, source, filter));
     }
 
-    public boolean add(@Nonnull Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public boolean add(@Nonnull Address address, @Nonnull AddressSource source, boolean filter)
     {
-        return add(address, sourceMessage, matchedRule, true);
+        return add(address, source, null, filter);
+    }
+
+    public boolean add(@Nonnull Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
+    {
+        return add(address, source, matchedRule, true);
     }
 
     /*
      * Filter checks are done in order of increasing severity (DUPLICATE, EXCLUDED, FLAGGED), to minimize how many
      * high-severity filter actions must be manually analyzed in the output file.
      */
-    private boolean add(@Nonnull Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule,
+    private boolean add(@Nonnull Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule,
         boolean filter)
     {
         if (addressesByDomain.containsEntry(address.getDomain(), address))
         {
-            auditLog.onAddressDuplicate(address, sourceMessage, matchedRule);
+            auditLog.onAddressDuplicate(address, source, matchedRule);
 
             return false;
         }
         else if (filter && addressFilters.shouldExclude(address))
         {
-            auditLog.onAddressExcluded(address, sourceMessage, matchedRule);
+            Set<AddressMatcherSource> exclusionSources = addressFilters.getExclusionSources(address);
+
+            auditLog.onAddressExcluded(address, source, exclusionSources, matchedRule);
 
             return false;
         }
         else if (filter && addressFilters.shouldFlag(address))
         {
-            auditLog.onAddressFlagged(address, sourceMessage, matchedRule);
+            Set<AddressMatcherSource> flagSources = addressFilters.getFlagSources(address);
+
+            auditLog.onAddressFlagged(address, source, flagSources, matchedRule);
 
             return false;
         }
@@ -87,33 +92,23 @@ public class AddressBook
 
             assertThat(changed, is(true));
 
-            auditLog.onAddressAdded(address, sourceMessage, matchedRule);
+            auditLog.onAddressAdded(address, source, matchedRule);
 
             return true;
         }
     }
 
-    public void init(@Nonnull Collection<Address> addresses, boolean filter)
-    {
-        addresses.stream().forEach(address -> add(address, filter));
-    }
-
-    public boolean remove(@Nonnull Address address)
-    {
-        return remove(address, null, null);
-    }
-
-    public boolean remove(@Nonnull Address address, @Nullable Message sourceMessage, @Nullable Rule matchedRule)
+    public boolean remove(@Nonnull Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
     {
         boolean changed = addressesByDomain.remove(address.getDomain(), address);
 
         if (changed)
         {
-            auditLog.onAddressRemoved(address, sourceMessage, matchedRule);
+            auditLog.onAddressRemoved(address, source, matchedRule);
         }
         else
         {
-            auditLog.onAddressRemoveNotApplicable(address, sourceMessage, matchedRule);
+            auditLog.onAddressRemoveNotApplicable(address, source, matchedRule);
         }
 
         return changed;
@@ -140,75 +135,5 @@ public class AddressBook
     public Collection<Address> getAddresses()
     {
         return unmodifiableCollection(addressesByDomain.values());
-    }
-
-    public static class Builder
-    {
-        private List<String> exclusionAddressStrings = List.of();
-        private List<String> exclusionDomainStrings = List.of();
-        private List<String> exclusionPatternStrings = List.of();
-
-        private List<String> flagAddressStrings = List.of();
-        private List<String> flagDomainStrings = List.of();
-        private List<String> flagPatternStrings = List.of();
-
-        private List<String> initialAddressStrings = List.of();
-
-        private Builder() { }
-
-        public Builder exclusionAddresses(List<String> exclusionAddressStrings)
-        {
-            this.exclusionAddressStrings = exclusionAddressStrings;
-            return this;
-        }
-
-        public Builder exclusionDomains(List<String> exclusionDomainStrings)
-        {
-            this.exclusionDomainStrings = exclusionDomainStrings;
-            return this;
-        }
-
-        public Builder exclusionPatterns(List<String> exclusionPatternStrings)
-        {
-            this.exclusionPatternStrings = exclusionPatternStrings;
-            return this;
-        }
-
-        public Builder flagAddresses(List<String> flagAddressStrings)
-        {
-            this.flagAddressStrings = flagAddressStrings;
-            return this;
-        }
-
-        public Builder flagDomains(List<String> flagDomainStrings)
-        {
-            this.flagDomainStrings = flagDomainStrings;
-            return this;
-        }
-
-        public Builder flagPatterns(List<String> flagPatternStrings)
-        {
-            this.flagPatternStrings = flagPatternStrings;
-            return this;
-        }
-
-        public Builder initialAddresses(List<String> initialAddressStrings)
-        {
-            this.initialAddressStrings = initialAddressStrings;
-            return this;
-        }
-
-        public AddressBook build()
-        {
-            AddressBook addressBook = new AddressBook(new AddressFilters(
-                Address.fromStrings(exclusionAddressStrings), Domain.fromStrings(exclusionDomainStrings),
-                AddressPattern.fromStrings(exclusionPatternStrings),
-                Address.fromStrings(flagAddressStrings), Domain.fromStrings(flagDomainStrings),
-                AddressPattern.fromStrings(flagPatternStrings)));
-
-            addressBook.init(Address.fromStrings(initialAddressStrings), false);
-
-            return addressBook;
-        }
     }
 }

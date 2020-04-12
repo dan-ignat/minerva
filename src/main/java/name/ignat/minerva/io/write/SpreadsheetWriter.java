@@ -1,6 +1,10 @@
 package name.ignat.minerva.io.write;
 
+import java.io.File;
 import java.util.Collection;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @param <O> the object type (input)
@@ -8,8 +12,12 @@ import java.util.Collection;
  * 
  * @author Dan Ignat
  */
+@RequiredArgsConstructor
 public abstract class SpreadsheetWriter<S> implements AutoCloseable
 {
+    @Getter
+    private final File file;
+
     public final <O> void write(String[] columnHeaders, Collection<O> objects, Class<O> objectClass)
     {
         S sheet = getSheet();

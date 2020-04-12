@@ -2,9 +2,7 @@ package name.ignat.minerva;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +17,10 @@ import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.AddressMatchers;
 import name.ignat.minerva.model.address.AddressPattern;
 import name.ignat.minerva.model.address.Domain;
+import name.ignat.minerva.model.source.AddressMatcherSource;
+import name.ignat.minerva.model.source.AddressSource;
+import name.ignat.minerva.model.source.ContactFileSource;
+import name.ignat.minerva.model.source.FilterMessageFileSource;
 import name.ignat.minerva.util.Array;
 
 @Component
@@ -56,11 +58,14 @@ public class MinervaReader
                 for (InitialAddressSheetConfig addressSheetConfig : addressSheetConfigs)
                 {
                     contactsReader.setSheetName(addressSheetConfig.getName());
-    
+
                     List<Address> addresses =
                         contactsReader.read(Array.of(addressSheetConfig.getColumnHeader()), Address.class);
-    
-                    addressBook.init(addresses, addressSheetConfig.isFilter());
+
+                    AddressSource source =
+                        new ContactFileSource(contactsReader.getFile().getPath(), addressSheetConfig.getName());
+
+                    addressBook.init(addresses, source, addressSheetConfig.isFilter());
                 }
             }
 
@@ -83,9 +88,7 @@ public class MinervaReader
         List<AddressMatcherSheetConfig> sheetConfigs, List<AddressMessageFileConfig> addressMessageFileConfigs)
         throws IOException
     {
-        Set<Address> addresses = new LinkedHashSet<>();
-        Set<Domain> domains = new LinkedHashSet<>();
-        Set<AddressPattern> patterns = new LinkedHashSet<>();
+        AddressMatchers.Builder builder = AddressMatchers.builder();
 
         if (sheetConfigs != null)
         {
@@ -95,16 +98,19 @@ public class MinervaReader
 
                 String[] columnHeaders = Array.of(sheetConfig.getColumnHeader());
 
+                AddressMatcherSource source =
+                    new ContactFileSource(contactsReader.getFile().getPath(), sheetConfig.getName());
+
                 switch (sheetConfig.getType())
                 {
                     case ADDRESS:
-                        addresses.addAll(contactsReader.read(columnHeaders, Address.class));
+                        builder.addAddresses(contactsReader.read(columnHeaders, Address.class), source);
                         break;
                     case DOMAIN:
-                        domains.addAll(contactsReader.read(columnHeaders, Domain.class));
+                        builder.addDomains(contactsReader.read(columnHeaders, Domain.class), source);
                         break;
                     case PATTERN:
-                        patterns.addAll(contactsReader.read(columnHeaders, AddressPattern.class));
+                        builder.addPatterns(contactsReader.read(columnHeaders, AddressPattern.class), source);
                         break;
                     default:
                         throw new UnexpectedCaseException(sheetConfig.getType());
@@ -114,17 +120,15 @@ public class MinervaReader
 
         if (addressMessageFileConfigs != null)
         {
-            addresses.addAll(readMessageAddresses(addressMessageFileConfigs));
+            readMessageAddresses(addressMessageFileConfigs, builder);
         }
 
-        return new AddressMatchers(addresses, domains, patterns);
+        return builder.build();
     }
 
-    private Set<Address> readMessageAddresses(
-        List<AddressMessageFileConfig> addressMessageFileConfigs) throws IOException
+    private void readMessageAddresses(
+        List<AddressMessageFileConfig> addressMessageFileConfigs, AddressMatchers.Builder builder) throws IOException
     {
-        Set<Address> messageAddresses = new LinkedHashSet<>();
-
         for (AddressMessageFileConfig addressMessageFileConfig : addressMessageFileConfigs)
         {
             List<Message> addressMessages = readMessages(addressMessageFileConfig);
@@ -133,17 +137,21 @@ public class MinervaReader
             {
                 if (addressMessage.getFrom() != null)
                 {
-                    messageAddresses.add(addressMessage.getFrom());
+                    AddressMatcherSource source =
+                        new FilterMessageFileSource(addressMessageFileConfig.getPath());
+
+                    builder.addAddress(addressMessage.getFrom(), source);
                 }
 
                 if (addressMessageFileConfig.isExtractBodyAddresses())
                 {
-                    messageAddresses.addAll(addressMessage.getBodyAddresses());
+                    AddressMatcherSource source =
+                        new FilterMessageFileSource(addressMessageFileConfig.getPath());
+
+                    builder.addAddresses(addressMessage.getBodyAddresses(), source);
                 }
             }
         }
-
-        return messageAddresses;
     }
 
     public List<Message> readMessages(MessageFileConfig messageFileConfig) throws IOException

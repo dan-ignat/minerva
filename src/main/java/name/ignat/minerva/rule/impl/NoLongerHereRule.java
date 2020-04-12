@@ -12,6 +12,11 @@ public class NoLongerHereRule extends AutoReplyRule
 {
     private static final String[] keyphrases = { "no longer", "any longer" };
 
+    public NoLongerHereRule(String messageFilePath)
+    {
+        super(messageFilePath);
+    }
+
     @Override
     public boolean matches(Message message, AddressBook addressBook)
     {

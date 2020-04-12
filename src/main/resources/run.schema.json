@@ -188,18 +188,20 @@
                             "type": "object",
                             "properties":
                             {
-                                "messageIndex":       { "$ref": "#/$defs/columnHeader" },
-                                "action":             { "$ref": "#/$defs/columnHeader" },
-                                "address":            { "$ref": "#/$defs/columnHeader" },
-                                "extractedAddresses": { "$ref": "#/$defs/columnHeader" },
-                                "matchedRule":        { "$ref": "#/$defs/columnHeader" }
+                                "messageIndex":  { "$ref": "#/$defs/columnHeader" },
+                                "address":       { "$ref": "#/$defs/columnHeader" },
+                                "addressSource": { "$ref": "#/$defs/columnHeader" },
+                                "action":        { "$ref": "#/$defs/columnHeader" },
+                                "filterSources": { "$ref": "#/$defs/columnHeader" },
+                                "matchedRule":   { "$ref": "#/$defs/columnHeader" }
                             },
                             "anyOf":
                             [
                                 { "required": ["messageIndex"] },
-                                { "required": ["action"] },
                                 { "required": ["address"] },
-                                { "required": ["extractedAddresses"] },
+                                { "required": ["addressSource"] },
+                                { "required": ["action"] },
+                                { "required": ["filterSources"] },
                                 { "required": ["matchedRule"] }
                             ],
                             "additionalProperties": false

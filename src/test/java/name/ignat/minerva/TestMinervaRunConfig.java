@@ -113,7 +113,8 @@ public class TestMinervaRunConfig
                         new AddressLogSheetConfig(
                             "Address Log2",
                             new AddressLogSheetConfig.ColumnHeadersConfig(
-                                "Message Index", "Action2", "Address", "Extracted Addresses2", "Matched Rule")
+                                "Message Index", "Address2", "Source",
+                                "Action", "Filter Sources2", "Matched Rule")
                         )
                     )
                 )
@@ -145,7 +146,8 @@ public class TestMinervaRunConfig
                         new AddressLogSheetConfig(
                             "Address Log",
                             new AddressLogSheetConfig.ColumnHeadersConfig(
-                                "Message Index", "Action", "Address", "Extracted Addresses", "Matched Rule")
+                                "Message Index", "Address", "Source",
+                                "Action", "Filter Sources", "Matched Rule")
                         )
                     )
                 )
@@ -177,7 +179,8 @@ public class TestMinervaRunConfig
                         new AddressLogSheetConfig(
                             "Address Log",
                             new AddressLogSheetConfig.ColumnHeadersConfig(
-                                "Message Index", "Action", "Address", "Extracted Addresses", "Matched Rule")
+                                "Message Index", "Address", "Source",
+                                "Action", "Filter Sources", "Matched Rule")
                         )
                     )
                 )
@@ -209,7 +212,8 @@ public class TestMinervaRunConfig
                         new AddressLogSheetConfig(
                             "Address Log",
                             new AddressLogSheetConfig.ColumnHeadersConfig(
-                                "Message Index", "Action", "Address", "Extracted Addresses", "Matched Rule")
+                                "Message Index", "Address", "Source",
+                                "Action", "Filter Sources", "Matched Rule")
                         )
                     )
                 )
@@ -234,7 +238,8 @@ public class TestMinervaRunConfig
                         new AddressLogSheetConfig(
                             "Address Log",
                             new AddressLogSheetConfig.ColumnHeadersConfig(
-                                "Message Index", "Action", "Address", "Extracted Addresses", "Matched Rule")
+                                "Message Index", "Address", "Source",
+                                "Action", "Filter Sources", "Matched Rule")
                         )
                     )
                 )

@@ -27,11 +27,11 @@ public class TestRemoveSendersEndToEnd extends TestBaseEndToEnd
                     List.of("b@b.com")
                 ),
                 List.of(
-                    List.of("Message Index", "Action",    "E-mail Address",         "Extracted Addresses", "Matched Rule"),
-                    List.of("",              "ADDED",     "a@b.com",                "",                    ""),
-                    List.of("",              "ADDED",     "b@b.com",                "",                    ""),
-                    List.of("3",             "REMOVED",   "a@b.com",                "a2@b.com",            "RemoveSenderRule"),
-                    List.of("3",             "REMOVE_NA", "a2@b.com",               "a2@b.com",            "RemoveSenderRule")
+                    List.of("Message Index", "Address",  "Source",   "Action",    "Filter Sources", "Matched Rule"),
+                    List.of("",              "a@b.com",  "Contract", "ADDED",     "",               ""),
+                    List.of("",              "b@b.com",  "Contract", "ADDED",     "",               ""),
+                    List.of("3",             "a@b.com",  "FROM",     "REMOVED",   "",               "RemoveSenderRule"),
+                    List.of("3",             "a2@b.com", "BODY",     "REMOVE_NA", "",               "RemoveSenderRule")
                 ),
                 List.of(
                     List.of("Index", "Matched Rule",        "Reason"),

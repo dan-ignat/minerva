@@ -24,10 +24,10 @@ import name.ignat.minerva.io.write.WriteMapper;
 
 public class ExcelWriter extends SpreadsheetWriter<Sheet>
 {
-    private final File file;
     private final OutputStream outputStream;
 
     private final Workbook workbook;
+
     // Create a single shared header style per workbook, for efficiency
     private final CellStyle headerStyle;
 
@@ -46,7 +46,8 @@ public class ExcelWriter extends SpreadsheetWriter<Sheet>
 
     private ExcelWriter(File file, OutputStream outputStream)
     {
-        this.file = file;
+        super(file);
+
         this.outputStream = outputStream;
 
         try
@@ -97,7 +98,7 @@ public class ExcelWriter extends SpreadsheetWriter<Sheet>
     public void close() throws IOException
     {
         try (OutputStream outputStream =
-            this.outputStream == null ? new FileOutputStream(this.file) : this.outputStream)
+            this.outputStream == null ? new FileOutputStream(getFile()) : this.outputStream)
         {
             workbook.write(outputStream);
             workbook.close();

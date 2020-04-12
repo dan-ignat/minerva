@@ -1,64 +1,111 @@
 package name.ignat.minerva.model.address;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-import static java.util.stream.Collectors.groupingBy;
-import static name.ignat.minerva.model.address.AddressMatcher.Type.ADDRESS;
-import static name.ignat.minerva.model.address.AddressMatcher.Type.DOMAIN;
-import static name.ignat.minerva.model.address.AddressMatcher.Type.PATTERN;
-
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.SetMultimap;
+
+import name.ignat.minerva.model.source.AddressMatcherSource;
 
 @Immutable
 public class AddressMatchers
 {
-    public static AddressMatchers fromStrings(List<String> strings)
+    public static Builder builder()
     {
-        Map<AddressMatcher.Type, ImmutableList<String>> groupMap =
-            strings.stream().collect(groupingBy(AddressMatcher.Type::fromExpression, toImmutableList()));
-
-        List<String> addresses = groupMap.get(ADDRESS);
-        List<String> domains = groupMap.get(DOMAIN);
-        List<String> patterns = groupMap.get(PATTERN);
-
-        return new AddressMatchers(
-            addresses == null ? ImmutableList.of() : Address.fromStrings(addresses),
-            domains == null   ? ImmutableList.of() : Domain.fromStrings(domains),
-            patterns == null  ? ImmutableList.of() : AddressPattern.fromStrings(patterns)
-        );
+        return new Builder();
     }
 
-    private final Set<Address> addresses;
-    private final Set<Domain> domains;
-    private final Set<AddressPattern> patterns;
+    private final SetMultimap<Address, AddressMatcherSource> addresses;
+    private final SetMultimap<Domain, AddressMatcherSource> domains;
+    private final SetMultimap<AddressPattern, AddressMatcherSource> patterns;
 
     public AddressMatchers()
     {
-        addresses = ImmutableSet.of();
-        domains = ImmutableSet.of();
-        patterns = ImmutableSet.of();
+        addresses = ImmutableSetMultimap.of();
+        domains = ImmutableSetMultimap.of();
+        patterns = ImmutableSetMultimap.of();
     }
 
     public AddressMatchers(
-        Collection<Address> addresses, Collection<Domain> domains, Collection<AddressPattern> patterns)
+        SetMultimap<Address, AddressMatcherSource> addresses,
+        SetMultimap<Domain, AddressMatcherSource> domains,
+        SetMultimap<AddressPattern, AddressMatcherSource> patterns)
     {
-        this.addresses = ImmutableSet.copyOf(addresses);
-        this.domains = ImmutableSet.copyOf(domains);
-        this.patterns = ImmutableSet.copyOf(patterns);
+        this.addresses = ImmutableSetMultimap.copyOf(addresses);
+        this.domains = ImmutableSetMultimap.copyOf(domains);
+        this.patterns = ImmutableSetMultimap.copyOf(patterns);
     }
 
+    // TODO: Consider removing this method, and relying entirely on getMatchingSources(), so as not to do two passes
+    // through the data structures.
     public boolean match(Address address)
     {
         return
-            addresses.contains(address) ||
-            domains.stream().anyMatch(domain -> domain.matches(address)) ||
-            patterns.stream().anyMatch(pattern -> pattern.matches(address));
+            addresses.containsKey(address) ||
+            domains.keySet().stream().anyMatch(domain -> domain.matches(address)) ||
+            patterns.keySet().stream().anyMatch(pattern -> pattern.matches(address));
+    }
+
+    public Set<AddressMatcherSource> getMatchingSources(Address address)
+    {
+        ImmutableSet.Builder<AddressMatcherSource> builder = ImmutableSet.builder();
+
+        if (addresses.containsKey(address))
+        {
+            builder.addAll(addresses.get(address));
+        }
+
+        domains.keySet().stream()
+            .filter(domain -> domain.matches(address))
+            .forEach(domain -> builder.addAll(domains.get(domain)));
+
+        patterns.keySet().stream()
+            .filter(pattern -> pattern.matches(address))
+            .forEach(pattern -> builder.addAll(patterns.get(pattern)));
+
+        return builder.build();
+    }
+
+    public static final class Builder
+    {
+        private final SetMultimap<Address, AddressMatcherSource> addresses = LinkedHashMultimap.create(5_000, 10);
+        private final SetMultimap<Domain, AddressMatcherSource> domains = LinkedHashMultimap.create(500, 10);
+        private final SetMultimap<AddressPattern, AddressMatcherSource> patterns = LinkedHashMultimap.create(500, 10);
+
+        public Builder addAddress(Address address, AddressMatcherSource source)
+        {
+            this.addresses.put(address, source);
+            return this;
+        }
+
+        public Builder addAddresses(Collection<Address> addresses, AddressMatcherSource source)
+        {
+            addresses.stream().forEach(address -> this.addresses.put(address, source));
+            return this;
+        }
+
+        public Builder addDomains(Collection<Domain> domains, AddressMatcherSource source)
+        {
+            domains.stream().forEach(domain -> this.domains.put(domain, source));
+            return this;
+        }
+
+        public Builder addPatterns(Collection<AddressPattern> patterns, AddressMatcherSource source)
+        {
+            patterns.stream().forEach(pattern -> this.patterns.put(pattern, source));
+            return this;
+        }
+
+        public AddressMatchers build()
+        {
+            return new AddressMatchers(addresses, domains, patterns);
+        }
+
+        private Builder() { }
     }
 }

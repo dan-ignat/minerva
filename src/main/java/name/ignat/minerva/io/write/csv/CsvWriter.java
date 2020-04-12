@@ -17,6 +17,8 @@ public class CsvWriter extends SpreadsheetWriter<CSVWriter>
 
     public CsvWriter(File file)
     {
+        super(file);
+
         try
         {
             csvWriter = new CSVWriter(new FileWriter(file));
@@ -29,6 +31,8 @@ public class CsvWriter extends SpreadsheetWriter<CSVWriter>
 
     public CsvWriter(Writer writer)
     {
+        super(null);
+
         csvWriter = new CSVWriter(writer);
     }
 

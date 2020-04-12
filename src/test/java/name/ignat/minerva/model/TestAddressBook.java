@@ -3,6 +3,7 @@ package name.ignat.minerva.model;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.Streams.zip;
 import static java.util.stream.Collectors.toList;
+import static name.ignat.commons.utils.ObjectUtils.equalsAny;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.ADDED;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.DUPLICATE;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.EXCLUDED;
@@ -11,6 +12,7 @@ import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVED;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.REMOVE_NA;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_FROM_ADDRESS;
 import static name.ignat.minerva.model.AuditLog.MessageFlag.Reason.NO_RULE_MATCHED;
+import static name.ignat.minerva.model.source.MainMessageFileSource.MessageField.FROM;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -24,13 +26,19 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
 import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.address.AddressMatchers;
+import name.ignat.minerva.model.address.AddressMatchersUtils;
 import name.ignat.minerva.model.address.TestAddressMatchers;
+import name.ignat.minerva.model.source.AddressMatcherSource;
+import name.ignat.minerva.model.source.AddressSource;
+import name.ignat.minerva.model.source.DummyAddressMatcherSource;
+import name.ignat.minerva.model.source.DummyAddressSource;
+import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 import name.ignat.minerva.rule.impl.AddSenderRule;
 import name.ignat.minerva.rule.impl.RemoveSenderRule;
@@ -71,14 +79,15 @@ public class TestAddressBook
 
     @ParameterizedTest
     @MethodSource("initCases")
-    public void init(List<String> exclusionStrings, List<String> flagStrings, List<String> initialAddressStrings,
-        boolean filterInitialAddresses, List<String> expectedAddressStrings, List<AddressEntry.Type> expectedAddressEntryTypes)
+    public void init(List<String> exclusionStrings, List<String> flagStrings,
+        List<String> initialAddressStrings, boolean filterInitialAddresses,
+        List<String> expectedAddressStrings, List<AddressEntry.Type> expectedAddressEntryTypes)
     {
         AddressBook addressBook = new AddressBook(new AddressFilters(
-            AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
+            AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
         // CALL UNDER TEST
-        addressBook.init(Address.fromStrings(initialAddressStrings), filterInitialAddresses);
+        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), filterInitialAddresses);
 
         // Assert addresses
         {
@@ -97,11 +106,19 @@ public class TestAddressBook
                     initialAddressStrings.stream(),
                     expectedAddressEntryTypes.stream(),
                     (initialAddressString, expectedAddressEntryType) ->
-                        new AddressEntry(expectedAddressEntryType, new Address(initialAddressString), null, null))
+                        new AddressEntry(expectedAddressEntryType, new Address(initialAddressString),
+                            new DummyAddressSource(), getExpectedFilterSources(expectedAddressEntryType), null))
                 .collect(toImmutableList());
 
             assertThat(addressEntries, is(expectedAddressEntries));
         }
+    }
+
+    private static ImmutableSet<AddressMatcherSource> getExpectedFilterSources(
+        AddressEntry.Type expectedAddressEntryType)
+    {
+        return equalsAny(expectedAddressEntryType, EXCLUDED, FLAGGED) ?
+            ImmutableSet.of(new DummyAddressMatcherSource()) : null;
     }
 
     private static Stream<Arguments> addCases()
@@ -136,18 +153,20 @@ public class TestAddressBook
         List<String> expectedAddressStrings, AddressEntry.Type expectedAddressEntryType)
     {
         AddressBook addressBook = new AddressBook(new AddressFilters(
-            AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
+            AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.init(Address.fromStrings(initialAddressStrings), false);
+        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
-        Message sourceMessage = new Message(1, addressToAddString, "Hello", "Lorem ipsum dolor");
-        Rule matchedRule = new AddSenderRule();
+        AddressSource addressSource =
+            new MainMessageFileSource(null, new Message(1, addressToAddString, "Hello", "Lorem ipsum dolor"), FROM);
+
+        Rule matchedRule = new AddSenderRule(null);
 
         // CALL UNDER TEST
-        boolean changed = addressBook.add(new Address(addressToAddString), sourceMessage, matchedRule);
+        boolean changed = addressBook.add(new Address(addressToAddString), addressSource, matchedRule);
 
         doAddRemoveAsserts(exclusionStrings, flagStrings, initialAddressStrings, addressToAddString,
-            sourceMessage, matchedRule, addressBook, changed, expectedAddressStrings, expectedAddressEntryType);
+            addressSource, matchedRule, addressBook, changed, expectedAddressStrings, expectedAddressEntryType);
     }
 
     private static Stream<Arguments> removeCases()
@@ -178,24 +197,26 @@ public class TestAddressBook
         List<String> expectedAddressStrings, AddressEntry.Type expectedAddressEntryType)
     {
         AddressBook addressBook = new AddressBook(new AddressFilters(
-            AddressMatchers.fromStrings(exclusionStrings), AddressMatchers.fromStrings(flagStrings)));
+            AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.init(Address.fromStrings(initialAddressStrings), false);
+        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
-        Message sourceMessage = new Message(1, addressToRemoveString, "Hello", "Lorem ipsum dolor");
-        Rule matchedRule = new RemoveSenderRule();
+        AddressSource addressSource =
+            new MainMessageFileSource(null, new Message(1, addressToRemoveString, "Hello", "Lorem ipsum dolor"), FROM);
+
+        Rule matchedRule = new RemoveSenderRule(null);
 
         // CALL UNDER TEST
-        boolean changed = addressBook.remove(new Address(addressToRemoveString), sourceMessage, matchedRule);
+        boolean changed = addressBook.remove(new Address(addressToRemoveString), addressSource, matchedRule);
 
         doAddRemoveAsserts(exclusionStrings, flagStrings, initialAddressStrings, addressToRemoveString,
-            sourceMessage, matchedRule, addressBook, changed, expectedAddressStrings, expectedAddressEntryType);
+            addressSource, matchedRule, addressBook, changed, expectedAddressStrings, expectedAddressEntryType);
     }
 
     private void doAddRemoveAsserts(
         List<String> exclusionStrings, List<String> flagStrings,
         List<String> initialAddressStrings, String addressToTestString,
-        Message sourceMessage, Rule matchedRule, AddressBook addressBook, boolean changed,
+        AddressSource addressSource, Rule matchedRule, AddressBook addressBook, boolean changed,
         List<String> expectedAddressStrings, AddressEntry.Type expectedAddressEntryType)
     {
         // Assert addresses
@@ -214,11 +235,12 @@ public class TestAddressBook
             List<AddressEntry> addressEntries = addressBook.getAuditLog().getAddressEntries();
 
             List<AddressEntry> expectedAddressEntries = initialAddressStrings.stream()
-                .map(initialAddressString -> new AddressEntry(ADDED, new Address(initialAddressString), null, null))
+                .map(initialAddressString ->
+                    new AddressEntry(ADDED, new Address(initialAddressString), new DummyAddressSource(), null, null))
                 .collect(toList());
 
             expectedAddressEntries.add(new AddressEntry(expectedAddressEntryType, new Address(addressToTestString),
-                sourceMessage, matchedRule));
+                addressSource, getExpectedFilterSources(expectedAddressEntryType), matchedRule));
 
             assertThat(addressEntries, is(expectedAddressEntries));
         }
@@ -237,7 +259,7 @@ public class TestAddressBook
     {
         return Stream.of(
             Arguments.of(new Message(1, "/O=EXCHANGELABS.../CN=MICROSOFTEXCHANGE...", "Hello", "Lorem ipsum dolor"),
-                new AddSenderRule(), NO_FROM_ADDRESS),
+                new AddSenderRule(null), NO_FROM_ADDRESS),
             Arguments.of(new Message(1, "a@b.com", "Hello", "Lorem ipsum dolor"), null, NO_RULE_MATCHED)
         );
     }

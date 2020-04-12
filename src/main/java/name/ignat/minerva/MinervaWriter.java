@@ -109,9 +109,10 @@ public class MinervaWriter
 
         String[] columnHeaders = Array.of(
             columnHeadersConfig.getMessageIndex(),
-            columnHeadersConfig.getAction(),
             columnHeadersConfig.getAddress(),
-            columnHeadersConfig.getExtractedAddresses(),
+            columnHeadersConfig.getAddressSource(),
+            columnHeadersConfig.getAction(),
+            columnHeadersConfig.getFilterSources(),
             columnHeadersConfig.getMatchedRule());
 
         excelWriter.write(columnHeaders, auditLog.getAddressEntries(), AddressEntry.class);
