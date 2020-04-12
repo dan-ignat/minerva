@@ -2,6 +2,7 @@ package name.ignat.minerva.util;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.Streams.stream;
+import static name.ignat.minerva.util.Doubles.toMinimalString;
 
 import java.util.List;
 
@@ -13,20 +14,34 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import name.ignat.commons.exception.UnexpectedCaseException;
+
 public final class PoiUtils
 {
     public static List<String[]> sheetToStrings(Sheet sheet)
     {
         return stream(sheet).map(
-            row -> stream(row).map(Cell::getStringCellValue).toArray(String[]::new)
+            row -> stream(row).map(PoiUtils::getCellValueAsString).toArray(String[]::new)
         ).collect(toImmutableList());
+    }
+
+    @SuppressWarnings("preview")
+    private static String getCellValueAsString(Cell cell)
+    {
+        return switch (cell.getCellType())
+        {
+            case STRING: yield cell.getStringCellValue();
+            case NUMERIC: yield toMinimalString(cell.getNumericCellValue());
+            case BLANK: yield "";
+            default: throw new UnexpectedCaseException(cell.getCellType());
+        };
     }
 
     /*
     public static List<List<String>> sheetToStringLists(Sheet sheet)
     {
         return stream(sheet).map(
-            row -> stream(row).map(Cell::getStringCellValue).collect(toImmutableList())
+            row -> stream(row).map(PoiUtils::getCellValueAsString).collect(toImmutableList())
         ).collect(toImmutableList());
     }
     */

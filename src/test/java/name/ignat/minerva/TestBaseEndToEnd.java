@@ -1,5 +1,6 @@
 package name.ignat.minerva;
 
+import static name.ignat.commons.utils.IoUtils.getClassPathResourceFile;
 import static name.ignat.minerva.MinervaProfiles.TEST;
 import static name.ignat.minerva.util.Lists.arraysToLists;
 import static name.ignat.minerva.util.PoiUtils.sheetToStrings;
@@ -8,6 +9,7 @@ import static org.hamcrest.Matchers.is;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -44,10 +46,14 @@ public abstract class TestBaseEndToEnd
     @Autowired
     protected ByteArrayOutputStream outputStream;
 
-    protected void run(List<List<String>> expectedAddressRows, List<List<String>> expectedAddressLogRows,
-        List<List<String>> expectedMessageFlagRows) throws IOException
+    protected void run(String expectedOutputFileClassPathResourcePath) throws IOException
     {
         SpringApplication.run(MinervaApp.class, args.getSourceArgs());
+
+        File expectedOutputFile = getClassPathResourceFile(expectedOutputFileClassPathResourcePath);
+        Workbook expectedWorkbook = WorkbookFactory.create(expectedOutputFile, null, true);
+
+        assertThat(expectedWorkbook.getNumberOfSheets(), is(3));
 
         Workbook workbook;
         try (InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray()))
@@ -56,27 +62,33 @@ public abstract class TestBaseEndToEnd
         }
 
         {
+            Sheet expectedAddressSheet = expectedWorkbook.getSheet(config.getOutputFile().getAddressSheet().getName());
+            List<List<String>> expectedAddressRows = arraysToLists(sheetToStrings(expectedAddressSheet));
+
             Sheet addressSheet = workbook.getSheet(config.getOutputFile().getAddressSheet().getName());
+            List<List<String>> addressRows = arraysToLists(sheetToStrings(addressSheet));
 
-            List<String[]> addressRows = sheetToStrings(addressSheet);
-
-            assertThat(arraysToLists(addressRows), is(expectedAddressRows));
+            assertThat(addressRows, is(expectedAddressRows));
         }
 
         {
+            Sheet expectedAddressLogSheet = expectedWorkbook.getSheet(config.getOutputFile().getAddressLogSheet().getName());
+            List<List<String>> expectedAddressLogRows = arraysToLists(sheetToStrings(expectedAddressLogSheet));
+
             Sheet addressLogSheet = workbook.getSheet(config.getOutputFile().getAddressLogSheet().getName());
+            List<List<String>> addressLogRows = arraysToLists(sheetToStrings(addressLogSheet));
 
-            List<String[]> addressLogRows = sheetToStrings(addressLogSheet);
-
-            assertThat(arraysToLists(addressLogRows), is(expectedAddressLogRows));
+            assertThat(addressLogRows, is(expectedAddressLogRows));
         }
 
         {
+            Sheet expectedMessageFlagSheet = expectedWorkbook.getSheet(config.getOutputFile().getMessageFlagSheet().getName());
+            List<List<String>> expectedMessageFlagRows = arraysToLists(sheetToStrings(expectedMessageFlagSheet));
+
             Sheet messageFlagSheet = workbook.getSheet(config.getOutputFile().getMessageFlagSheet().getName());
+            List<List<String>> messageFlagRows = arraysToLists(sheetToStrings(messageFlagSheet));
 
-            List<String[]> messageFlagRows = sheetToStrings(messageFlagSheet);
-
-            assertThat(arraysToLists(messageFlagRows), is(expectedMessageFlagRows));
+            assertThat(messageFlagRows, is(expectedMessageFlagRows));
         }
     }
 }
