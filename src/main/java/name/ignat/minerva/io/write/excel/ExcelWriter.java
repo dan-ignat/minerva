@@ -2,7 +2,7 @@ package name.ignat.minerva.io.write.excel;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static name.ignat.minerva.util.PoiUtils.autoSizeColumns;
-import static name.ignat.minerva.util.PoiUtils.boldenHeaderRow;
+import static name.ignat.minerva.util.PoiUtils.emboldenHeaderRow;
 import static name.ignat.minerva.util.PoiUtils.createHeaderStyle;
 import static name.ignat.minerva.util.PoiUtils.freezeHeaderRow;
 import static name.ignat.minerva.util.PoiUtils.setAutoFilter;
@@ -85,7 +85,7 @@ public class ExcelWriter extends SpreadsheetWriter<Sheet>
     @Override
     protected void finishSheet(Sheet sheet, int numColumns)
     {
-        boldenHeaderRow(sheet, headerStyle);
+        emboldenHeaderRow(sheet, headerStyle);
 
         setAutoFilter(sheet);
 

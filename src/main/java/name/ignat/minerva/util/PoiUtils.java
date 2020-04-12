@@ -42,7 +42,7 @@ public final class PoiUtils
         return headerStyle;
     }
 
-    public static void boldenHeaderRow(Sheet sheet, CellStyle headerStyle)
+    public static void emboldenHeaderRow(Sheet sheet, CellStyle headerStyle)
     {
         Row headerRow = sheet.iterator().next();
 
