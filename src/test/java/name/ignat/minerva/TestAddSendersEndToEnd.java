@@ -13,7 +13,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import name.ignat.minerva.TestBaseEndToEnd.TestConfig;
 
-@SpringBootTest(args = { "src/test/resources/TestAddRemoveSendersEndToEnd/Add-run.yaml" })
+@SpringBootTest(args = { "src/test/resources/TestEndToEnd/AddSenders-run.yaml" })
 @Import(TestConfig.class)
 @DirtiesContext
 public class TestAddSendersEndToEnd extends TestBaseEndToEnd
@@ -23,27 +23,27 @@ public class TestAddSendersEndToEnd extends TestBaseEndToEnd
         return Stream.of(
             Arguments.of(
                 List.of(
-                    List.of("E-mail Address"),
+                    List.of("Address"),
                     List.of("a@b.com"),
                     List.of("b@b.com"),
                     List.of("c@b.com"),
                     List.of("j@b.com")
                 ),
                 List.of(
-                    List.of("Message Index", "Address",                "Source",   "Action",    "Filter Sources",                                                         "Matched Rule"),
-                    List.of("",              "a@b.com",                "Contract", "ADDED",     "",                                                                       ""),
-                    List.of("",              "b@b.com",                "Contract", "ADDED",     "",                                                                       ""),
-                    List.of("3",             "a@g.com",                "FROM",     "EXCLUDED",  "Blacklisted",                                                            "AddSenderRule"),
-                    List.of("3",             "a@b.com",                "BODY",     "DUPLICATE", "",                                                                       "AddSenderRule"),
-                    List.of("4",             "hit-reply@linkedin.com", "FROM",     "EXCLUDED",  "Ignored Patterns",                                                       "AddSenderRule"),
-                    List.of("4",             "c@b.com",                "BODY",     "ADDED",     "",                                                                       "AddSenderRule"),
-                    List.of("5",             "d@gmail.com",            "FROM",     "FLAGGED",   "Personal Domains",                                                       "AddSenderRule"),
-                    List.of("5",             "e@outlook.com",          "BODY",     "FLAGGED",   "Personal Domains",                                                       "AddSenderRule"),
-                    List.of("6",             "f@k.com",                "FROM",     "EXCLUDED",  "src/test/resources/TestAddRemoveSendersEndToEnd/To Be Unsubscribed.csv", "AddSenderRule"),
-                    List.of("6",             "g@k.com",                "BODY",     "EXCLUDED",  "src/test/resources/TestAddRemoveSendersEndToEnd/To Be Unsubscribed.csv", "AddSenderRule"),
-                    List.of("7",             "h@m.com",                "FROM",     "FLAGGED",   "src/test/resources/TestAddRemoveSendersEndToEnd/Colleagues.csv",         "AddSenderRule"),
-                    List.of("7",             "i@m.com",                "BODY",     "FLAGGED",   "src/test/resources/TestAddRemoveSendersEndToEnd/Colleagues.csv",         "AddSenderRule"),
-                    List.of("8",             "j@b.com",                "FROM",     "ADDED",     "",                                                                       "AddSenderRule")
+                    List.of("Message Index", "Address",                "Source",   "Action",    "Filter Sources",                                         "Matched Rule"),
+                    List.of("",              "a@b.com",                "Contract", "ADDED",     "",                                                       ""),
+                    List.of("",              "b@b.com",                "Contract", "ADDED",     "",                                                       ""),
+                    List.of("3",             "a@g.com",                "FROM",     "EXCLUDED",  "Blacklisted",                                            "AddSenderRule"),
+                    List.of("3",             "a@b.com",                "BODY",     "DUPLICATE", "",                                                       "AddSenderRule"),
+                    List.of("4",             "hit-reply@linkedin.com", "FROM",     "EXCLUDED",  "Ignored Patterns",                                       "AddSenderRule"),
+                    List.of("4",             "c@b.com",                "BODY",     "ADDED",     "",                                                       "AddSenderRule"),
+                    List.of("5",             "d@gmail.com",            "FROM",     "FLAGGED",   "Personal Domains",                                       "AddSenderRule"),
+                    List.of("5",             "e@outlook.com",          "BODY",     "FLAGGED",   "Personal Domains",                                       "AddSenderRule"),
+                    List.of("6",             "f@k.com",                "FROM",     "EXCLUDED",  "src/test/resources/TestEndToEnd/To Be Unsubscribed.csv", "AddSenderRule"),
+                    List.of("6",             "g@k.com",                "BODY",     "EXCLUDED",  "src/test/resources/TestEndToEnd/To Be Unsubscribed.csv", "AddSenderRule"),
+                    List.of("7",             "h@m.com",                "FROM",     "FLAGGED",   "src/test/resources/TestEndToEnd/Colleagues.csv",         "AddSenderRule"),
+                    List.of("7",             "i@m.com",                "BODY",     "FLAGGED",   "src/test/resources/TestEndToEnd/Colleagues.csv",         "AddSenderRule"),
+                    List.of("8",             "j@b.com",                "FROM",     "ADDED",     "",                                                       "AddSenderRule")
                 ),
                 List.of(
                     List.of("Index", "Matched Rule",        "Reason"),

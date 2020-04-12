@@ -13,7 +13,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import name.ignat.minerva.TestBaseEndToEnd.TestConfig;
 
-@SpringBootTest(args = { "src/test/resources/TestAutoRepliesEndToEnd/run.yaml" })
+@SpringBootTest(args = { "src/test/resources/TestEndToEnd/AutoReplies-run.yaml" })
 @Import(TestConfig.class)
 @DirtiesContext
 public class TestAutoRepliesEndToEnd extends TestBaseEndToEnd
@@ -23,7 +23,7 @@ public class TestAutoRepliesEndToEnd extends TestBaseEndToEnd
         return Stream.of(
             Arguments.of(
                 List.of(
-                    List.of("E-mail Address"),
+                    List.of("Address"),
                     List.of("c@b.com"),
                     List.of("d@b.com")
                 ),

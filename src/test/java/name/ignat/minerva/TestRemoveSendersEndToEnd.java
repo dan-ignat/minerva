@@ -13,7 +13,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import name.ignat.minerva.TestBaseEndToEnd.TestConfig;
 
-@SpringBootTest(args = { "src/test/resources/TestAddRemoveSendersEndToEnd/Remove-run.yaml" })
+@SpringBootTest(args = { "src/test/resources/TestEndToEnd/RemoveSenders-run.yaml" })
 @Import(TestConfig.class)
 @DirtiesContext
 public class TestRemoveSendersEndToEnd extends TestBaseEndToEnd
@@ -23,7 +23,7 @@ public class TestRemoveSendersEndToEnd extends TestBaseEndToEnd
         return Stream.of(
             Arguments.of(
                 List.of(
-                    List.of("E-mail Address"),
+                    List.of("Address"),
                     List.of("b@b.com")
                 ),
                 List.of(
