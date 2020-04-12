@@ -1,5 +1,7 @@
 package name.ignat.minerva.model.source;
 
+import java.io.File;
+
 import javax.annotation.concurrent.Immutable;
 
 import lombok.EqualsAndHashCode;
@@ -18,6 +20,6 @@ public class FilterMessageFileSource extends FileSource implements AddressMatche
     @Override
     public String describe()
     {
-        return getPath();
+        return new File(getPath()).getName();
     }
 }
