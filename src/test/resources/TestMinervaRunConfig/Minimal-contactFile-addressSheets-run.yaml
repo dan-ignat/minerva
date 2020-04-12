@@ -1,15 +1,11 @@
 contactFile:
-
     path: /path/to/Contacts.xlsx
-
     addressSheets:
         - { name: Main }
 
 messageFile:
-
     type: ADD_SENDERS
     path: /path/to/New Messages.csv
 
 outputFile:
-
     path: /path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx

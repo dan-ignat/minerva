@@ -1,10 +1,7 @@
 contactFile:
-
     path: src/test/resources/TestEndToEnd/Contacts.xlsm
-
     addressSheets:
         - { name: Contract }
-
     exclusionSheets:
         - { name: Perm,         type: ADDRESS }
         - { name: Unsubscribed, type: ADDRESS }
