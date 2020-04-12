@@ -1,6 +1,6 @@
 package name.ignat.minerva.util;
 
-import static com.google.common.collect.Streams.forEachPair;
+/*import static com.google.common.collect.Streams.forEachPair;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -10,7 +10,7 @@ import java.util.function.Function;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
-/*public final class Asserts
+public final class Asserts
 {
     /**
      * Asserts that two insertion-ordered {@code Collection}s are equal, using Hamcrest {@link Matchers} at the item

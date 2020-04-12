@@ -4,9 +4,9 @@ import static com.google.common.collect.Streams.stream;
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+//import java.util.function.Consumer;
+//import java.util.function.Function;
+//import java.util.function.Predicate;
 
 public final class Objects
 {
@@ -24,7 +24,7 @@ public final class Objects
         }
     }*/
 
-    public static <T, U> U ifNotNull(T object, Function<T, U> function)
+    /*public static <T, U> U ifNotNull(T object, Function<T, U> function)
     {
         if (object == null)
         {
@@ -34,7 +34,7 @@ public final class Objects
         {
             return function.apply(object);
         }
-    }
+    }*/
 
     /*public static <T> void ifNotNull(T object, Consumer<T> consumer)
     {
