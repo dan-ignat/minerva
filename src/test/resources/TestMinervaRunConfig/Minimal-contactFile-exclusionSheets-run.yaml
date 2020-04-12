@@ -3,8 +3,7 @@ contactFile:
     path: /path/to/Contacts.xlsx
 
     exclusionSheets:
-        - name:         Unsubscribed
-          type:             ADDRESS
+        - { name: Unsubscribed, type: ADDRESS }
 
 messageFile:
 

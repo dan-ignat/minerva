@@ -3,65 +3,31 @@ contactFile:
     path: /path/to/Contacts.xlsx
 
     addressSheets:
-        - name:         Main
-          columnHeader:     Address
-          filter:           false
-        - name:         MainOverrides
-          columnHeader:     Address2
-          filter:           true
-        - name:         MainDefaults
+        - { name: Main,          columnHeader: Address,  filter: false }
+        - { name: MainOverrides, columnHeader: Address2, filter: true  }
+        - { name: MainDefaults                                         }
 
     exclusionSheets:
-        - name:         Unsubscribed
-          type:             ADDRESS
-          columnHeader:     Address
-        - name:         UnsubscribedOverrides
-          type:             ADDRESS
-          columnHeader:     Address2
-        - name:         UnsubscribedDefaults
-          type:             ADDRESS
-        - name:         Blacklisted
-          type:             DOMAIN
-          columnHeader:     Domain
-        - name:         BlacklistedOverrides
-          type:             DOMAIN
-          columnHeader:     Domain2
-        - name:         BlacklistedDefaults
-          type:             DOMAIN
-        - name:         Ignored
-          type:             PATTERN
-          columnHeader:     Pattern
-        - name:         IgnoredOverrides
-          type:             PATTERN
-          columnHeader:     Pattern2
-        - name:         IgnoredDefaults
-          type:             PATTERN
+        - { name: Unsubscribed,          type: ADDRESS, columnHeader: Address  }
+        - { name: UnsubscribedOverrides, type: ADDRESS, columnHeader: Address2 }
+        - { name: UnsubscribedDefaults,  type: ADDRESS                         }
+        - { name: Blacklisted,           type: DOMAIN,  columnHeader: Domain   }
+        - { name: BlacklistedOverrides,  type: DOMAIN,  columnHeader: Domain2  }
+        - { name: BlacklistedDefaults,   type: DOMAIN                          }
+        - { name: Ignored,               type: PATTERN, columnHeader: Pattern  }
+        - { name: IgnoredOverrides,      type: PATTERN, columnHeader: Pattern2 }
+        - { name: IgnoredDefaults,       type: PATTERN                         }
 
     flagSheets:
-        - name:         Colleagues
-          type:             ADDRESS
-          columnHeader:     Address
-        - name:         ColleaguesOverrides
-          type:             ADDRESS
-          columnHeader:     Address2
-        - name:         ColleaguesDefaults
-          type:             ADDRESS
-        - name:         Personal
-          type:             DOMAIN
-          columnHeader:     Domain
-        - name:         PersonalOverrides
-          type:             DOMAIN
-          columnHeader:     Domain2
-        - name:         PersonalDefaults
-          type:             DOMAIN
-        - name:         Scam
-          type:             PATTERN
-          columnHeader:     Pattern
-        - name:         ScamOverrides
-          type:             PATTERN
-          columnHeader:     Pattern2
-        - name:         ScamDefaults
-          type:             PATTERN
+        - { name: Colleagues,          type: ADDRESS, columnHeader: Address  }
+        - { name: ColleaguesOverrides, type: ADDRESS, columnHeader: Address2 }
+        - { name: ColleaguesDefaults,  type: ADDRESS                         }
+        - { name: Personal,            type: DOMAIN,  columnHeader: Domain   }
+        - { name: PersonalOverrides,   type: DOMAIN,  columnHeader: Domain2  }
+        - { name: PersonalDefaults,    type: DOMAIN                          }
+        - { name: Scam,                type: PATTERN, columnHeader: Pattern  }
+        - { name: ScamOverrides,       type: PATTERN, columnHeader: Pattern2 }
+        - { name: ScamDefaults,        type: PATTERN                         }
 
 exclusionMessageFiles:
     - path: /path/to/Exclusion Messages.csv
