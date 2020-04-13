@@ -10,7 +10,11 @@ import name.ignat.minerva.model.Message;
 @EqualsAndHashCode(callSuper = true)
 public class OutOfOfficeRule extends AutoReplyRule
 {
-    private static final String[] keyphrases = { "out of office", "out of the office", "ooo", "ooto", "vacation" };
+    private static final String[] subject_keyphrases =
+        { "automatic reply", "auto-reply", "autoreply", "auto reply", "auto" };
+
+    private static final String[] subject_body_keyphrases =
+        { "out of office", "out of the office", "ooo", "ooto", "vacation" };
 
     public OutOfOfficeRule(String messageFilePath)
     {
@@ -20,8 +24,10 @@ public class OutOfOfficeRule extends AutoReplyRule
     @Override
     public boolean matches(Message message, AddressBook addressBook)
     {
-        return containsAnyIgnoreCase(message.getSubject(), keyphrases) ||
-            containsAnyIgnoreCase(message.getBody(), keyphrases);
+        return
+            containsAnyIgnoreCase(message.getSubject(), subject_keyphrases) ||
+            containsAnyIgnoreCase(message.getSubject(), subject_body_keyphrases) ||
+            containsAnyIgnoreCase(message.getBody(),    subject_body_keyphrases);
     }
 
     @Override
