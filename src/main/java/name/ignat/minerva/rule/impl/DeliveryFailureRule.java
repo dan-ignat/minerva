@@ -10,7 +10,7 @@ import name.ignat.minerva.model.Message;
 @EqualsAndHashCode(callSuper = true)
 public class DeliveryFailureRule extends AutoReplyRule
 {
-    private static final String[] keyphrases = { "undeliverable", "failure" };
+    private static final String[] SUBJECT_KEYPHRASES = { "undeliverable", "failure" };
 
     public DeliveryFailureRule(String messageFilePath)
     {
@@ -20,7 +20,7 @@ public class DeliveryFailureRule extends AutoReplyRule
     @Override
     public boolean matches(Message message, AddressBook addressBook)
     {
-        return containsAnyIgnoreCase(message.getSubject(), keyphrases);
+        return containsAnyIgnoreCase(message.getSubject(), SUBJECT_KEYPHRASES);
     }
 
     @Override

@@ -10,7 +10,7 @@ import name.ignat.minerva.model.Message;
 @EqualsAndHashCode(callSuper = true)
 public class NoLongerHereRule extends AutoReplyRule
 {
-    private static final String[] keyphrases = { "no longer", "any longer" };
+    private static final String[] BODY_KEYPHRASES = { "no longer", "any longer" };
 
     public NoLongerHereRule(String messageFilePath)
     {
@@ -20,7 +20,7 @@ public class NoLongerHereRule extends AutoReplyRule
     @Override
     public boolean matches(Message message, AddressBook addressBook)
     {
-        return containsAnyIgnoreCase(message.getBody(), keyphrases);
+        return containsAnyIgnoreCase(message.getBody(), BODY_KEYPHRASES);
     }
 
     @Override
