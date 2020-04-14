@@ -1,0 +1,30 @@
+contactFiles:
+    - path: src/test/resources/TestEndToEnd/Contacts.xlsm
+      addressSheets:
+        - { name: Contract }
+      exclusionSheets:
+        - { name: Perm,             type: ADDRESS }
+        - { name: Unsubscribed,     type: ADDRESS }
+        - { name: Blacklisted,      type: DOMAIN  }
+        - { name: Ignored,          type: DOMAIN  }
+        - { name: Ignored Patterns, type: PATTERN }
+      flagSheets:
+        - { name: Personal Domains, type: DOMAIN  }
+
+exclusionMessageFiles:
+    - path: src/test/resources/TestEndToEnd/To Be Unsubscribed.csv
+      extractBodyAddresses: true
+
+flagMessageFiles:
+    - path: src/test/resources/TestEndToEnd/Colleagues.csv
+      extractBodyAddresses: true
+
+messageFiles:
+    - type: AUTO_REPLIES
+      path: src/test/resources/TestEndToEnd/Auto Replies.csv
+    - type: ADD_SENDERS
+      path: src/test/resources/TestEndToEnd/New Messages To Add.csv
+
+outputFile:
+    # Not used by this in-memory test
+    path: src/test/resources/TestEndToEnd/Contacts UPDATED.xlsx
