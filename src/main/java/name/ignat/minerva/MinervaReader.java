@@ -16,7 +16,6 @@ import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.AddressMatchers;
 import name.ignat.minerva.model.address.AddressPattern;
 import name.ignat.minerva.model.address.Domain;
-import name.ignat.minerva.model.source.AddressMatcherSource;
 import name.ignat.minerva.model.source.ContactFileSource;
 import name.ignat.minerva.model.source.FilterMessageFileSource;
 import name.ignat.minerva.util.Array;
@@ -94,7 +93,7 @@ public class MinervaReader
 
                 String[] columnHeaders = Array.of(sheetConfig.getColumnHeader());
 
-                AddressMatcherSource source =
+                ContactFileSource source =
                     new ContactFileSource(contactsReader.getFile().getPath(), sheetConfig.getName());
 
                 switch (sheetConfig.getType())
@@ -126,7 +125,7 @@ public class MinervaReader
 
                 for (Message addressMessage : addressMessages)
                 {
-                    AddressMatcherSource source = new FilterMessageFileSource(addressMessageFileConfig.getPath());
+                    FilterMessageFileSource source = new FilterMessageFileSource(addressMessageFileConfig.getPath());
 
                     if (addressMessage.getFrom() != null)
                     {

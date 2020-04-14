@@ -14,6 +14,7 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import name.ignat.minerva.model.source.AddressMatcherSource;
+import name.ignat.minerva.model.source.ContactFileSource;
 
 @Immutable
 public class AddressMatchers
@@ -24,8 +25,8 @@ public class AddressMatchers
     }
 
     private final SetMultimap<Address, AddressMatcherSource> addresses;
-    private final SetMultimap<Domain, AddressMatcherSource> domains;
-    private final SetMultimap<AddressPattern, AddressMatcherSource> patterns;
+    private final SetMultimap<Domain, ContactFileSource> domains;
+    private final SetMultimap<AddressPattern, ContactFileSource> patterns;
 
     public AddressMatchers()
     {
@@ -36,8 +37,8 @@ public class AddressMatchers
 
     public AddressMatchers(
         SetMultimap<Address, AddressMatcherSource> addresses,
-        SetMultimap<Domain, AddressMatcherSource> domains,
-        SetMultimap<AddressPattern, AddressMatcherSource> patterns)
+        SetMultimap<Domain, ContactFileSource> domains,
+        SetMultimap<AddressPattern, ContactFileSource> patterns)
     {
         this.addresses = ImmutableSetMultimap.copyOf(addresses);
         this.domains = ImmutableSetMultimap.copyOf(domains);
@@ -88,9 +89,9 @@ public class AddressMatchers
 
     public static final class Builder
     {
-        private final SetMultimap<Address, AddressMatcherSource> addresses       = LinkedHashMultimap.create(5_000, 10);
-        private final SetMultimap<Domain, AddressMatcherSource> domains          = LinkedHashMultimap.create(500,   10);
-        private final SetMultimap<AddressPattern, AddressMatcherSource> patterns = LinkedHashMultimap.create(500,   10);
+        private final SetMultimap<Address, AddressMatcherSource> addresses    = LinkedHashMultimap.create(5_000, 10);
+        private final SetMultimap<Domain, ContactFileSource> domains          = LinkedHashMultimap.create(500,   10);
+        private final SetMultimap<AddressPattern, ContactFileSource> patterns = LinkedHashMultimap.create(500,   10);
 
         public Builder addAddress(Address address, AddressMatcherSource source)
         {
@@ -104,13 +105,13 @@ public class AddressMatchers
             return this;
         }
 
-        public Builder addDomains(Collection<Domain> domains, AddressMatcherSource source)
+        public Builder addDomains(Collection<Domain> domains, ContactFileSource source)
         {
             domains.stream().forEach(domain -> this.domains.put(domain, source));
             return this;
         }
 
-        public Builder addPatterns(Collection<AddressPattern> patterns, AddressMatcherSource source)
+        public Builder addPatterns(Collection<AddressPattern> patterns, ContactFileSource source)
         {
             patterns.stream().forEach(pattern -> this.patterns.put(pattern, source));
             return this;

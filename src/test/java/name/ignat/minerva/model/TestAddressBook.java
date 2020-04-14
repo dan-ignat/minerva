@@ -37,7 +37,6 @@ import name.ignat.minerva.model.address.TestAddressMatchers;
 import name.ignat.minerva.model.source.AddressMatcherSource;
 import name.ignat.minerva.model.source.AddressSource;
 import name.ignat.minerva.model.source.ContactFileSource;
-import name.ignat.minerva.model.source.DummyAddressMatcherSource;
 import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 import name.ignat.minerva.rule.impl.AddSenderRule;
@@ -119,7 +118,7 @@ public class TestAddressBook
         AddressEntry.Type expectedAddressEntryType)
     {
         return equalsAny(expectedAddressEntryType, EXCLUDED, FLAGGED) ?
-            ImmutableSet.of(new DummyAddressMatcherSource()) : null;
+            ImmutableSet.of(new ContactFileSource(null, null)) : null;
     }
 
     private static Stream<Arguments> addCases()

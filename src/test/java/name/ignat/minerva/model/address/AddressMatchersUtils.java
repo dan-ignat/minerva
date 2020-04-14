@@ -11,8 +11,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 
-import name.ignat.minerva.model.source.AddressMatcherSource;
-import name.ignat.minerva.model.source.DummyAddressMatcherSource;
+import name.ignat.minerva.model.source.ContactFileSource;
 
 public class AddressMatchersUtils
 {
@@ -30,12 +29,10 @@ public class AddressMatchersUtils
         List<AddressPattern> patterns =
             patternStrings == null  ? ImmutableList.of() : AddressPattern.fromStrings(patternStrings);
 
-        AddressMatcherSource source = new DummyAddressMatcherSource();
-
         return AddressMatchers.builder()
-            .addAddresses(addresses, source)
-            .addDomains(domains, source)
-            .addPatterns(patterns, source)
+            .addAddresses(addresses, new ContactFileSource(null, null))
+            .addDomains(domains, new ContactFileSource(null, null))
+            .addPatterns(patterns, new ContactFileSource(null, null))
             .build();
     }
 }
