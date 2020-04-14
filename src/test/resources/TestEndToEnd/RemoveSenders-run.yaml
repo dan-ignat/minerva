@@ -1,18 +1,18 @@
-contactFile:
+contactFiles:
 
-    path: src/test/resources/TestEndToEnd/Contacts.xlsm
+    - path: src/test/resources/TestEndToEnd/Contacts.xlsm
 
-    addressSheets:
+      addressSheets:
         - { name: Contract }
 
-    exclusionSheets:
+      exclusionSheets:
         - { name: Perm,             type: ADDRESS }
         - { name: Unsubscribed,     type: ADDRESS }
         - { name: Blacklisted,      type: DOMAIN  }
         - { name: Ignored,          type: DOMAIN  }
         - { name: Ignored Patterns, type: PATTERN }
 
-    flagSheets:
+      flagSheets:
         - { name: Personal Domains, type: DOMAIN  }
 
 exclusionMessageFiles:
@@ -23,9 +23,9 @@ flagMessageFiles:
     - path: src/test/resources/TestEndToEnd/Colleagues.csv
       extractBodyAddresses: true
 
-messageFile:
-    type: REMOVE_SENDERS
-    path: src/test/resources/TestEndToEnd/Recent Messages To Remove.csv
+messageFiles:
+    - type: REMOVE_SENDERS
+      path: src/test/resources/TestEndToEnd/Recent Messages To Remove.csv
 
 outputFile:
     # Not used by this in-memory test

@@ -1,5 +1,8 @@
 package name.ignat.minerva.model;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
@@ -23,6 +26,15 @@ public class AddressFilters
     {
         this.exclusionMatchers = exclusionMatchers;
         this.flagMatchers = flagMatchers;
+    }
+
+    public AddressFilters(List<AddressFilters> addressFiltersList)
+    {
+        this.exclusionMatchers = new AddressMatchers(
+            addressFiltersList.stream().map(addressFilters -> addressFilters.exclusionMatchers).collect(toList()));
+
+        this.flagMatchers = new AddressMatchers(
+            addressFiltersList.stream().map(addressFilters -> addressFilters.flagMatchers).collect(toList()));
     }
 
     public boolean shouldExclude(Address address)

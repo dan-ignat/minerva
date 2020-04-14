@@ -1,13 +1,13 @@
-contactFile:
+contactFiles:
 
-    path: /path/to/Contacts.xlsx
+    - path: /path/to/Contacts.xlsx
 
-    addressSheets:
+      addressSheets:
         - { name: Main,          columnHeader: Address,  filter: false }
         - { name: MainOverrides, columnHeader: Address2, filter: true  }
         - { name: MainDefaults                                         }
 
-    exclusionSheets:
+      exclusionSheets:
         - { name: Unsubscribed,          type: ADDRESS, columnHeader: Address  }
         - { name: UnsubscribedOverrides, type: ADDRESS, columnHeader: Address2 }
         - { name: UnsubscribedDefaults,  type: ADDRESS                         }
@@ -18,7 +18,7 @@ contactFile:
         - { name: IgnoredOverrides,      type: PATTERN, columnHeader: Pattern2 }
         - { name: IgnoredDefaults,       type: PATTERN                         }
 
-    flagSheets:
+      flagSheets:
         - { name: Colleagues,          type: ADDRESS, columnHeader: Address  }
         - { name: ColleaguesOverrides, type: ADDRESS, columnHeader: Address2 }
         - { name: ColleaguesDefaults,  type: ADDRESS                         }
@@ -59,12 +59,12 @@ flagMessageFiles:
       extractBodyAddresses: true
     - path: /path/to/Flag Messages Defaults.csv
 
-messageFile:
+messageFiles:
 
-    type: ADD_SENDERS
-    path: /path/to/New Messages.csv
+    - type: ADD_SENDERS
+      path: /path/to/New Messages.csv
 
-    columnHeaders:
+      columnHeaders:
         from:    "From: (Address)"
         subject: Subject2
         #body:    Body

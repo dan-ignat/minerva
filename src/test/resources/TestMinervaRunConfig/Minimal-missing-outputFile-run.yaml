@@ -1,3 +1,3 @@
-messageFile:
-    type: ADD_SENDERS
-    path: /path/to/New Messages.csv
+messageFiles:
+    - type: ADD_SENDERS
+      path: /path/to/New Messages.csv

@@ -1,6 +1,9 @@
 package name.ignat.minerva.model.address;
 
+import static name.ignat.minerva.util.Multimaps.combiningSetMultimapsImmutably;
+
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.concurrent.Immutable;
@@ -41,6 +44,18 @@ public class AddressMatchers
         this.patterns = ImmutableSetMultimap.copyOf(patterns);
     }
 
+    public AddressMatchers(List<AddressMatchers> addressMatchersList)
+    {
+        this.addresses = addressMatchersList.stream().map(addressMatchers -> addressMatchers.addresses)
+            .collect(combiningSetMultimapsImmutably());
+
+        this.domains = addressMatchersList.stream().map(addressMatchers -> addressMatchers.domains)
+            .collect(combiningSetMultimapsImmutably());
+
+        this.patterns = addressMatchersList.stream().map(addressMatchers -> addressMatchers.patterns)
+            .collect(combiningSetMultimapsImmutably());
+    }
+
     // TODO: Consider removing this method, and relying entirely on getMatchingSources(), so as not to do two passes
     // through the data structures.
     public boolean match(Address address)
@@ -73,9 +88,9 @@ public class AddressMatchers
 
     public static final class Builder
     {
-        private final SetMultimap<Address, AddressMatcherSource> addresses = LinkedHashMultimap.create(5_000, 10);
-        private final SetMultimap<Domain, AddressMatcherSource> domains = LinkedHashMultimap.create(500, 10);
-        private final SetMultimap<AddressPattern, AddressMatcherSource> patterns = LinkedHashMultimap.create(500, 10);
+        private final SetMultimap<Address, AddressMatcherSource> addresses       = LinkedHashMultimap.create(5_000, 10);
+        private final SetMultimap<Domain, AddressMatcherSource> domains          = LinkedHashMultimap.create(500,   10);
+        private final SetMultimap<AddressPattern, AddressMatcherSource> patterns = LinkedHashMultimap.create(500,   10);
 
         public Builder addAddress(Address address, AddressMatcherSource source)
         {

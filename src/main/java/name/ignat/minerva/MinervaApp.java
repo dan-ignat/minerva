@@ -3,6 +3,7 @@ package name.ignat.minerva;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.util.stream.Collectors.joining;
 import static name.ignat.commons.utils.IoUtils.getClassPathResource;
 import static name.ignat.commons.utils.ObjectUtils.equalsAny;
 import static name.ignat.minerva.MinervaProfiles.PROD;
@@ -29,12 +30,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.google.common.collect.ImmutableMap;
 
-import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.commons.exception.UnexpectedException;
-import name.ignat.minerva.rule.AddSendersRuleEngine;
-import name.ignat.minerva.rule.AutoRepliesRuleEngine;
-import name.ignat.minerva.rule.RemoveSendersRuleEngine;
-import name.ignat.minerva.rule.RuleEngine;
 
 @SpringBootApplication
 public class MinervaApp
@@ -107,23 +103,6 @@ public class MinervaApp
         }
     }
 
-    @Bean
-    protected RuleEngine ruleEngine(MinervaRunConfig config)
-    {
-        String messageFilePath = config.getMessageFile().getPath();
-
-        @SuppressWarnings("preview")
-        RuleEngine ruleEngine = switch (config.getMessageFile().getType())
-        {
-            case ADD_SENDERS: yield new AddSendersRuleEngine(messageFilePath);
-            case AUTO_REPLIES: yield new AutoRepliesRuleEngine(messageFilePath);
-            case REMOVE_SENDERS: yield new RemoveSendersRuleEngine(messageFilePath);
-            default: throw new UnexpectedCaseException(config.getMessageFile().getType());
-        };
-
-        return ruleEngine;
-    }
-
     /*
      * Need to expose the outputFile separately from the outputStream, to be able to log the variable-resolved
      * outputFile name at the end of processing.
@@ -131,9 +110,12 @@ public class MinervaApp
     @Bean @Lazy @Profile(PROD)
     protected File outputFile(MinervaRunConfig config) throws IOException
     {
+        String messageFileTypes = config.getMessageFiles() == null ? "[ ]" : config.getMessageFiles().stream()
+            .map(MainMessageFileConfig::getType).map(Object::toString).collect(joining(", ", "[ ", " ]"));
+
         Map<String, String> variableMap = ImmutableMap.<String, String>of(
-            "dateTime",        now().format(DATE_TIME_FORMATTER),
-            "messageFileType", config.getMessageFile().getType().toString()
+            "dateTime",         now().format(DATE_TIME_FORMATTER),
+            "messageFileTypes", messageFileTypes
         );
 
         String filePath = config.getOutputFile().getPath();

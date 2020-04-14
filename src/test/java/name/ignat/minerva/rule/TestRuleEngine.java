@@ -382,7 +382,7 @@ public class TestRuleEngine
         List<MessageFlagTuple> expectedMessageFlagTuples)
     {
         AddressBook addressBook = new AddressBook();
-        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addAll(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
         // CALL UNDER TEST
         ruleEngine.run(addressBook, List.of(message));

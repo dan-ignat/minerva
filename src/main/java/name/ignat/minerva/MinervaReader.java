@@ -11,7 +11,6 @@ import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.io.read.csv.CsvReader;
 import name.ignat.minerva.io.read.excel.ExcelReader;
 import name.ignat.minerva.model.AddressBook;
-import name.ignat.minerva.model.AddressFilters;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.AddressMatchers;
@@ -36,60 +35,58 @@ public class MinervaReader
 
     public AddressBook initAddressBook() throws IOException
     {
-        ContactFileConfig contactFileConfig = config.getContactFile();
+        AddressBook.Builder builder = AddressBook.builder();
 
-        if (contactFileConfig == null)
+        if (config.getContactFiles() != null)
         {
-            return new AddressBook();
-        }
-
-        File contactsFile = new File(contactFileConfig.getPath());
-
-        try (ExcelReader contactsReader = new ExcelReader(contactsFile))
-        {
-            AddressFilters addressFilters = readAddressFilters(contactsReader);
-
-            AddressBook addressBook = new AddressBook(addressFilters);
-
-            List<InitialAddressSheetConfig> addressSheetConfigs = contactFileConfig.getAddressSheets();
-
-            if (addressSheetConfigs != null)
+            for (ContactFileConfig contactFileConfig : config.getContactFiles())
             {
-                for (InitialAddressSheetConfig addressSheetConfig : addressSheetConfigs)
+                File contactsFile = new File(contactFileConfig.getPath());
+
+                try (ExcelReader contactsReader = new ExcelReader(contactsFile))
                 {
-                    contactsReader.setSheetName(addressSheetConfig.getName());
+                    readAddresses(contactFileConfig.getAddressSheets(), contactsReader, builder);
 
-                    List<Address> addresses =
-                        contactsReader.read(Array.of(addressSheetConfig.getColumnHeader()), Address.class);
+                    readAddressMatchers(
+                        contactFileConfig.getExclusionSheets(), contactsReader, builder.exclusionMatchersBuilder());
 
-                    AddressSource source =
-                        new ContactFileSource(contactsReader.getFile().getPath(), addressSheetConfig.getName());
-
-                    addressBook.init(addresses, source, addressSheetConfig.isFilter());
+                    readAddressMatchers(
+                        contactFileConfig.getFlagSheets(), contactsReader, builder.flagMatchersBuilder());
                 }
             }
+        }
 
-            return addressBook;
+        readMessageAddresses(config.getExclusionMessageFiles(), builder.exclusionMatchersBuilder());
+
+        readMessageAddresses(config.getFlagMessageFiles(), builder.flagMatchersBuilder());
+
+        return builder.build();
+    }
+
+    private void readAddresses(List<InitialAddressSheetConfig> addressSheetConfigs, ExcelReader contactsReader,
+        AddressBook.Builder builder) throws IOException
+    {
+        if (addressSheetConfigs != null)
+        {
+            for (InitialAddressSheetConfig addressSheetConfig : addressSheetConfigs)
+            {
+                contactsReader.setSheetName(addressSheetConfig.getName());
+
+                List<Address> addresses =
+                    contactsReader.read(Array.of(addressSheetConfig.getColumnHeader()), Address.class);
+
+                AddressSource source =
+                    new ContactFileSource(contactsReader.getFile().getPath(), addressSheetConfig.getName());
+
+                builder.addAddresses(addresses, source, addressSheetConfig.isFilter());
+            }
         }
     }
 
-    private AddressFilters readAddressFilters(ExcelReader contactsReader) throws IOException
-    {
-        AddressMatchers exclusionMatchers = readAddressMatchers(contactsReader,
-            config.getContactFile().getExclusionSheets(), config.getExclusionMessageFiles());
-
-        AddressMatchers flagMatchers = readAddressMatchers(contactsReader,
-            config.getContactFile().getFlagSheets(), config.getFlagMessageFiles());
-
-        return new AddressFilters(exclusionMatchers, flagMatchers);
-    }
-
-    private AddressMatchers readAddressMatchers(ExcelReader contactsReader,
-        List<AddressMatcherSheetConfig> sheetConfigs, List<AddressMessageFileConfig> addressMessageFileConfigs)
+    private void readAddressMatchers(List<AddressMatcherSheetConfig> sheetConfigs, ExcelReader contactsReader,
+        AddressMatchers.Builder builder)
         throws IOException
     {
-        AddressMatchers.Builder builder = AddressMatchers.builder();
-
         if (sheetConfigs != null)
         {
             for (AddressMatcherSheetConfig sheetConfig : sheetConfigs)
@@ -117,38 +114,30 @@ public class MinervaReader
                 }
             }
         }
-
-        if (addressMessageFileConfigs != null)
-        {
-            readMessageAddresses(addressMessageFileConfigs, builder);
-        }
-
-        return builder.build();
     }
 
     private void readMessageAddresses(
         List<AddressMessageFileConfig> addressMessageFileConfigs, AddressMatchers.Builder builder) throws IOException
     {
-        for (AddressMessageFileConfig addressMessageFileConfig : addressMessageFileConfigs)
+        if (addressMessageFileConfigs != null)
         {
-            List<Message> addressMessages = readMessages(addressMessageFileConfig);
-
-            for (Message addressMessage : addressMessages)
+            for (AddressMessageFileConfig addressMessageFileConfig : addressMessageFileConfigs)
             {
-                if (addressMessage.getFrom() != null)
+                List<Message> addressMessages = readMessages(addressMessageFileConfig);
+
+                for (Message addressMessage : addressMessages)
                 {
-                    AddressMatcherSource source =
-                        new FilterMessageFileSource(addressMessageFileConfig.getPath());
+                    AddressMatcherSource source = new FilterMessageFileSource(addressMessageFileConfig.getPath());
 
-                    builder.addAddress(addressMessage.getFrom(), source);
-                }
+                    if (addressMessage.getFrom() != null)
+                    {
+                        builder.addAddress(addressMessage.getFrom(), source);
+                    }
 
-                if (addressMessageFileConfig.isExtractBodyAddresses())
-                {
-                    AddressMatcherSource source =
-                        new FilterMessageFileSource(addressMessageFileConfig.getPath());
-
-                    builder.addAddresses(addressMessage.getBodyAddresses(), source);
+                    if (addressMessageFileConfig.isExtractBodyAddresses())
+                    {
+                        builder.addAddresses(addressMessage.getBodyAddresses(), source);
+                    }
                 }
             }
         }

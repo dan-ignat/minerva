@@ -72,58 +72,68 @@
 
     "properties":
     {
-        "contactFile":
+        "contactFiles":
         {
-            "type": "object",
-            "properties":
+            "type": "array",
+            "items":
             {
-                "path":            { "$ref": "#/$defs/path" },
-                "addressSheets":   { "$ref": "#/$defs/initialAddressSheets" },
-                "exclusionSheets": { "$ref": "#/$defs/addressMatcherSheets" },
-                "flagSheets":      { "$ref": "#/$defs/addressMatcherSheets" }
+                "type": "object",
+                "properties":
+                {
+                    "path":            { "$ref": "#/$defs/path" },
+                    "addressSheets":   { "$ref": "#/$defs/initialAddressSheets" },
+                    "exclusionSheets": { "$ref": "#/$defs/addressMatcherSheets" },
+                    "flagSheets":      { "$ref": "#/$defs/addressMatcherSheets" }
+                },
+                "allOf":
+                [
+                    { "required": ["path"] },
+                    { "anyOf":
+                        [
+                            { "required": ["addressSheets"] },
+                            { "required": ["exclusionSheets"] },
+                            { "required": ["flagSheets"] }
+                        ]
+                    }
+                ],
+                "additionalProperties": false
             },
-            "allOf":
-            [
-                { "required": ["path"] },
-                { "anyOf":
-                    [
-                        { "required": ["addressSheets"] },
-                        { "required": ["exclusionSheets"] },
-                        { "required": ["flagSheets"] }
-                    ]
-                }
-            ],
-            "additionalProperties": false
+            "minItems": 1
         },
         "exclusionMessageFiles": { "$ref": "#/$defs/addressMessageFiles" },
         "flagMessageFiles":      { "$ref": "#/$defs/addressMessageFiles" },
-        "messageFile":
+        "messageFiles":
         {
-            "type": "object",
-            "properties":
+            "type": "array",
+            "items":
             {
-                "type": { "type": "string", "enum": ["ADD_SENDERS", "AUTO_REPLIES", "REMOVE_SENDERS"] },
-                "path": { "$ref": "#/$defs/path" },
-                "columnHeaders":
+                "type": "object",
+                "properties":
                 {
-                    "type": "object",
-                    "properties":
+                    "type": { "type": "string", "enum": ["ADD_SENDERS", "AUTO_REPLIES", "REMOVE_SENDERS"] },
+                    "path": { "$ref": "#/$defs/path" },
+                    "columnHeaders":
                     {
-                        "from":    { "$ref": "#/$defs/columnHeader" },
-                        "subject": { "$ref": "#/$defs/columnHeader" },
-                        "body":    { "$ref": "#/$defs/columnHeader" }
-                    },
-                    "anyOf":
-                    [
-                        { "required": ["from"] },
-                        { "required": ["subject"] },
-                        { "required": ["body"] }
-                    ],
-                    "additionalProperties": false
-                }
+                        "type": "object",
+                        "properties":
+                        {
+                            "from":    { "$ref": "#/$defs/columnHeader" },
+                            "subject": { "$ref": "#/$defs/columnHeader" },
+                            "body":    { "$ref": "#/$defs/columnHeader" }
+                        },
+                        "anyOf":
+                        [
+                            { "required": ["from"] },
+                            { "required": ["subject"] },
+                            { "required": ["body"] }
+                        ],
+                        "additionalProperties": false
+                    }
+                },
+                "required": ["type", "path"],
+                "additionalProperties": false
             },
-            "required": ["type", "path"],
-            "additionalProperties": false
+            "minItems": 1
         },
         "outputFile":
         {
@@ -219,6 +229,15 @@
             "additionalProperties": false
         }
     },
-    "required": ["messageFile", "outputFile"],
+    "allOf":
+    [
+        { "anyOf":
+            [
+                { "required": ["contactFiles"] },
+                { "required": ["messageFiles"] }
+            ]
+        },
+        { "required": ["outputFile"] }
+    ],
     "additionalProperties": false
 }

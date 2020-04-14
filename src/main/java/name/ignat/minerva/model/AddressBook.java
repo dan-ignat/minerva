@@ -4,7 +4,9 @@ import static java.util.Collections.unmodifiableCollection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -14,8 +16,10 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
 import lombok.Getter;
+import lombok.Value;
 import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
 import name.ignat.minerva.model.address.Address;
+import name.ignat.minerva.model.address.AddressMatchers;
 import name.ignat.minerva.model.address.Domain;
 import name.ignat.minerva.model.source.AddressMatcherSource;
 import name.ignat.minerva.model.source.AddressSource;
@@ -23,6 +27,11 @@ import name.ignat.minerva.rule.Rule;
 
 public class AddressBook
 {
+    public static Builder builder()
+    {
+        return new Builder();
+    }
+
     // TODO: Optimize this with expected sizes based on actual incoming data
     private final SetMultimap<Domain, Address> addressesByDomain = LinkedHashMultimap.create(500, 50);
 
@@ -42,7 +51,7 @@ public class AddressBook
         this.addressFilters = addressFilters;
     }
 
-    public void init(@Nonnull Collection<Address> addresses, @Nonnull AddressSource source, boolean filter)
+    public void addAll(@Nonnull Collection<Address> addresses, @Nonnull AddressSource source, boolean filter)
     {
         addresses.stream().forEach(address -> add(address, source, filter));
     }
@@ -135,5 +144,50 @@ public class AddressBook
     public Collection<Address> getAddresses()
     {
         return unmodifiableCollection(addressesByDomain.values());
+    }
+
+    public static class Builder
+    {
+        private final AddressMatchers.Builder exclusionMatchersBuilder = AddressMatchers.builder();
+        private final AddressMatchers.Builder flagMatchersBuilder = AddressMatchers.builder();
+
+        private final List<AddressesTuple> addressesTuples = new ArrayList<>();
+
+        private Builder() { }
+
+        public AddressMatchers.Builder exclusionMatchersBuilder()
+        {
+            return exclusionMatchersBuilder;
+        }
+
+        public AddressMatchers.Builder flagMatchersBuilder()
+        {
+            return flagMatchersBuilder;
+        }
+
+        public Builder addAddresses(List<Address> addresses, AddressSource source, boolean filter)
+        {
+            addressesTuples.add(new AddressesTuple(addresses, source, filter));
+            return this;
+        }
+
+        public AddressBook build()
+        {
+            AddressBook addressBook = new AddressBook(
+                new AddressFilters(exclusionMatchersBuilder.build(), flagMatchersBuilder.build()));
+
+            addressesTuples.stream().forEach(
+                tuple -> addressBook.addAll(tuple.getAddresses(), tuple.getSource(), tuple.isFilter()));
+
+            return addressBook;
+        }
+
+        @Value
+        private class AddressesTuple
+        {
+            private List<Address> addresses;
+            private AddressSource source;
+            private boolean filter;
+        }
     }
 }

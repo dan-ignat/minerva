@@ -1,11 +1,7 @@
-contactFile:
-    path: /path/to/Contacts.xlsx
-    exclusionSheets:
+contactFiles:
+    - path: /path/to/Contacts.xlsx
+      exclusionSheets:
         - { name: Unsubscribed, type: ADDRESS }
-
-messageFile:
-    type: ADD_SENDERS
-    path: /path/to/New Messages.csv
 
 outputFile:
     path: /path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx

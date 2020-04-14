@@ -87,7 +87,7 @@ public class TestAddressBook
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
         // CALL UNDER TEST
-        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), filterInitialAddresses);
+        addressBook.addAll(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), filterInitialAddresses);
 
         // Assert addresses
         {
@@ -155,7 +155,7 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addAll(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
         AddressSource addressSource =
             new MainMessageFileSource(null, new Message(1, addressToAddString, "Hello", "Lorem ipsum dolor"), FROM);
@@ -199,7 +199,7 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.init(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addAll(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
         AddressSource addressSource =
             new MainMessageFileSource(null, new Message(1, addressToRemoveString, "Hello", "Lorem ipsum dolor"), FROM);

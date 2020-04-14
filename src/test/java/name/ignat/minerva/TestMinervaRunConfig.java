@@ -34,34 +34,36 @@ public class TestMinervaRunConfig
         return Stream.of(
             Arguments.of("TestMinervaRunConfig/Full-run.yaml",
                 new MinervaRunConfig(
-                    new ContactFileConfig(
-                        "/path/to/Contacts.xlsx",
-                        List.of(
-                            new InitialAddressSheetConfig("Main",          "Address",  false),
-                            new InitialAddressSheetConfig("MainOverrides", "Address2", true),
-                            new InitialAddressSheetConfig("MainDefaults",  "Address",  false)
-                        ),
-                        List.of(
-                            new AddressMatcherSheetConfig("Unsubscribed",          "Address",  ADDRESS),
-                            new AddressMatcherSheetConfig("UnsubscribedOverrides", "Address2", ADDRESS),
-                            new AddressMatcherSheetConfig("UnsubscribedDefaults",  "Address",  ADDRESS),
-                            new AddressMatcherSheetConfig("Blacklisted",           "Domain",   DOMAIN),
-                            new AddressMatcherSheetConfig("BlacklistedOverrides",  "Domain2",  DOMAIN),
-                            new AddressMatcherSheetConfig("BlacklistedDefaults",   "Domain",   DOMAIN),
-                            new AddressMatcherSheetConfig("Ignored",               "Pattern",  PATTERN),
-                            new AddressMatcherSheetConfig("IgnoredOverrides",      "Pattern2", PATTERN),
-                            new AddressMatcherSheetConfig("IgnoredDefaults",       "Pattern",  PATTERN)
-                        ),
-                        List.of(
-                            new AddressMatcherSheetConfig("Colleagues",          "Address",  ADDRESS),
-                            new AddressMatcherSheetConfig("ColleaguesOverrides", "Address2", ADDRESS),
-                            new AddressMatcherSheetConfig("ColleaguesDefaults",  "Address",  ADDRESS),
-                            new AddressMatcherSheetConfig("Personal",            "Domain",   DOMAIN),
-                            new AddressMatcherSheetConfig("PersonalOverrides",   "Domain2",  DOMAIN),
-                            new AddressMatcherSheetConfig("PersonalDefaults",    "Domain",   DOMAIN),
-                            new AddressMatcherSheetConfig("Scam",                "Pattern",  PATTERN),
-                            new AddressMatcherSheetConfig("ScamOverrides",       "Pattern2", PATTERN),
-                            new AddressMatcherSheetConfig("ScamDefaults",        "Pattern",  PATTERN)
+                    List.of(
+                        new ContactFileConfig(
+                            "/path/to/Contacts.xlsx",
+                            List.of(
+                                new InitialAddressSheetConfig("Main",          "Address",  false),
+                                new InitialAddressSheetConfig("MainOverrides", "Address2", true),
+                                new InitialAddressSheetConfig("MainDefaults",  "Address",  false)
+                            ),
+                            List.of(
+                                new AddressMatcherSheetConfig("Unsubscribed",          "Address",  ADDRESS),
+                                new AddressMatcherSheetConfig("UnsubscribedOverrides", "Address2", ADDRESS),
+                                new AddressMatcherSheetConfig("UnsubscribedDefaults",  "Address",  ADDRESS),
+                                new AddressMatcherSheetConfig("Blacklisted",           "Domain",   DOMAIN),
+                                new AddressMatcherSheetConfig("BlacklistedOverrides",  "Domain2",  DOMAIN),
+                                new AddressMatcherSheetConfig("BlacklistedDefaults",   "Domain",   DOMAIN),
+                                new AddressMatcherSheetConfig("Ignored",               "Pattern",  PATTERN),
+                                new AddressMatcherSheetConfig("IgnoredOverrides",      "Pattern2", PATTERN),
+                                new AddressMatcherSheetConfig("IgnoredDefaults",       "Pattern",  PATTERN)
+                            ),
+                            List.of(
+                                new AddressMatcherSheetConfig("Colleagues",          "Address",  ADDRESS),
+                                new AddressMatcherSheetConfig("ColleaguesOverrides", "Address2", ADDRESS),
+                                new AddressMatcherSheetConfig("ColleaguesDefaults",  "Address",  ADDRESS),
+                                new AddressMatcherSheetConfig("Personal",            "Domain",   DOMAIN),
+                                new AddressMatcherSheetConfig("PersonalOverrides",   "Domain2",  DOMAIN),
+                                new AddressMatcherSheetConfig("PersonalDefaults",    "Domain",   DOMAIN),
+                                new AddressMatcherSheetConfig("Scam",                "Pattern",  PATTERN),
+                                new AddressMatcherSheetConfig("ScamOverrides",       "Pattern2", PATTERN),
+                                new AddressMatcherSheetConfig("ScamDefaults",        "Pattern",  PATTERN)
+                            )
                         )
                     ),
                     List.of(
@@ -98,10 +100,12 @@ public class TestMinervaRunConfig
                             false
                         )
                     ),
-                    new MainMessageFileConfig(
-                        "/path/to/New Messages.csv",
-                        new MessageFileConfig.ColumnHeadersConfig("From: (Address)", "Subject2", "Body"),
-                        ADD_SENDERS
+                    List.of(
+                        new MainMessageFileConfig(
+                            "/path/to/New Messages.csv",
+                            new MessageFileConfig.ColumnHeadersConfig("From: (Address)", "Subject2", "Body"),
+                            ADD_SENDERS
+                        )
                     ),
                     new OutputFileConfig(
                         "/path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx",
@@ -121,21 +125,19 @@ public class TestMinervaRunConfig
             ),
             Arguments.of("TestMinervaRunConfig/Minimal-contactFile-addressSheets-run.yaml",
                 new MinervaRunConfig(
-                    new ContactFileConfig(
-                        "/path/to/Contacts.xlsx",
-                        List.of(
-                            new InitialAddressSheetConfig("Main", "Address", false)
-                        ),
-                        null,
-                        null
+                    List.of(
+                        new ContactFileConfig(
+                            "/path/to/Contacts.xlsx",
+                            List.of(
+                                new InitialAddressSheetConfig("Main", "Address", false)
+                            ),
+                            null,
+                            null
+                        )
                     ),
                     null,
                     null,
-                    new MainMessageFileConfig(
-                        "/path/to/New Messages.csv",
-                        new MessageFileConfig.ColumnHeadersConfig("From: (Address)", "Subject", "Body"),
-                        ADD_SENDERS
-                    ),
+                    null,
                     new OutputFileConfig(
                         "/path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx",
                         new AddressSheetConfig("Addresses", "Address"),
@@ -154,21 +156,19 @@ public class TestMinervaRunConfig
             ),
             Arguments.of("TestMinervaRunConfig/Minimal-contactFile-exclusionSheets-run.yaml",
                 new MinervaRunConfig(
-                    new ContactFileConfig(
-                        "/path/to/Contacts.xlsx",
-                        null,
-                        List.of(
-                            new AddressMatcherSheetConfig("Unsubscribed", "Address", ADDRESS)
-                        ),
-                        null
+                    List.of(
+                        new ContactFileConfig(
+                            "/path/to/Contacts.xlsx",
+                            null,
+                            List.of(
+                                new AddressMatcherSheetConfig("Unsubscribed", "Address", ADDRESS)
+                            ),
+                            null
+                        )
                     ),
                     null,
                     null,
-                    new MainMessageFileConfig(
-                        "/path/to/New Messages.csv",
-                        new MessageFileConfig.ColumnHeadersConfig("From: (Address)", "Subject", "Body"),
-                        ADD_SENDERS
-                    ),
+                    null,
                     new OutputFileConfig(
                         "/path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx",
                         new AddressSheetConfig("Addresses", "Address"),
@@ -187,21 +187,19 @@ public class TestMinervaRunConfig
             ),
             Arguments.of("TestMinervaRunConfig/Minimal-contactFile-flagSheets-run.yaml",
                 new MinervaRunConfig(
-                    new ContactFileConfig(
-                        "/path/to/Contacts.xlsx",
-                        null,
-                        null,
-                        List.of(
-                            new AddressMatcherSheetConfig("Colleagues", "Address", ADDRESS)
+                    List.of(
+                        new ContactFileConfig(
+                            "/path/to/Contacts.xlsx",
+                            null,
+                            null,
+                            List.of(
+                                new AddressMatcherSheetConfig("Colleagues", "Address", ADDRESS)
+                            )
                         )
                     ),
                     null,
                     null,
-                    new MainMessageFileConfig(
-                        "/path/to/New Messages.csv",
-                        new MessageFileConfig.ColumnHeadersConfig("From: (Address)", "Subject", "Body"),
-                        ADD_SENDERS
-                    ),
+                    null,
                     new OutputFileConfig(
                         "/path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx",
                         new AddressSheetConfig("Addresses", "Address"),
@@ -218,15 +216,17 @@ public class TestMinervaRunConfig
                     )
                 )
             ),
-            Arguments.of("TestMinervaRunConfig/Minimal-run.yaml",
+            Arguments.of("TestMinervaRunConfig/Minimal-messageFile-run.yaml",
                 new MinervaRunConfig(
                     null,
                     null,
                     null,
-                    new MainMessageFileConfig(
-                        "/path/to/New Messages.csv",
-                        new MessageFileConfig.ColumnHeadersConfig("From: (Address)", "Subject", "Body"),
-                        ADD_SENDERS
+                    List.of(
+                        new MainMessageFileConfig(
+                            "/path/to/New Messages.csv",
+                            new MessageFileConfig.ColumnHeadersConfig("From: (Address)", "Subject", "Body"),
+                            ADD_SENDERS
+                        )
                     ),
                     new OutputFileConfig(
                         "/path/to/Contacts OUTPUT {dateTime} {messageFileType}.xlsx",
@@ -264,9 +264,9 @@ public class TestMinervaRunConfig
     private static Stream<Arguments> invalidCases()
     {
         return Stream.of(
-            Arguments.of("TestMinervaRunConfig/Minimal-missing-messageFile-run.yaml"),
+            Arguments.of("TestMinervaRunConfig/Minimal-missing-contactFile-messageFile-run.yaml"),
             Arguments.of("TestMinervaRunConfig/Minimal-missing-outputFile-run.yaml"),
-            Arguments.of("TestMinervaRunConfig/Minimal-contactFile-incomplete-run.yaml")
+            Arguments.of("TestMinervaRunConfig/Minimal-contactFile-missing-sheets-run.yaml")
         );
     }
 

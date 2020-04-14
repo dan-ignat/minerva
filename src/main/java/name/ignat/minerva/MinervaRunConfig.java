@@ -44,10 +44,10 @@ import name.ignat.minerva.model.address.AddressMatcher;
 @AllArgsConstructor @NoArgsConstructor(force = true, access = PRIVATE)
 public class MinervaRunConfig
 {
-    private ContactFileConfig contactFile;
+    private List<ContactFileConfig> contactFiles;
     private List<AddressMessageFileConfig> exclusionMessageFiles;
     private List<AddressMessageFileConfig> flagMessageFiles;
-    private MainMessageFileConfig messageFile;
+    private List<MainMessageFileConfig> messageFiles;
     private OutputFileConfig outputFile;
 }
 

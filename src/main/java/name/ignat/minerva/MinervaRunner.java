@@ -11,8 +11,12 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.flogger.FluentLogger;
 
+import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.Message;
+import name.ignat.minerva.rule.AddSendersRuleEngine;
+import name.ignat.minerva.rule.AutoRepliesRuleEngine;
+import name.ignat.minerva.rule.RemoveSendersRuleEngine;
 import name.ignat.minerva.rule.RuleEngine;
 
 @Component
@@ -22,15 +26,13 @@ public class MinervaRunner implements CommandLineRunner
 
     private final MinervaRunConfig config;
     private final MinervaReader reader;
-    private final RuleEngine ruleEngine;
     private final MinervaWriter writer;
 
     @Autowired
-    public MinervaRunner(MinervaRunConfig config, MinervaReader reader, RuleEngine ruleEngine, MinervaWriter writer)
+    public MinervaRunner(MinervaRunConfig config, MinervaReader reader, MinervaWriter writer)
     {
         this.config = config;
         this.reader = reader;
-        this.ruleEngine = ruleEngine;
         this.writer = writer;
     }
 
@@ -39,9 +41,26 @@ public class MinervaRunner implements CommandLineRunner
     {
         AddressBook addressBook = reader.initAddressBook();
 
-        List<Message> messages = reader.readMessages(config.getMessageFile());
+        if (config.getMessageFiles() != null)
+        {
+            for (MainMessageFileConfig mainMessageFileConfig : config.getMessageFiles())
+            {
+                String mainMessageFilePath = mainMessageFileConfig.getPath();
 
-        ruleEngine.run(addressBook, messages);
+                @SuppressWarnings("preview")
+                RuleEngine ruleEngine = switch (mainMessageFileConfig.getType())
+                {
+                    case ADD_SENDERS: yield new AddSendersRuleEngine(mainMessageFilePath);
+                    case AUTO_REPLIES: yield new AutoRepliesRuleEngine(mainMessageFilePath);
+                    case REMOVE_SENDERS: yield new RemoveSendersRuleEngine(mainMessageFilePath);
+                    default: throw new UnexpectedCaseException(mainMessageFileConfig.getType());
+                };
+
+                List<Message> messages = reader.readMessages(mainMessageFileConfig);
+
+                ruleEngine.run(addressBook, messages);
+            }
+        }
 
         writer.writeAddressBook(addressBook);
 

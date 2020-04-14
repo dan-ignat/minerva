@@ -1,15 +1,15 @@
-contactFile:
-    path: src/test/resources/TestEndToEnd/Contacts.xlsm
-    addressSheets:
+contactFiles:
+    - path: src/test/resources/TestEndToEnd/Contacts.xlsm
+      addressSheets:
         - { name: Contract }
-    exclusionSheets:
+      exclusionSheets:
         - { name: Perm,         type: ADDRESS }
         - { name: Unsubscribed, type: ADDRESS }
         - { name: Blacklisted,  type: DOMAIN  }
 
-messageFile:
-    type: AUTO_REPLIES
-    path: src/test/resources/TestEndToEnd/Auto Replies.csv
+messageFiles:
+    - type: AUTO_REPLIES
+      path: src/test/resources/TestEndToEnd/Auto Replies.csv
 
 outputFile:
     # Not used by this in-memory test
