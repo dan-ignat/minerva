@@ -35,6 +35,7 @@ import name.ignat.commons.exception.UnexpectedException;
 @SpringBootApplication
 public class MinervaApp
 {
+    /** Relative to the class path */
     public static final String CONFIG_SCHEMA_FILE_PATH = "run.schema.json";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = ofPattern("YYYY-MM-dd HH.mm.ss");
