@@ -2,6 +2,7 @@ package name.ignat.minerva;
 
 import static name.ignat.commons.utils.IoUtils.getClassPathResource;
 import static name.ignat.minerva.MainMessageFileConfig.Type.ADD_SENDERS;
+import static name.ignat.minerva.MinervaApp.CONFIG_SCHEMA_FILE_PATH;
 import static name.ignat.minerva.model.address.AddressMatcher.Type.ADDRESS;
 import static name.ignat.minerva.model.address.AddressMatcher.Type.DOMAIN;
 import static name.ignat.minerva.model.address.AddressMatcher.Type.PATTERN;
@@ -27,8 +28,6 @@ import name.ignat.minerva.util.JacksonUtils.ValidationException;
 
 public class TestMinervaRunConfig
 {
-    private static final String CONFIG_SCHEMA_FILE_PATH = "run.schema.json";
-
     private static Stream<Arguments> validCases()
     {
         return Stream.of(

@@ -35,6 +35,8 @@ import name.ignat.commons.exception.UnexpectedException;
 @SpringBootApplication
 public class MinervaApp
 {
+    public static final String CONFIG_SCHEMA_FILE_PATH = "run.schema.json";
+
     private static final DateTimeFormatter DATE_TIME_FORMATTER = ofPattern("YYYY-MM-dd HH.mm.ss");
 
     public static void main(String[] args)
@@ -93,11 +95,10 @@ public class MinervaApp
     protected MinervaRunConfig config(ApplicationArguments args) throws IOException
     {
         String configFilePath = args.getSourceArgs()[0];
-        String configSchemaFilePath = "run.schema.json";
 
         try (
             InputStream configFileIn = new FileInputStream(configFilePath);
-            InputStream configSchemaFileIn = getClassPathResource(configSchemaFilePath))
+            InputStream configSchemaFileIn = getClassPathResource(CONFIG_SCHEMA_FILE_PATH))
         {
             return parseYaml(configFileIn, MinervaRunConfig.class, configSchemaFileIn);
         }

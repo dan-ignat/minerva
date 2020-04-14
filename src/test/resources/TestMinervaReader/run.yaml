@@ -1,0 +1,31 @@
+contactFiles:
+    - path: src/test/resources/TestMinervaReader/Contacts.xlsm
+      addressSheets:
+        - { name: Main }
+      exclusionSheets:
+        - { name: Unsubscribed, type: ADDRESS }
+      flagSheets:
+        - { name: Colleagues,   type: ADDRESS }
+    - path: src/test/resources/TestMinervaReader/Contacts2.xlsm
+      addressSheets:
+        - { name: Main2 }
+      exclusionSheets:
+        - { name: Unsubscribed2, type: ADDRESS }
+      flagSheets:
+        - { name: Colleagues2,   type: ADDRESS }
+
+exclusionMessageFiles:
+    - path: src/test/resources/TestMinervaReader/Exclusion Messages.csv
+      extractBodyAddresses: true
+    - path: src/test/resources/TestMinervaReader/Exclusion Messages2.csv
+      extractBodyAddresses: true
+
+flagMessageFiles:
+    - path: src/test/resources/TestMinervaReader/Flag Messages.csv
+      extractBodyAddresses: true
+    - path: src/test/resources/TestMinervaReader/Flag Messages2.csv
+      extractBodyAddresses: true
+
+outputFile:
+    # Not used by this in-memory test
+    path: src/test/resources/TestMinervaReader/Contacts OUTPUT {dateTime} {messageFileType}.xlsx
