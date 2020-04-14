@@ -279,4 +279,38 @@ public class TestAddressBook
 
         assertThat(messageFlags, is(expectedMessageFlags));
     }
+
+    // Tests that insertion order is preserved
+    private static Stream<Arguments> getAddressesCases()
+    {
+        return Stream.of(
+            Arguments.of(
+                List.of("q@y.com", "o@w.com", "h@k.com", "u@z.com", "e@b.com", "d@j.com",
+                    "v@p.com", "n@x.com", "t@q.com", "g@a.com", "i@m.com", "f@r.com"),
+                List.of("q@y.com", "o@w.com", "h@k.com", "u@z.com", "e@b.com", "d@j.com",
+                    "v@p.com", "n@x.com", "t@q.com", "g@a.com", "i@m.com", "f@r.com"),
+                "d@j.com",
+                List.of("q@y.com", "o@w.com", "h@k.com", "u@z.com", "e@b.com",
+                    "v@p.com", "n@x.com", "t@q.com", "g@a.com", "i@m.com", "f@r.com", "d@j.com")
+            )
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getAddressesCases")
+    public void getAddresses(List<String> addressStrings, List<String> expectedOrder,
+        String addressStringToRemoveAndAdd, List<String> expectedNewOrder)
+    {
+        AddressBook addressBook = new AddressBook();
+
+        addressBook.addInitial(Address.fromStrings(addressStrings), new ContactFileSource(null, null), false);
+
+        assertThat(List.copyOf(addressBook.getAddresses()), is(Address.fromStrings(expectedOrder)));
+
+        addressBook.remove(new Address(addressStringToRemoveAndAdd), new MainMessageFileSource(null, null, null), null);
+
+        addressBook.add(new Address(addressStringToRemoveAndAdd), new MainMessageFileSource(null, null, null), null);
+
+        assertThat(List.copyOf(addressBook.getAddresses()), is(Address.fromStrings(expectedNewOrder)));
+    }
 }
