@@ -55,7 +55,7 @@ import name.ignat.minerva.rule.impl.RemoveSenderRule;
  */
 public class TestAddressBook
 {
-    private static Stream<Arguments> initCases()
+    private static Stream<Arguments> addInitialCases()
     {
         return Stream.of(
             // Basic
@@ -78,8 +78,8 @@ public class TestAddressBook
     }
 
     @ParameterizedTest
-    @MethodSource("initCases")
-    public void init(List<String> exclusionStrings, List<String> flagStrings,
+    @MethodSource("addInitialCases")
+    public void addInitial(List<String> exclusionStrings, List<String> flagStrings,
         List<String> initialAddressStrings, boolean filterInitialAddresses,
         List<String> expectedAddressStrings, List<AddressEntry.Type> expectedAddressEntryTypes)
     {
@@ -87,7 +87,7 @@ public class TestAddressBook
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
         // CALL UNDER TEST
-        addressBook.addAll(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), filterInitialAddresses);
+        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), filterInitialAddresses);
 
         // Assert addresses
         {
@@ -155,7 +155,7 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.addAll(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
         AddressSource addressSource =
             new MainMessageFileSource(null, new Message(1, addressToAddString, "Hello", "Lorem ipsum dolor"), FROM);
@@ -199,7 +199,7 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.addAll(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
 
         AddressSource addressSource =
             new MainMessageFileSource(null, new Message(1, addressToRemoveString, "Hello", "Lorem ipsum dolor"), FROM);

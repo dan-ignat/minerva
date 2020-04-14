@@ -78,7 +78,7 @@ public class MinervaReader
                 AddressSource source =
                     new ContactFileSource(contactsReader.getFile().getPath(), addressSheetConfig.getName());
 
-                builder.addAddresses(addresses, source, addressSheetConfig.isFilter());
+                builder.addInitial(addresses, source, addressSheetConfig.isFilter());
             }
         }
     }

@@ -51,7 +51,7 @@ public class AddressBook
         this.addressFilters = addressFilters;
     }
 
-    public void addAll(@Nonnull Collection<Address> addresses, @Nonnull AddressSource source, boolean filter)
+    public void addInitial(@Nonnull Collection<Address> addresses, @Nonnull AddressSource source, boolean filter)
     {
         addresses.stream().forEach(address -> add(address, source, filter));
     }
@@ -151,7 +151,7 @@ public class AddressBook
         private final AddressMatchers.Builder exclusionMatchersBuilder = AddressMatchers.builder();
         private final AddressMatchers.Builder flagMatchersBuilder = AddressMatchers.builder();
 
-        private final List<AddressesTuple> addressesTuples = new ArrayList<>();
+        private final List<InitialAddressesTuple> initialAddressesTuples = new ArrayList<>();
 
         private Builder() { }
 
@@ -165,9 +165,9 @@ public class AddressBook
             return flagMatchersBuilder;
         }
 
-        public Builder addAddresses(List<Address> addresses, AddressSource source, boolean filter)
+        public Builder addInitial(List<Address> addresses, AddressSource source, boolean filter)
         {
-            addressesTuples.add(new AddressesTuple(addresses, source, filter));
+            initialAddressesTuples.add(new InitialAddressesTuple(addresses, source, filter));
             return this;
         }
 
@@ -176,14 +176,14 @@ public class AddressBook
             AddressBook addressBook = new AddressBook(
                 new AddressFilters(exclusionMatchersBuilder.build(), flagMatchersBuilder.build()));
 
-            addressesTuples.stream().forEach(
-                tuple -> addressBook.addAll(tuple.getAddresses(), tuple.getSource(), tuple.isFilter()));
+            initialAddressesTuples.stream().forEach(
+                tuple -> addressBook.addInitial(tuple.getAddresses(), tuple.getSource(), tuple.isFilter()));
 
             return addressBook;
         }
 
         @Value
-        private class AddressesTuple
+        private class InitialAddressesTuple
         {
             private List<Address> addresses;
             private AddressSource source;
