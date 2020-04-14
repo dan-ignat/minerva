@@ -33,7 +33,7 @@ import name.ignat.minerva.model.AuditLog.MessageFlag.Reason;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.TestAddressBook;
 import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.source.DummyAddressSource;
+import name.ignat.minerva.model.source.ContactFileSource;
 import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.model.source.MainMessageFileSource.MessageField;
 import name.ignat.minerva.rule.impl.AddSenderRule;
@@ -382,7 +382,7 @@ public class TestRuleEngine
         List<MessageFlagTuple> expectedMessageFlagTuples)
     {
         AddressBook addressBook = new AddressBook();
-        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new ContactFileSource(null, null), false);
 
         // CALL UNDER TEST
         ruleEngine.run(addressBook, List.of(message));
@@ -401,7 +401,7 @@ public class TestRuleEngine
             List<AddressEntry> addressEntries = addressBook.getAuditLog().getAddressEntries();
 
             List<AddressEntry> expectedAddressEntries = initialAddressStrings.stream()
-                .map(a -> new AddressEntry(ADDED, new Address(a), new DummyAddressSource(), null, null))
+                .map(a -> new AddressEntry(ADDED, new Address(a), new ContactFileSource(null, null), null, null))
                 .collect(toList());
 
             expectedAddressEntries.addAll(expectedAddressLogTuples.stream()

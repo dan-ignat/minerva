@@ -23,6 +23,8 @@ import name.ignat.minerva.model.address.AddressMatchers;
 import name.ignat.minerva.model.address.Domain;
 import name.ignat.minerva.model.source.AddressMatcherSource;
 import name.ignat.minerva.model.source.AddressSource;
+import name.ignat.minerva.model.source.ContactFileSource;
+import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 
 public class AddressBook
@@ -51,17 +53,17 @@ public class AddressBook
         this.addressFilters = addressFilters;
     }
 
-    public void addInitial(@Nonnull Collection<Address> addresses, @Nonnull AddressSource source, boolean filter)
+    public void addInitial(@Nonnull Collection<Address> addresses, @Nonnull ContactFileSource source, boolean filter)
     {
         addresses.stream().forEach(address -> add(address, source, filter));
     }
 
-    public boolean add(@Nonnull Address address, @Nonnull AddressSource source, boolean filter)
+    public boolean add(@Nonnull Address address, @Nonnull ContactFileSource source, boolean filter)
     {
         return add(address, source, null, filter);
     }
 
-    public boolean add(@Nonnull Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
+    public boolean add(@Nonnull Address address, @Nonnull MainMessageFileSource source, @Nullable Rule matchedRule)
     {
         return add(address, source, matchedRule, true);
     }
@@ -107,7 +109,7 @@ public class AddressBook
         }
     }
 
-    public boolean remove(@Nonnull Address address, @Nonnull AddressSource source, @Nullable Rule matchedRule)
+    public boolean remove(@Nonnull Address address, @Nonnull MainMessageFileSource source, @Nullable Rule matchedRule)
     {
         boolean changed = addressesByDomain.remove(address.getDomain(), address);
 
@@ -165,7 +167,7 @@ public class AddressBook
             return flagMatchersBuilder;
         }
 
-        public Builder addInitial(List<Address> addresses, AddressSource source, boolean filter)
+        public Builder addInitial(List<Address> addresses, ContactFileSource source, boolean filter)
         {
             initialAddressesTuples.add(new InitialAddressesTuple(addresses, source, filter));
             return this;
@@ -186,7 +188,7 @@ public class AddressBook
         private class InitialAddressesTuple
         {
             private List<Address> addresses;
-            private AddressSource source;
+            private ContactFileSource source;
             private boolean filter;
         }
     }

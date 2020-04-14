@@ -36,8 +36,8 @@ import name.ignat.minerva.model.address.AddressMatchersUtils;
 import name.ignat.minerva.model.address.TestAddressMatchers;
 import name.ignat.minerva.model.source.AddressMatcherSource;
 import name.ignat.minerva.model.source.AddressSource;
+import name.ignat.minerva.model.source.ContactFileSource;
 import name.ignat.minerva.model.source.DummyAddressMatcherSource;
-import name.ignat.minerva.model.source.DummyAddressSource;
 import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 import name.ignat.minerva.rule.impl.AddSenderRule;
@@ -87,7 +87,8 @@ public class TestAddressBook
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
         // CALL UNDER TEST
-        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), filterInitialAddresses);
+        addressBook.addInitial(
+            Address.fromStrings(initialAddressStrings), new ContactFileSource(null, null), filterInitialAddresses);
 
         // Assert addresses
         {
@@ -107,7 +108,7 @@ public class TestAddressBook
                     expectedAddressEntryTypes.stream(),
                     (initialAddressString, expectedAddressEntryType) ->
                         new AddressEntry(expectedAddressEntryType, new Address(initialAddressString),
-                            new DummyAddressSource(), getExpectedFilterSources(expectedAddressEntryType), null))
+                            new ContactFileSource(null, null), getExpectedFilterSources(expectedAddressEntryType), null))
                 .collect(toImmutableList());
 
             assertThat(addressEntries, is(expectedAddressEntries));
@@ -155,9 +156,9 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new ContactFileSource(null, null), false);
 
-        AddressSource addressSource =
+        MainMessageFileSource addressSource =
             new MainMessageFileSource(null, new Message(1, addressToAddString, "Hello", "Lorem ipsum dolor"), FROM);
 
         Rule matchedRule = new AddSenderRule(null);
@@ -199,9 +200,9 @@ public class TestAddressBook
         AddressBook addressBook = new AddressBook(new AddressFilters(
             AddressMatchersUtils.fromStrings(exclusionStrings), AddressMatchersUtils.fromStrings(flagStrings)));
 
-        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new DummyAddressSource(), false);
+        addressBook.addInitial(Address.fromStrings(initialAddressStrings), new ContactFileSource(null, null), false);
 
-        AddressSource addressSource =
+        MainMessageFileSource addressSource =
             new MainMessageFileSource(null, new Message(1, addressToRemoveString, "Hello", "Lorem ipsum dolor"), FROM);
 
         Rule matchedRule = new RemoveSenderRule(null);
@@ -235,8 +236,8 @@ public class TestAddressBook
             List<AddressEntry> addressEntries = addressBook.getAuditLog().getAddressEntries();
 
             List<AddressEntry> expectedAddressEntries = initialAddressStrings.stream()
-                .map(initialAddressString ->
-                    new AddressEntry(ADDED, new Address(initialAddressString), new DummyAddressSource(), null, null))
+                .map(initialAddressString -> new AddressEntry(
+                    ADDED, new Address(initialAddressString), new ContactFileSource(null, null), null, null))
                 .collect(toList());
 
             expectedAddressEntries.add(new AddressEntry(expectedAddressEntryType, new Address(addressToTestString),

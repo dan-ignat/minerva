@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.model.source.AddressSource;
 import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 
@@ -35,7 +34,7 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            AddressSource source = new MainMessageFileSource(messageFilePath, message, FROM);
+            MainMessageFileSource source = new MainMessageFileSource(messageFilePath, message, FROM);
 
             addressBook.add(from, source, this);
         }
@@ -51,7 +50,7 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            AddressSource source = new MainMessageFileSource(messageFilePath, message, FROM);
+            MainMessageFileSource source = new MainMessageFileSource(messageFilePath, message, FROM);
 
             addressBook.remove(from, source, this);
         }
@@ -70,7 +69,7 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            AddressSource source = new MainMessageFileSource(messageFilePath, message, BODY);
+            MainMessageFileSource source = new MainMessageFileSource(messageFilePath, message, BODY);
 
             addresses.stream().forEach(address -> addressBook.add(address, source, this));
         }
@@ -89,7 +88,7 @@ abstract class RuleBase implements Rule
         }
         else
         {
-            AddressSource source = new MainMessageFileSource(messageFilePath, message, BODY);
+            MainMessageFileSource source = new MainMessageFileSource(messageFilePath, message, BODY);
 
             addresses.stream().forEach(address -> addressBook.remove(address, source, this));
         }
