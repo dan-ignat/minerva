@@ -29,7 +29,7 @@ public class TestMinervaReader
     @Test
     public void initAddressBook_twoContactFiles_twoFilterMessageFiles() throws IOException
     {
-        String configFilePath = "TestMinervaReader/run.yaml";
+        String configFilePath = "TestMinervaReader/initAddressBook_twoContactFiles_twoFilterMessageFiles-run.yaml";
 
         try (
             InputStream configSchemaFileIn = getClassPathResource(CONFIG_SCHEMA_FILE_PATH);
@@ -72,6 +72,45 @@ public class TestMinervaReader
                     "e2@f.com", "f2@f.com",
                     "i@j.com",  "i@jj.com",  "j@j.com",  "j@jj.com",
                     "i2@j.com", "i2@jj.com", "j2@j.com", "j2@jj.com"));
+
+            assertThat(List.copyOf(flagAddresses), is(expectedFlagAddresses));
+        }
+    }
+
+    @Test
+    public void initAddressBook_badFrom_noBodyAddresses() throws IOException
+    {
+        String configFilePath = "TestMinervaReader/initAddressBook_badFrom_noBodyAddresses-run.yaml";
+
+        try (
+            InputStream configSchemaFileIn = getClassPathResource(CONFIG_SCHEMA_FILE_PATH);
+            InputStream configFileIn = getClassPathResource(configFilePath))
+        {
+            MinervaRunConfig config = parseYaml(configFileIn, MinervaRunConfig.class, configSchemaFileIn);
+
+            MinervaReader reader = new MinervaReader(config);
+
+            // CALL UNDER TEST
+            AddressBook addressBook = reader.initAddressBook();
+
+            List<Address> expectedAddresses = Address.fromStrings(
+                List.of("a@b.com",  "b@b.com"));
+
+            assertThat(List.copyOf(addressBook.getAddresses()), is(expectedAddresses));
+
+            @SuppressWarnings("unchecked")
+            Set<Address> exclusionAddresses = ((SetMultimap<Address, AddressMatcherSource>)
+                getNestedField(addressBook, "addressFilters.exclusionMatchers.addresses")).keySet();
+
+            List<Address> expectedExclusionAddresses = List.of();
+
+            assertThat(List.copyOf(exclusionAddresses), is(expectedExclusionAddresses));
+
+            @SuppressWarnings("unchecked")
+            Set<Address> flagAddresses = ((SetMultimap<Address, AddressMatcherSource>)
+                getNestedField(addressBook, "addressFilters.flagMatchers.addresses")).keySet();
+
+            List<Address> expectedFlagAddresses = List.of();
 
             assertThat(List.copyOf(flagAddresses), is(expectedFlagAddresses));
         }

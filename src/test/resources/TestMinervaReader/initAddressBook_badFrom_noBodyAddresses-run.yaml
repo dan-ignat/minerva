@@ -1,0 +1,12 @@
+contactFiles:
+    - path: src/test/resources/TestMinervaReader/Contacts.xlsm
+      addressSheets:
+        - { name: Main }
+
+exclusionMessageFiles:
+    - path: src/test/resources/TestMinervaReader/Exclusion Messages - Bad Addresses.csv
+      extractBodyAddresses: true
+
+outputFile:
+    # Not used by this in-memory test
+    path: src/test/resources/TestMinervaReader/Contacts OUTPUT {dateTime} {messageFileType}.xlsx
