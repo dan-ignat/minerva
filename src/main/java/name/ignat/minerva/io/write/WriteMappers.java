@@ -65,7 +65,7 @@ public final class WriteMappers
             message.getIndex().toString(),
             message.getFrom() == null ? "" : message.getFrom().toCanonical(),
             message.getSubject(),
-            message.getBody());
+            message.getBody() == null ? "" : message.getBody());
     }
 
     public static String[] fromMessageFlag(MessageFlag flag)
