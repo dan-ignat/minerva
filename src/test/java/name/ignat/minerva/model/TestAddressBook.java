@@ -285,13 +285,10 @@ public class TestAddressBook
     {
         return Stream.of(
             Arguments.of(
-                List.of("q@y.com", "o@w.com", "h@k.com", "u@z.com", "e@b.com", "d@j.com",
-                    "v@p.com", "n@x.com", "t@q.com", "g@a.com", "i@m.com", "f@r.com"),
-                List.of("q@y.com", "o@w.com", "h@k.com", "u@z.com", "e@b.com", "d@j.com",
-                    "v@p.com", "n@x.com", "t@q.com", "g@a.com", "i@m.com", "f@r.com"),
+                List.of("q@y.com", "h@k.org", "u@z.com", "e@b.net.uk", "d@j.com", "v@p.com", "t@q.name", "g@a.com"),
+                List.of("q@y.com", "h@k.org", "u@z.com", "e@b.net.uk", "d@j.com", "v@p.com", "t@q.name", "g@a.com"),
                 "d@j.com",
-                List.of("q@y.com", "o@w.com", "h@k.com", "u@z.com", "e@b.com",
-                    "v@p.com", "n@x.com", "t@q.com", "g@a.com", "i@m.com", "f@r.com", "d@j.com")
+                List.of("q@y.com", "h@k.org", "u@z.com", "e@b.net.uk", "v@p.com", "t@q.name", "g@a.com", "d@j.com")
             )
         );
     }
