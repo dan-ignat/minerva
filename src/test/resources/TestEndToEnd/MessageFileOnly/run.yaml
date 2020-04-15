@@ -1,0 +1,7 @@
+messageFiles:
+    - type: ADD_SENDERS
+      path: src/test/resources/TestEndToEnd/AddSenders/Messages.csv
+
+outputFile:
+    # Not used by this in-memory test
+    path: src/test/resources/TestEndToEnd/MessageFileOnly/Contacts ADDED.xlsx
