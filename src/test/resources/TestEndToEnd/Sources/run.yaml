@@ -1,0 +1,25 @@
+contactFiles:
+    - path: src/test/resources/TestEndToEnd/Sources/Contacts1.xlsm
+      addressSheets:
+        - { name: Main1,        filter: true }
+      exclusionSheets:
+        - { name: Perm1,        type: ADDRESS }
+      flagSheets:
+        - { name: Colleagues1,  type: ADDRESS }
+    - path: src/test/resources/TestEndToEnd/Sources/Contacts2.xlsm
+      addressSheets:
+        - { name: Main2,        filter: true }
+      exclusionSheets:
+        - { name: Blacklisted2, type: DOMAIN }
+      flagSheets:
+        - { name: Ignored2,     type: PATTERN }
+
+exclusionMessageFiles:
+    - path: src/test/resources/TestEndToEnd/Sources/Exclusion Messages.csv
+
+flagMessageFiles:
+    - path: src/test/resources/TestEndToEnd/Sources/Flag Messages.csv
+
+outputFile:
+    # Not used by this in-memory test
+    path: src/test/resources/TestEndToEnd/Sources/Contacts ADDED.xlsx
