@@ -21,8 +21,8 @@ flagMessageFiles:
 
 messageFiles:
     - type: REMOVE_SENDERS
-      path: src/test/resources/TestEndToEnd/Recent Messages To Remove.csv
+      path: src/test/resources/TestEndToEnd/RemoveSenders/Messages.csv
 
 outputFile:
     # Not used by this in-memory test
-    path: src/test/resources/TestEndToEnd/Contacts REMOVED.xlsx
+    path: src/test/resources/TestEndToEnd/RemoveSenders/Contacts REMOVED.xlsx

@@ -9,7 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import name.ignat.minerva.TestBaseEndToEnd.TestConfig;
 
-@SpringBootTest(args = { "src/test/resources/TestEndToEnd/AutoReplies-run.yaml" })
+@SpringBootTest(args = { "src/test/resources/TestEndToEnd/AutoReplies/run.yaml" })
 @Import(TestConfig.class)
 @DirtiesContext
 public class TestAutoRepliesEndToEnd extends TestBaseEndToEnd
@@ -17,6 +17,6 @@ public class TestAutoRepliesEndToEnd extends TestBaseEndToEnd
     @Test
     public void run() throws IOException
     {
-        super.run("TestEndToEnd/AutoReplies Expected Output.xlsx");
+        super.run("TestEndToEnd/AutoReplies/Expected Output.xlsx");
     }
 }

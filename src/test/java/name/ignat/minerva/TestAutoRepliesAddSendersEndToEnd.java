@@ -9,7 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import name.ignat.minerva.TestBaseEndToEnd.TestConfig;
 
-@SpringBootTest(args = { "src/test/resources/TestEndToEnd/AutoReplies-AddSenders-run.yaml" })
+@SpringBootTest(args = { "src/test/resources/TestEndToEnd/AutoRepliesAddSenders/run.yaml" })
 @Import(TestConfig.class)
 @DirtiesContext
 public class TestAutoRepliesAddSendersEndToEnd extends TestBaseEndToEnd
@@ -17,6 +17,6 @@ public class TestAutoRepliesAddSendersEndToEnd extends TestBaseEndToEnd
     @Test
     public void run() throws IOException
     {
-        super.run("TestEndToEnd/AutoReplies AddSenders Expected Output.xlsx");
+        super.run("TestEndToEnd/AutoRepliesAddSenders/Expected Output.xlsx");
     }
 }

@@ -20,11 +20,9 @@ flagMessageFiles:
       extractBodyAddresses: true
 
 messageFiles:
-    - type: AUTO_REPLIES
-      path: src/test/resources/TestEndToEnd/Auto Replies.csv
     - type: ADD_SENDERS
-      path: src/test/resources/TestEndToEnd/New Messages To Add.csv
+      path: src/test/resources/TestEndToEnd/AddSenders/Messages.csv
 
 outputFile:
     # Not used by this in-memory test
-    path: src/test/resources/TestEndToEnd/Contacts UPDATED.xlsx
+    path: src/test/resources/TestEndToEnd/AddSenders/Contacts ADDED.xlsx

@@ -21,8 +21,8 @@ flagMessageFiles:
 
 messageFiles:
     - type: AUTO_REPLIES
-      path: src/test/resources/TestEndToEnd/Auto Replies.csv
+      path: src/test/resources/TestEndToEnd/AutoReplies/Messages.csv
 
 outputFile:
     # Not used by this in-memory test
-    path: src/test/resources/TestEndToEnd/Contacts UPDATED.xlsx
+    path: src/test/resources/TestEndToEnd/AutoReplies/Contacts UPDATED.xlsx
