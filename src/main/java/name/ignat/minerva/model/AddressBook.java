@@ -34,7 +34,13 @@ public class AddressBook
         return new Builder();
     }
 
-    // TODO: Optimize this with expected sizes based on actual incoming data
+    /*
+     * We chose a SetMultimap for this initially, when it seemed like we'd need to delete entire domains at a time, or
+     * sort by domains.  Now that that no longer seems like a requirement, we could probably simplify this to a
+     * LinkedHashSet to just preserve insertion order.
+     * 
+     * TODO: Optimize this with expected sizes based on actual incoming data.
+     */
     private final SetMultimap<Domain, Address> addressesByDomain = LinkedHashMultimap.create(500, 50);
 
     @Nonnull
