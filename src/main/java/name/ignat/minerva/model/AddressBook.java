@@ -32,8 +32,7 @@ import name.ignat.minerva.rule.Rule;
  * which additions may be subject.  Also contains an {@link AuditLog} that tracks the outcome of each attempt to add
  * (remove) an address, along with any {@link Message}s that were flagged for manual analysis.
  * <p>
- * This is the primary abstraction exported by the model layer to other layers of the app.  It's also central to the
- * entire app, as all layers interact with and depend upon the {@code AddressBook}.
+ * This is the central abstraction of the app, as all of the layers interact with and depend upon it.
  * 
  * @author Dan Ignat
  */
