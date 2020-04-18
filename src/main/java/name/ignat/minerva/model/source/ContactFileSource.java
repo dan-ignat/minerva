@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
+/**
+ * @author Dan Ignat
+ */
 @Immutable
 @Value @EqualsAndHashCode(callSuper = true) @ToString(callSuper = true)
 public class ContactFileSource extends FileSource implements AddressMatcherSource, AddressSource

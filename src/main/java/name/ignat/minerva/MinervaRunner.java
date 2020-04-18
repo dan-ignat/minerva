@@ -19,6 +19,9 @@ import name.ignat.minerva.rule.AutoRepliesRuleEngine;
 import name.ignat.minerva.rule.RemoveSendersRuleEngine;
 import name.ignat.minerva.rule.RuleEngine;
 
+/**
+ * @author Dan Ignat
+ */
 @Component
 public class MinervaRunner implements CommandLineRunner
 {

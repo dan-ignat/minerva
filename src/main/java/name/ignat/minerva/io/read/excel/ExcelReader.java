@@ -21,6 +21,9 @@ import name.ignat.minerva.MinervaException;
 import name.ignat.minerva.io.read.ReadMapper;
 import name.ignat.minerva.io.read.SpreadsheetReader;
 
+/**
+ * @author Dan Ignat
+ */
 public class ExcelReader extends SpreadsheetReader<Row, Cell>
 {
     private final Workbook workbook;

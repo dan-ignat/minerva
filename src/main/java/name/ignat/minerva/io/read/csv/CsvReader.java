@@ -17,6 +17,9 @@ import name.ignat.commons.exception.UnexpectedException;
 import name.ignat.minerva.io.read.ReadMapper;
 import name.ignat.minerva.io.read.SpreadsheetReader;
 
+/**
+ * @author Dan Ignat
+ */
 public class CsvReader extends SpreadsheetReader<List<String>, String>
 {
     private final CSVReader csvReader;

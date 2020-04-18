@@ -16,6 +16,9 @@ import javax.annotation.concurrent.Immutable;
 
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author Dan Ignat
+ */
 @Immutable
 @EqualsAndHashCode(callSuper = true)
 public class AddressPattern extends AddressMatcher

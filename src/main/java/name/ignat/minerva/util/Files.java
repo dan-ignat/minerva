@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * @author Dan Ignat
+ */
 public final class Files
 {
     public static FileOutputStream openNewOutputFile(File file) throws IOException

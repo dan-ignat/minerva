@@ -2,6 +2,9 @@ package name.ignat.minerva.rule.impl;
 
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author Dan Ignat
+ */
 @EqualsAndHashCode(callSuper = true)
 public class FlagAutoReplyRule extends FlagAnyMatchRule
 {

@@ -8,6 +8,9 @@ import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.rule.Rule;
 
+/**
+ * @author Dan Ignat
+ */
 @EqualsAndHashCode(callSuper = true)
 public class FlagAnyMatchRule extends RuleBase
 {

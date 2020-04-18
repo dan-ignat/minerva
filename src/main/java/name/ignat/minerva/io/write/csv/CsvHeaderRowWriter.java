@@ -4,6 +4,9 @@ import com.opencsv.CSVWriter;
 
 import name.ignat.minerva.io.write.HeaderRowWriter;
 
+/**
+ * @author Dan Ignat
+ */
 class CsvHeaderRowWriter extends HeaderRowWriter<CSVWriter>
 {
     @Override

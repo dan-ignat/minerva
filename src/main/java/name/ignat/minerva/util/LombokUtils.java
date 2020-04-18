@@ -1,5 +1,8 @@
 package name.ignat.minerva.util;
 
+/**
+ * @author Dan Ignat
+ */
 public final class LombokUtils
 {
     public static String toCustomString(Canonizable canonizable)

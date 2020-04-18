@@ -19,6 +19,9 @@ import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.ValidationMessage;
 
+/**
+ * @author Dan Ignat
+ */
 public final class JacksonUtils
 {
     public static <T> T parseJson(InputStream jsonIn, Class<T> clazz)

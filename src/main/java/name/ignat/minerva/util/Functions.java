@@ -4,6 +4,9 @@ import java.util.function.Function;
 
 import org.apache.commons.collections4.Transformer;
 
+/**
+ * @author Dan Ignat
+ */
 public final class Functions
 {
     public static <T, R> org.apache.commons.collections4.Transformer<T, R> toApacheTransformer(Function<T, R> function)

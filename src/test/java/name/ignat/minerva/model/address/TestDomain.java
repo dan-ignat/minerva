@@ -16,6 +16,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestDomain
 {
     private static Stream<Arguments> constructorCases()

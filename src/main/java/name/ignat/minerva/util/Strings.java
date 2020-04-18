@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
+/**
+ * @author Dan Ignat
+ */
 public final class Strings
 {
     public static boolean containsIgnoreCase(String string, String searchString)

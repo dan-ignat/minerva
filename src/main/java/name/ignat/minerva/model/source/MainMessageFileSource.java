@@ -7,6 +7,9 @@ import lombok.ToString;
 import lombok.Value;
 import name.ignat.minerva.model.Message;
 
+/**
+ * @author Dan Ignat
+ */
 @Immutable
 @Value @EqualsAndHashCode(callSuper = true) @ToString(callSuper = true)
 public class MainMessageFileSource extends FileSource implements AddressSource

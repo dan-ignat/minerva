@@ -1,5 +1,8 @@
 package name.ignat.minerva.util;
 
+/**
+ * @author Dan Ignat
+ */
 public final class Doubles
 {
     public static String toMinimalString(double d)

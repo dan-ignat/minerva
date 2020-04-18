@@ -5,6 +5,9 @@ import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * @author Dan Ignat
+ */
 public final class TestUtils
 {
     @Nullable

@@ -42,6 +42,9 @@ import name.ignat.minerva.rule.impl.AddSenderRule;
 import name.ignat.minerva.rule.impl.NoLongerHereRule;
 import name.ignat.minerva.util.StreamNextRest;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestExcelWriter
 {
     private static Stream<Arguments> writeCases()

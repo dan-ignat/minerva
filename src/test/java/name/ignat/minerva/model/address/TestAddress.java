@@ -20,6 +20,9 @@ import com.google.common.collect.ImmutableSet;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestAddress
 {
     private static Stream<Arguments> extractAllCases()

@@ -2,6 +2,9 @@ package name.ignat.minerva.util;
 
 import java.util.function.Predicate;
 
+/**
+ * @author Dan Ignat
+ */
 public final class Predicates
 {
     public static <T> org.apache.commons.collections4.Predicate<T> toApachePredicate(Predicate<T> predicate)

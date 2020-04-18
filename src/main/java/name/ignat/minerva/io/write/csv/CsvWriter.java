@@ -11,6 +11,9 @@ import name.ignat.commons.exception.UnexpectedException;
 import name.ignat.minerva.io.write.SpreadsheetWriter;
 import name.ignat.minerva.io.write.WriteMapper;
 
+/**
+ * @author Dan Ignat
+ */
 public class CsvWriter extends SpreadsheetWriter<CSVWriter>
 {
     private final CSVWriter csvWriter;

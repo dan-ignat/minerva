@@ -16,6 +16,8 @@ import name.ignat.minerva.util.Array;
 /**
  * The {@code from*()} methods return empty string instead of {@code null}, because CSVs have no way to distinguish
  * between the two, and e.g. unit tests fail when they read back a CSV and compare to {@code null}.
+ * 
+ * @author Dan Ignat
  */
 public final class WriteMappers
 {

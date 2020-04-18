@@ -14,6 +14,9 @@ import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 
+/**
+ * @author Dan Ignat
+ */
 @EqualsAndHashCode
 abstract class RuleBase implements Rule
 {

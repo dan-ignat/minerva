@@ -18,6 +18,9 @@ import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.source.ContactFileSource;
 import name.ignat.minerva.util.Array;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestWriteMappers
 {
     private static Stream<Arguments> nullOrBadValueCases()

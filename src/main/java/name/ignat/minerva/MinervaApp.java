@@ -32,6 +32,14 @@ import com.google.common.collect.ImmutableMap;
 
 import name.ignat.commons.exception.UnexpectedException;
 
+/**
+ * Minerva lets a user extract new email addresses from email messages, subject to user-specified filters, and using
+ * various extraction rules (depending on whether the messages are auto-replies or normal replies).
+ * 
+ * @see README.md
+ * 
+ * @author Dan Ignat
+ */
 @SpringBootApplication
 public class MinervaApp
 {

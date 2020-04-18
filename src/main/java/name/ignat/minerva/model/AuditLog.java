@@ -23,6 +23,9 @@ import name.ignat.minerva.model.source.AddressMatcherSource;
 import name.ignat.minerva.model.source.AddressSource;
 import name.ignat.minerva.rule.Rule;
 
+/**
+ * @author Dan Ignat
+ */
 public class AuditLog
 {
     private final List<AddressEntry> addressEntries = new ArrayList<>();

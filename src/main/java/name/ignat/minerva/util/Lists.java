@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+/**
+ * @author Dan Ignat
+ */
 public final class Lists
 {
     /**

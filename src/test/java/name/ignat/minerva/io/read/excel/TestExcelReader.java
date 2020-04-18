@@ -17,6 +17,9 @@ import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.Domain;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestExcelReader
 {
     private static Stream<Arguments> readCases()

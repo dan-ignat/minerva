@@ -13,6 +13,9 @@ import com.google.common.collect.ImmutableList;
 
 import name.ignat.minerva.model.source.ContactFileSource;
 
+/**
+ * @author Dan Ignat
+ */
 public class AddressMatchersUtils
 {
     public static AddressMatchers fromStrings(List<String> strings)

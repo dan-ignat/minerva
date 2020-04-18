@@ -5,6 +5,9 @@ import com.opencsv.CSVWriter;
 import name.ignat.minerva.io.write.WriteMapper;
 import name.ignat.minerva.io.write.ContentRowWriter;
 
+/**
+ * @author Dan Ignat
+ */
 class CsvContentRowWriter<O> extends ContentRowWriter<O, CSVWriter>
 {
     public CsvContentRowWriter(WriteMapper<O> objectMapper, int numColumns)

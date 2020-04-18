@@ -2,6 +2,9 @@ package name.ignat.minerva;
 
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author Dan Ignat
+ */
 @EqualsAndHashCode(callSuper = false)
 @SuppressWarnings("serial")
 public class MinervaException extends RuntimeException

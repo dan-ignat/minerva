@@ -11,6 +11,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import name.ignat.minerva.model.address.TopLevelDomains;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestTopLevelDomains
 {
     private static Stream<Arguments> hasValidTLDCases()

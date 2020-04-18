@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
  * @see http://www.regular-expressions.info/email.html
  * @see http://tools.ietf.org/html/rfc2822#section-3.4.1
  * 
- * @author Dan Ignat <dan@ignat.name>
+ * @author Dan Ignat
  */
 final class Addressables
 {

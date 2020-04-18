@@ -16,6 +16,9 @@ import com.google.common.collect.SetMultimap;
 import name.ignat.minerva.model.source.AddressMatcherSource;
 import name.ignat.minerva.model.source.ContactFileSource;
 
+/**
+ * @author Dan Ignat
+ */
 @Immutable
 public class AddressMatchers
 {

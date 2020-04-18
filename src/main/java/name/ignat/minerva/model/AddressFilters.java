@@ -11,6 +11,9 @@ import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.AddressMatchers;
 import name.ignat.minerva.model.source.AddressMatcherSource;
 
+/**
+ * @author Dan Ignat
+ */
 @Immutable
 public class AddressFilters
 {

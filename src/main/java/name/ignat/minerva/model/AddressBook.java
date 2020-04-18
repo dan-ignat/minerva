@@ -27,6 +27,16 @@ import name.ignat.minerva.model.source.ContactFileSource;
 import name.ignat.minerva.model.source.MainMessageFileSource;
 import name.ignat.minerva.rule.Rule;
 
+/**
+ * Models a set of {@link Address}es to (from) which the app adds (removes), along with the {@link AddressFilters} to
+ * which additions may be subject.  Also contains an {@link AuditLog} that tracks the outcome of each attempt to add
+ * (remove) an address, along with any {@link Message}s that were flagged for manual analysis.
+ * <p>
+ * This is the primary abstraction exported by the model layer to other layers of the app.  It's also central to the
+ * entire app, as all layers interact with and depend upon the {@code AddressBook}.
+ * 
+ * @author Dan Ignat
+ */
 public class AddressBook
 {
     public static Builder builder()

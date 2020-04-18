@@ -9,6 +9,12 @@ import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.rule.Rule.Signal;
 
+/**
+ * A simple rule engine that contains one or more {@link Rule}s and runs them on an {@link AddressBook} and a list of
+ * {@link Message}s.
+ * 
+ * @author Dan Ignat
+ */
 public abstract class RuleEngine
 {
     private final Rule[] rules;

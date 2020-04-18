@@ -25,7 +25,7 @@ import lombok.ToString;
  * by 2LD, then TLD.  (Most domain name owners first settle on a given 2LD, and then pick the best TLD available for
  * that 2LD, so it seems better to group/sort by 2LD first.)
  * 
- * @author Dan Ignat <dan@ignat.name>
+ * @author Dan Ignat
  */
 @Immutable
 @EqualsAndHashCode(callSuper = true)

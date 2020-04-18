@@ -6,6 +6,9 @@ import javax.annotation.Nonnull;
 
 import name.ignat.minerva.io.read.HeaderRowReader;
 
+/**
+ * @author Dan Ignat
+ */
 class CsvHeaderRowReader extends HeaderRowReader<List<String>, String>
 {
     public CsvHeaderRowReader(String[] desiredColumnHeaders)

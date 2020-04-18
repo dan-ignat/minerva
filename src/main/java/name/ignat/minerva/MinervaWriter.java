@@ -23,6 +23,9 @@ import name.ignat.minerva.model.AuditLog.MessageFlag;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.util.Array;
 
+/**
+ * @author Dan Ignat
+ */
 @Component
 public class MinervaWriter
 {

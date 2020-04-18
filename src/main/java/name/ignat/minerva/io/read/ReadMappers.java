@@ -13,6 +13,9 @@ import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.AddressPattern;
 import name.ignat.minerva.model.address.Domain;
 
+/**
+ * @author Dan Ignat
+ */
 public final class ReadMappers
 {
     /*

@@ -23,6 +23,9 @@ import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.source.AddressMatcherSource;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestMinervaReader
 {
     private static Stream<Arguments> initAddressBookCases()

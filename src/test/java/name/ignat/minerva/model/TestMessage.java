@@ -19,6 +19,9 @@ import com.google.common.collect.ImmutableSet;
 
 import name.ignat.minerva.model.address.Address;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestMessage
 {
     private static Stream<Arguments> constructorExceptionCases()

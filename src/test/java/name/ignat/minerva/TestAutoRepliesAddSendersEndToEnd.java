@@ -9,6 +9,9 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import name.ignat.minerva.TestBaseEndToEnd.TestConfig;
 
+/**
+ * @author Dan Ignat
+ */
 @SpringBootTest(args = { "src/test/resources/TestEndToEnd/AutoRepliesAddSenders/run.yaml" })
 @Import(TestConfig.class)
 @DirtiesContext

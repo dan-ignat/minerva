@@ -4,6 +4,9 @@ import static java.util.stream.Collectors.joining;
 
 import java.util.Collection;
 
+/**
+ * @author Dan Ignat
+ */
 public interface Describable
 {
     static String describe(Collection<? extends Describable> describes)

@@ -11,6 +11,9 @@ import java.util.Set;
 
 import name.ignat.commons.exception.UnexpectedException;
 
+/**
+ * @author Dan Ignat
+ */
 public final class TopLevelDomains
 {
     private static final Set<String> tlds;

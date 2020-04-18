@@ -15,6 +15,9 @@ import lombok.Value;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.ValidationException;
 
+/**
+ * @author Dan Ignat
+ */
 @Immutable
 @Value
 public class Message

@@ -20,6 +20,9 @@ import name.ignat.minerva.model.source.ContactFileSource;
 import name.ignat.minerva.model.source.FilterMessageFileSource;
 import name.ignat.minerva.util.Array;
 
+/**
+ * @author Dan Ignat
+ */
 @Component
 public class MinervaReader
 {

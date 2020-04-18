@@ -22,6 +22,9 @@ import name.ignat.commons.exception.UnexpectedException;
 import name.ignat.minerva.io.write.SpreadsheetWriter;
 import name.ignat.minerva.io.write.WriteMapper;
 
+/**
+ * @author Dan Ignat
+ */
 public class ExcelWriter extends SpreadsheetWriter<Sheet>
 {
     private final OutputStream outputStream;

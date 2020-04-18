@@ -7,6 +7,9 @@ import lombok.EqualsAndHashCode;
 import name.ignat.minerva.model.AddressBook;
 import name.ignat.minerva.model.Message;
 
+/**
+ * @author Dan Ignat
+ */
 @EqualsAndHashCode(callSuper = true)
 public class NoLongerHereRule extends AutoReplyRule
 {

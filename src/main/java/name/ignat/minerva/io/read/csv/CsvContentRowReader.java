@@ -7,6 +7,9 @@ import javax.annotation.Nonnull;
 import name.ignat.minerva.io.read.ContentRowReader;
 import name.ignat.minerva.io.read.ReadMapper;
 
+/**
+ * @author Dan Ignat
+ */
 class CsvContentRowReader<O> extends ContentRowReader<List<String>, String, O>
 {
     public CsvContentRowReader(Integer[] columnIndexes, ReadMapper<O> objectMapper)

@@ -26,6 +26,9 @@ import name.ignat.minerva.OutputFileConfig.AddressSheetConfig;
 import name.ignat.minerva.OutputFileConfig.MessageFlagSheetConfig;
 import name.ignat.minerva.util.JacksonUtils.ValidationException;
 
+/**
+ * @author Dan Ignat
+ */
 public class TestMinervaRunConfig
 {
     private static Stream<Arguments> validCases()

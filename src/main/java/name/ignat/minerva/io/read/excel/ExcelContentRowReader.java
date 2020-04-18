@@ -8,6 +8,9 @@ import org.apache.poi.ss.usermodel.Row;
 import name.ignat.minerva.io.read.ContentRowReader;
 import name.ignat.minerva.io.read.ReadMapper;
 
+/**
+ * @author Dan Ignat
+ */
 class ExcelContentRowReader<O> extends ContentRowReader<Row, Cell, O>
 {
     public ExcelContentRowReader(Integer[] columnIndexes, ReadMapper<O> objectMapper)

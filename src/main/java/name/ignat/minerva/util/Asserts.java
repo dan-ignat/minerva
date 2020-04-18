@@ -10,6 +10,9 @@ import java.util.function.Function;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
+/**
+ * @author Dan Ignat
+ * /
 public final class Asserts
 {
     /**

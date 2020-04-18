@@ -4,6 +4,9 @@ import static java.lang.String.format;
 
 import name.ignat.minerva.MinervaException;
 
+/**
+ * @author Dan Ignat
+ */
 @SuppressWarnings("serial")
 public class ValidationException extends MinervaException
 {

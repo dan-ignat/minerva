@@ -6,6 +6,9 @@ import lombok.EqualsAndHashCode;
 import name.ignat.commons.exception.UnexpectedCaseException;
 import name.ignat.minerva.util.Canonizable;
 
+/**
+ * @author Dan Ignat
+ */
 @EqualsAndHashCode
 public abstract class AddressMatcher implements Canonizable
 {

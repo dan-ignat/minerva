@@ -16,6 +16,9 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
 
+/**
+ * @author Dan Ignat
+ */
 public final class PoiUtils
 {
     public static List<String[]> sheetToStrings(Sheet sheet)
@@ -45,6 +48,14 @@ public final class PoiUtils
         ).collect(toImmutableList());
     }
     */
+
+    public static void writeRow(Row row, String[] cellValues)
+    {
+        for (int i = 0; i < cellValues.length; i++)
+        {
+            row.createCell(i).setCellValue(cellValues[i]);
+        }
+    }
 
     public static CellStyle createHeaderStyle(Workbook workbook)
     {

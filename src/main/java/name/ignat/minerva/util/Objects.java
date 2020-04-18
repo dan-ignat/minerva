@@ -8,6 +8,9 @@ import static java.util.stream.Collectors.joining;
 //import java.util.function.Function;
 //import java.util.function.Predicate;
 
+/**
+ * @author Dan Ignat
+ */
 public final class Objects
 {
     // This causes conflict with the overloaded version below, as a lambda can match either a Function or Predicate.
