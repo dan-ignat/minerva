@@ -110,7 +110,7 @@
                 "type": "object",
                 "properties":
                 {
-                    "type": { "type": "string", "enum": ["ADD_SENDERS", "AUTO_REPLIES", "REMOVE_SENDERS"] },
+                    "type": { "type": "string", "enum": ["AUTO_REPLIES", "ADD_SENDERS", "REMOVE_SENDERS"] },
                     "path": { "$ref": "#/$defs/path" },
                     "columnHeaders":
                     {
