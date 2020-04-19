@@ -78,9 +78,9 @@ public class MinervaApp
         {
             @SuppressWarnings("preview")
             String usage = """
-                Usage: java -jar minerva.jar <CONFIG_FILE>
-                Generates an updated e-mail address list (XLSX format) based on an initial list, filters, and new e-mail messages.
-                      <CONFIG_FILE> The YAML config file to use for this run (validated against src/main/resources/run.schema.json)
+                Usage: java --enable-preview -jar minerva.jar <CONFIG_FILE>
+                Generates an updated e-mail address list based on an initial list, filters, and addresses extracted from new e-mail messages using various rules.  (See README.md for more details.)
+                      <CONFIG_FILE> The YAML config file to use for this run
                 """;
 
             System.err.println(usage);
