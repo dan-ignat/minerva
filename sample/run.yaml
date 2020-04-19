@@ -1,0 +1,25 @@
+contactFiles:
+    - path: sample/Contacts.xlsm
+      addressSheets:
+        - { name: Addresses }
+      exclusionSheets:
+        - { name: Unsubscribed, type: ADDRESS }
+        - { name: Blacklisted,  type: DOMAIN  }
+        - { name: Ignored,      type: PATTERN }
+      flagSheets:
+        - { name: Personal,     type: DOMAIN  }
+
+exclusionMessageFiles:
+    - path: sample/Spam.csv
+
+flagMessageFiles:
+    - path: sample/Colleagues.csv
+
+messageFiles:
+    - type: AUTO_REPLIES
+      path: sample/Auto Replies.csv
+    - type: ADD_SENDERS
+      path: sample/New Messages.csv
+
+outputFile:
+    path: sample/Contacts OUTPUT {messageFileTypes} {dateTime}.xlsx

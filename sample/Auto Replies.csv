@@ -1,0 +1,13 @@
+From: (Address),Subject,Body
+Mailer Daemon,Undeliverable: Rolling off in September,"Delivery has failed to these recipients or distribution lists: bob@b.com
+
+An error occurred while trying to deliver this message to the recipient's e-mail address. Microsoft Exchange will not try to redeliver this message for you. Please try resending this message, or provide the following diagnostic text to your system administrator."
+charlie@c.com,Out of Office: Rolling off in September,"Thank you for your email, but I'm on vacation July 30th through August 6th.
+
+If you require immediate assistance, please contact Carl at carl@c.com.
+
+-Charlie"
+earl@e.com,Auto Reply: Rolling off in September,"Earl is no longer with the company.
+
+Instead, please contact Ethan at ethan@e.com."
+oliver@o.com,Hello,"How are you?  (This message isn't an auto-reply, so it should get flagged.)"
