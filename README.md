@@ -54,6 +54,8 @@ includes:
 - the path to *run.yaml* (specified on the command line above)
 - the paths specified in *run.yaml*
 
+On Windows, absolute paths look like `/C:/some/path/...`.
+
 ### Run Config
 
 Configuration of a Minerva run is done via a YAML file, which we often refer to as *run.yaml*, but it may have any name.
