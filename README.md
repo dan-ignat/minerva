@@ -54,9 +54,9 @@ includes:
 - the path to *run.yaml* (specified on the command line above)
 - the paths specified in *run.yaml*
 
-### Run config
+### Run Config
 
-Configuration of a Minerva run is done via a YAML file, which we refer to as *run.yaml*, but it may have any name.
+Configuration of a Minerva run is done via a YAML file, which we often refer to as *run.yaml*, but it may have any name.
 
 It is validated against *src/main/resources/run.schema.json*, using JSON Schema.
 
@@ -68,12 +68,11 @@ contactFiles:
       addressSheets:
         - { name: Addresses }
       exclusionSheets:
-        - { name: Unsubscribed,     type: ADDRESS }
-        - { name: Blacklisted,      type: DOMAIN  }
-        - { name: Ignored,          type: DOMAIN  }
-        - { name: Ignored Patterns, type: PATTERN }
+        - { name: Unsubscribed, type: ADDRESS }
+        - { name: Blacklisted,  type: DOMAIN  }
+        - { name: Ignored,      type: PATTERN }
       flagSheets:
-        - { name: Personal Domains, type: DOMAIN  }
+        - { name: Personal,     type: DOMAIN  }
 
 exclusionMessageFiles:
     - path: files/Spam.csv
@@ -86,8 +85,6 @@ messageFiles:
       path: files/Auto Replies.csv
     - type: ADD_SENDERS
       path: files/New Messages.csv
-    #- type: REMOVE_SENDERS
-    #  path: files/Recent Messages.csv
 
 outputFile:
     path: files/Contacts UPDATED {messageFileTypes} {dateTime}.xlsx
@@ -95,8 +92,23 @@ outputFile:
 
 #### General Structure
 
+See [Run Config Details](doc/RunConfigDetails.md).
+
+#### Sample Files
+
+The *sample* dir contains sample input files that compose a fully working example that can be run to produce an output
+file.  To run it:
+
 ```
+> java --enable-preview -jar minerva.jar sample/run.yaml
 ```
+
+### Rules
+
+Minerva uses a simple rules engine to determine whether an e-mail message is matched and, if so, which addresses to
+extract from it and what to do with them.
+
+See [Rules](doc/Rules.md).
 
 ### Notes
 
@@ -104,7 +116,23 @@ For input Excel spreadsheets, the following formats are supported: *.xls*, *.xsl
 
 ## Architecture
 
-TBD
+Minerva is a Core Java app, using Spring Boot for bootstrapping and dependency injection.
+
+Project Lombok is used to reduce boilerplate code (constructors, getters, setters, equals()/hashCode()/toString(),
+etc.).
+
+YAML is used for user-specified configuration options (with Jackson for deserialization), and JSON Schema is used to
+validate the YAML.
+
+Google Guava and Apache Commons are used for utility code.
+
+Apache POI is used to read/write Excel files, and OpenCSV is used to read/write CSV files.
+
+Hamcrest is used for matcher-based assertions in both runtime code and test code.
+
+Google Flogger is used for logging.
+
+JUnit 5 is used for unit tests, mainly parameterized ones.
 
 ### Tech Stack
 
