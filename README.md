@@ -43,7 +43,7 @@ Minerva's third-party dependencies.
 
 ## Usage
 
-```
+```shell
 > java --enable-preview -jar path/to/minerva.jar path/to/run.yaml
 ```
 
@@ -64,7 +64,7 @@ It is validated against *src/main/resources/run.schema.json*, using JSON Schema.
 
 #### Example
 
-```
+```yaml
 contactFiles:
     - path: files/Contacts.xlsm
       addressSheets:
@@ -101,7 +101,7 @@ See [Run Config Details](doc/RunConfigDetails.md).
 The *sample* dir contains sample input files that compose a fully working example that can be run to produce an output
 file.  To run it:
 
-```
+```shell
 > java --enable-preview -jar minerva.jar sample/run.yaml
 ```
 

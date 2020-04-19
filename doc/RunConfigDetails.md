@@ -8,7 +8,7 @@ Notes:
 - All `path` properties must be either absolute or relative to dir in which **java** is run
     - On Windows, absolute paths look like `/C:/some/path/...`
 
-```
+```yaml
 # either contactFiles or messageFiles is required
 
 contactFiles:                   # optional
