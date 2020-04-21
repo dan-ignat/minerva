@@ -1,7 +1,7 @@
 # Minerva
 
-Minerva generates an updated e-mail address list based on an initial list, filters, and addresses extracted from new
-e-mail messages using various rules.
+Minerva is a Core Java app that updates an e-mail address list based on filters, rules, and new messages.  It also flags
+messages for manual analysis and audits how each address was handled.
 
 ## Input
 
