@@ -7,6 +7,8 @@ plugins
     // Lombok plugin seems to be a bit behind the latest Lombok version (1.18.10 vs. 1.18.12), so I'll just use the
     // dependencies below
     //id 'io.freefair.lombok' version '5.0.0-rc2'
+
+    id 'distribution'
 }
 
 // This enables the preview features for JDK 13 that we use in Minerva, e.g. text blocks and switch expressions
@@ -55,7 +57,7 @@ dependencies
 
     testLogging
     {
-        events "passed", "skipped", "failed"
+        events 'passed', 'skipped', 'failed'
     }
 }*/
 
@@ -67,4 +69,37 @@ repositories
 bootJar
 {
     mainClassName = 'name.ignat.minerva.MinervaApp'
+
+    /*
+    Exclude the version from the archiveFileName, because it goes against convention.  The distribution file name has
+    the version, and the bootJar inside it should be named consistently, so users can refer to it (in their scripts,
+    etc.) by the same name, regardless of the release version.
+    */
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
 }
+
+distributions
+{
+    main
+    {
+        contents
+        {
+            into('/')
+            {
+                from "${buildDir}/libs"
+                from 'README.md'
+            }
+            into('/docs')    { from 'docs' }
+            into('/samples') { from 'samples' }
+        }
+    }
+}
+
+tasks.withType(Tar)
+{
+    compression = Compression.GZIP
+    extension = 'tar.gz'
+}
+
+// You'd think this would be the case by default, but it isn't
+assembleDist.dependsOn(bootJar)
