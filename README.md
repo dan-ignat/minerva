@@ -122,7 +122,7 @@ For input Excel spreadsheets, the following formats are supported: *.xls*, *.xsl
 
 Minerva is a Core Java app, using Spring Boot for bootstrapping and dependency injection.
 
-Project Lombok is used to reduce boilerplate code (constructors, getters, setters, equals()/hashCode()/toString(),
+Project Lombok is used to reduce boilerplate code (constructors, getters, setters, `equals()`/`hashCode()`/`toString()`,
 etc.).
 
 YAML is used for user-specified configuration options (with Jackson for deserialization), and JSON Schema is used to
