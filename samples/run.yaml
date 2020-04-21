@@ -1,5 +1,5 @@
 contactFiles:
-    - path: sample/Contacts.xlsm
+    - path: samples/Contacts.xlsm
       addressSheets:
         - { name: Addresses }
       exclusionSheets:
@@ -10,16 +10,16 @@ contactFiles:
         - { name: Personal,     type: DOMAIN  }
 
 exclusionMessageFiles:
-    - path: sample/Spam.csv
+    - path: samples/Spam.csv
 
 flagMessageFiles:
-    - path: sample/Colleagues.csv
+    - path: samples/Colleagues.csv
 
 messageFiles:
     - type: AUTO_REPLIES
-      path: sample/Auto Replies.csv
+      path: samples/Auto Replies.csv
     - type: ADD_SENDERS
-      path: sample/New Messages.csv
+      path: samples/New Messages.csv
 
 outputFile:
-    path: sample/Contacts OUTPUT {messageFileTypes} {dateTime}.xlsx
+    path: samples/Contacts OUTPUT {messageFileTypes} {dateTime}.xlsx

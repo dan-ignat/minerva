@@ -96,15 +96,15 @@ outputFile:
 
 #### General Structure
 
-See [Run Config Details](doc/RunConfigDetails.md).
+See [Run Config Details](docs/RunConfigDetails.md).
 
 #### Sample Files
 
-The *sample* dir contains sample input files that compose a fully working example that can be run to produce an output
+The *samples* dir contains sample input files that compose a fully working example that can be run to produce an output
 file.  To run it:
 
 ```shell
-> java --enable-preview -jar minerva.jar sample/run.yaml
+> java --enable-preview -jar minerva.jar samples/run.yaml
 ```
 
 ### Rules
@@ -112,7 +112,7 @@ file.  To run it:
 Minerva uses a simple rules engine to determine whether an e-mail message is matched and, if so, which addresses to
 extract from it and what to do with them.
 
-See [Rules](doc/Rules.md).
+See [Rules](docs/Rules.md).
 
 ### Notes
 

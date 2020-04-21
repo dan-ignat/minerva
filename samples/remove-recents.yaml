@@ -1,0 +1,11 @@
+contactFiles:
+    - path: samples/Contacts UPDATED [ AUTO_REPLIES, ADD_SENDERS ] 2020-04-18 23.35.23.xlsm
+      addressSheets:
+        - { name: Addresses }
+
+messageFiles:
+    - type: REMOVE_SENDERS
+      path: samples/Recent Messages.csv
+
+outputFile:
+    path: samples/Contacts OUTPUT {messageFileTypes} {dateTime}.xlsx
