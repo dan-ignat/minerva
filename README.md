@@ -1,3 +1,5 @@
+![Statue of Minerva on the embankment, Castell de Tossa de Mar on Costa Brava at summer sunset; Catalunya, Spain](images/Minerva-800x294.jpg)
+
 # Minerva
 
 Minerva is a Core Java app that updates an e-mail address list based on filters, rules, and new messages.  It also flags
