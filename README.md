@@ -1,6 +1,6 @@
 <figure>
-    <img src="images/Minerva-800x294.jpg" alt="Statue of Minerva on the embankment at summer sunset; Castell de Tossa de Mar on Costa Brava, Catalunya, Spain; Photo by Kavalenkava Volha">
-    <figcaption><sup><em>Statue of Minerva on the embankment at summer sunset; Castell de Tossa de Mar on Costa Brava, Catalunya, Spain; Photo by Kavalenkava Volha</em></sup></figcaption>
+    <img src="images/Minerva-800x294.jpg" alt="Statue of Minerva on the embankment at summer sunset; Castell de Tossa de Mar on Costa Brava, Catalunya, Spain.  Photo by Kavalenkava Volha.">
+    <figcaption><sup><em>Statue of Minerva on the embankment at summer sunset; Castell de Tossa de Mar on Costa Brava, Catalunya, Spain.  Photo by Kavalenkava Volha.</em></sup></figcaption>
 </figure>
 
 # Minerva
