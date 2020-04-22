@@ -10,7 +10,7 @@ messages for manual analysis and audits how each address was handled.
 
 ## Example
 
-The easiest way to understand Minerva is to look at a simple example of inputs and outputs.
+The best way to explain Minerva is to look at some simple inputs and outputs.
 
 ### Inputs
 
