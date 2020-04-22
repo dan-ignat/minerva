@@ -12,7 +12,7 @@ messages for manual analysis and audits how each address was handled.
 
 The easiest way to understand Minerva is to look at a simple example of inputs and outputs.
 
-### Input
+### Inputs
 
 Given these **Initial Addresses**:
 
@@ -49,10 +49,10 @@ Given these **Initial Addresses**:
 | 6   | diane@d.com            | Checking in   | Hi!  It's been a while since we last spoke.  Is your contract wrapping up soon?      |
 | 7   | frank@f.com            | Fulltime opp  | I have a great fulltime opp.  Let me know if you'd be interested in hearing more.    |
 | 8   | george@g.com           | Terrible fit  | I know this has zero chances, but I'm gonna tell you about it anyway.                |
-| 9   | hit-reply@linkedin.com | Hi            | If you want to network, feel free to send me your résumé at nancy@n.com.             |
+| 9   | hit-reply@linkedin.com | Hi            | If you want to network, feel free to send me your resume at nancy@n.com.             |
 | 10  | gene@gmail.com         | How you been? | Hey!  Haven't seen you since college.  How you been?                                 |
 
-### Output
+### Outputs
 
 Minerva would produce this updated **Addresses** tab:
 
@@ -124,7 +124,7 @@ file.  To run it:
 > java --enable-preview -jar minerva.jar samples/run.yaml
 ```
 
-### Input
+### Inputs
 
 1. Initial addresses
     - Provided via tabs in an Excel spreadsheet
@@ -138,7 +138,7 @@ file.  To run it:
 
 (For input Excel spreadsheets, the following formats are supported: *.xls*, *.xslx*, *.xslm*.)
 
-### Output
+### Outputs
 
 An Excel spreadsheet (.xlsx) with the following tabs:
 
