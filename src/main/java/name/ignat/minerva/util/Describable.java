@@ -9,9 +9,9 @@ import java.util.Collection;
  */
 public interface Describable
 {
-    static String describe(Collection<? extends Describable> describes)
+    static String describe(Collection<? extends Describable> describables)
     {
-        return describes.stream().map(Describable::describe).collect(joining(", "));
+        return describables.stream().map(Describable::describe).collect(joining(", "));
     }
 
     String describe();
