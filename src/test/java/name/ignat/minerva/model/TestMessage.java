@@ -79,7 +79,7 @@ public class TestMessage
     public void constructor(Message message, Integer expectedIndex, String expectedFrom, String expectedFromRaw,
         String expectedSubject, String expectedBody, List<String> expectedBodyAddressStrings)
     {
-        assertThat(message.getIndex(), expectedIndex == null ? nullValue() : is(expectedIndex));
+        assertThat(message.getIndex(), is(expectedIndex));
 
         if (expectedFrom == null)
         {
@@ -90,11 +90,11 @@ public class TestMessage
             assertThat(message.getFrom().toCanonical(), is(expectedFrom));
         }
 
-        assertThat(message.getFromRaw(), expectedFromRaw == null ? nullValue() : is(expectedFromRaw));
+        assertThat(message.getFromRaw(), is(expectedFromRaw));
 
-        assertThat(message.getSubject(), expectedSubject == null ? nullValue() : is(expectedSubject));
+        assertThat(message.getSubject(), is(expectedSubject));
 
-        assertThat(message.getBody(), expectedBody == null ? nullValue() : is(expectedBody));
+        assertThat(message.getBody(), is(expectedBody));
 
         Set<Address> expectedBodyAddresses = ImmutableSet.copyOf(Address.fromStrings(expectedBodyAddressStrings));
         assertThat(message.getBodyAddresses(), is(expectedBodyAddresses));
