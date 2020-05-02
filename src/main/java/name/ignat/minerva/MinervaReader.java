@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
+import name.ignat.commons.lang.Arrays;
 import name.ignat.minerva.io.read.csv.CsvReader;
 import name.ignat.minerva.io.read.excel.ExcelReader;
 import name.ignat.minerva.model.AddressBook;
@@ -18,7 +19,6 @@ import name.ignat.minerva.model.address.AddressPattern;
 import name.ignat.minerva.model.address.Domain;
 import name.ignat.minerva.model.source.ContactFileSource;
 import name.ignat.minerva.model.source.FilterMessageFileSource;
-import name.ignat.minerva.util.Array;
 
 /**
  * @author Dan Ignat
@@ -74,7 +74,7 @@ public class MinervaReader
                 contactsReader.setSheetName(addressSheetConfig.getName());
 
                 List<Address> addresses =
-                    contactsReader.read(Array.of(addressSheetConfig.getColumnHeader()), Address.class);
+                    contactsReader.read(Arrays.of(addressSheetConfig.getColumnHeader()), Address.class);
 
                 ContactFileSource source =
                     new ContactFileSource(contactsReader.getFile().getPath(), addressSheetConfig.getName());
@@ -94,7 +94,7 @@ public class MinervaReader
             {
                 contactsReader.setSheetName(sheetConfig.getName());
 
-                String[] columnHeaders = Array.of(sheetConfig.getColumnHeader());
+                String[] columnHeaders = Arrays.of(sheetConfig.getColumnHeader());
 
                 ContactFileSource source =
                     new ContactFileSource(contactsReader.getFile().getPath(), sheetConfig.getName());
@@ -154,7 +154,7 @@ public class MinervaReader
         {
             MessageFileConfig.ColumnHeadersConfig columnHeadersConfig = messageFileConfig.getColumnHeaders();
 
-            String[] columnHeaders = Array.of(
+            String[] columnHeaders = Arrays.of(
                 columnHeadersConfig.getFrom(), columnHeadersConfig.getSubject(), columnHeadersConfig.getBody());
 
             return messagesReader.read(columnHeaders, Message.class);

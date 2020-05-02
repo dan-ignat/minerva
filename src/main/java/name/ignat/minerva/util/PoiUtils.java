@@ -2,7 +2,7 @@ package name.ignat.minerva.util;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.Streams.stream;
-import static name.ignat.minerva.util.Doubles.toMinimalString;
+import static name.ignat.commons.lang.Doubles.toCompactString;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public final class PoiUtils
         return switch (cell.getCellType())
         {
             case STRING: yield cell.getStringCellValue();
-            case NUMERIC: yield toMinimalString(cell.getNumericCellValue());
+            case NUMERIC: yield toCompactString(cell.getNumericCellValue());
             case BLANK: yield "";
             default: throw new UnexpectedCaseException(cell.getCellType());
         };

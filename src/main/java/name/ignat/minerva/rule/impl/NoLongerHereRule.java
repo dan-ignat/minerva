@@ -1,7 +1,7 @@
 package name.ignat.minerva.rule.impl;
 
+import static name.ignat.commons.lang.Strings.containsAnyIgnoreCase;
 import static name.ignat.minerva.rule.Rule.Signal.STOP;
-import static name.ignat.minerva.util.Strings.containsAnyIgnoreCase;
 
 import lombok.EqualsAndHashCode;
 import name.ignat.minerva.model.AddressBook;

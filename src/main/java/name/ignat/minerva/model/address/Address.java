@@ -2,7 +2,7 @@ package name.ignat.minerva.model.address;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
-import static name.ignat.minerva.util.Strings.findAllMatches;
+import static name.ignat.commons.lang.Strings.findAllMatches;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 

@@ -1,7 +1,8 @@
 package name.ignat.minerva.util;
 
 import static com.networknt.schema.SpecVersion.VersionFlag.V201909;
-import static name.ignat.minerva.util.Objects.toLines;
+import static java.lang.System.lineSeparator;
+import static name.ignat.commons.lang.Objects.toLinesString;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,7 +78,8 @@ public final class JacksonUtils
 
         if (!validationMessages.isEmpty())
         {
-            throw new ValidationException("Failed JSON Schema validation: " + toLines(validationMessages));
+            throw new ValidationException(
+                "Failed JSON Schema validation:" + lineSeparator() + toLinesString(validationMessages));
         }
     }
 

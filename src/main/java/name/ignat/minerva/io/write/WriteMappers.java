@@ -6,12 +6,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import name.ignat.commons.exception.UnexpectedCaseException;
+import name.ignat.commons.lang.Arrays;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
 import name.ignat.minerva.model.Message;
 import name.ignat.minerva.model.address.Address;
 import name.ignat.minerva.model.address.Domain;
-import name.ignat.minerva.util.Array;
 
 /**
  * The {@code from*()} methods return empty string instead of {@code null}, because CSVs have no way to distinguish
@@ -53,17 +53,17 @@ public final class WriteMappers
 
     public static String[] fromAddress(Address address)
     {
-        return Array.of(address.toCanonical());
+        return Arrays.of(address.toCanonical());
     }
 
     public static String[] fromDomain(Domain domain)
     {
-        return Array.of(domain.toCanonical());
+        return Arrays.of(domain.toCanonical());
     }
 
     public static String[] fromMessage(Message message)
     {
-        return Array.of(
+        return Arrays.of(
             message.getIndex().toString(),
             message.getFrom() == null ? "" : message.getFrom().toCanonical(),
             message.getSubject(),
@@ -72,7 +72,7 @@ public final class WriteMappers
 
     public static String[] fromMessageFlag(MessageFlag flag)
     {
-        return Array.of(
+        return Arrays.of(
             flag.getMessage().getIndex().toString(),
             flag.getMatchedRule() == null ? "" : flag.getMatchedRule().getClass().getSimpleName(),
             flag.getReason().toString());
@@ -82,7 +82,7 @@ public final class WriteMappers
     {
         Integer messageIndex = entry.getAddressSource().getMessageIndex();
 
-        return Array.of(
+        return Arrays.of(
             messageIndex == null ? "" : messageIndex.toString(),
             entry.getAddress().toCanonical(),
             entry.getAddressSource().describe(),

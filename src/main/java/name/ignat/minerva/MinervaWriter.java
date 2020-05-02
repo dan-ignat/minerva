@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.flogger.FluentLogger;
 
+import name.ignat.commons.lang.Arrays;
 import name.ignat.minerva.OutputFileConfig.AddressLogSheetConfig;
 import name.ignat.minerva.OutputFileConfig.MessageFlagSheetConfig;
 import name.ignat.minerva.io.write.excel.ExcelWriter;
@@ -21,7 +22,6 @@ import name.ignat.minerva.model.AuditLog;
 import name.ignat.minerva.model.AuditLog.AddressEntry;
 import name.ignat.minerva.model.AuditLog.MessageFlag;
 import name.ignat.minerva.model.address.Address;
-import name.ignat.minerva.util.Array;
 
 /**
  * @author Dan Ignat
@@ -83,7 +83,7 @@ public class MinervaWriter
 
         excelWriter.setSheetName(sheetConfig.getName());
 
-        excelWriter.write(Array.of(sheetConfig.getColumnHeader()), addressBook.getAddresses(), Address.class);
+        excelWriter.write(Arrays.of(sheetConfig.getColumnHeader()), addressBook.getAddresses(), Address.class);
     }
 
     private void writeMessageFlagSheet(AuditLog auditLog, ExcelWriter excelWriter) throws IOException
@@ -94,7 +94,7 @@ public class MinervaWriter
 
         MessageFlagSheetConfig.ColumnHeadersConfig columnHeadersConfig = sheetConfig.getColumnHeaders();
 
-        String[] columnHeaders = Array.of(
+        String[] columnHeaders = Arrays.of(
             columnHeadersConfig.getMessageIndex(),
             columnHeadersConfig.getMatchedRule(),
             columnHeadersConfig.getReason());
@@ -110,7 +110,7 @@ public class MinervaWriter
 
         AddressLogSheetConfig.ColumnHeadersConfig columnHeadersConfig = sheetConfig.getColumnHeaders();
 
-        String[] columnHeaders = Array.of(
+        String[] columnHeaders = Arrays.of(
             columnHeadersConfig.getMessageIndex(),
             columnHeadersConfig.getAddress(),
             columnHeadersConfig.getAddressSource(),
