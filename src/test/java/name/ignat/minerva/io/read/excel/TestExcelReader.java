@@ -1,6 +1,6 @@
 package name.ignat.minerva.io.read.excel;
 
-import static name.ignat.commons.utils.IoUtils.getClassPathResourceFile;
+import static name.ignat.commons.io.Resources.getResourceFile;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -42,10 +42,10 @@ public class TestExcelReader
 
     @ParameterizedTest
     @MethodSource("readCases")
-    public <O> void read(String classPathResourcePath, String sheetName, List<String> columnHeaders, Class<O> objectClass,
+    public <O> void read(String resourcePath, String sheetName, List<String> columnHeaders, Class<O> objectClass,
         List<O> expectedObjects) throws IOException
     {
-        File file = getClassPathResourceFile(classPathResourcePath);
+        File file = getResourceFile(resourcePath);
 
         List<O> objects;
         try (ExcelReader excelReader = new ExcelReader(file))

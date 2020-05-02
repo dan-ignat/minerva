@@ -1,6 +1,6 @@
 package name.ignat.minerva.io.read.csv;
 
-import static name.ignat.commons.utils.IoUtils.getClassPathResourceFile;
+import static name.ignat.commons.io.Resources.getResourceFile;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -42,10 +42,10 @@ public class TestCsvReader
 
     @ParameterizedTest
     @MethodSource("readCases")
-    public <O> void read(String classPathResourcePath, List<String> columnHeaders, Class<O> objectClass,
+    public <O> void read(String resourcePath, List<String> columnHeaders, Class<O> objectClass,
         List<O> expectedObjects) throws IOException
     {
-        File file = getClassPathResourceFile(classPathResourcePath);
+        File file = getResourceFile(resourcePath);
 
         List<O> objects;
         try (CsvReader csvReader = new CsvReader(file))

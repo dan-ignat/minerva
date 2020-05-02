@@ -1,6 +1,6 @@
 package name.ignat.minerva;
 
-import static name.ignat.commons.utils.IoUtils.getClassPathResourceFile;
+import static name.ignat.commons.io.Resources.getResourceFile;
 import static name.ignat.minerva.MinervaProfiles.TEST;
 import static name.ignat.minerva.util.Lists.arraysToLists;
 import static name.ignat.minerva.util.PoiUtils.sheetToStrings;
@@ -49,11 +49,11 @@ public abstract class TestBaseEndToEnd
     @Autowired
     protected ByteArrayOutputStream outputStream;
 
-    protected void run(String expectedOutputFileClassPathResourcePath) throws IOException
+    protected void run(String expectedOutputFileResourcePath) throws IOException
     {
         SpringApplication.run(MinervaApp.class, args.getSourceArgs());
 
-        File expectedOutputFile = getClassPathResourceFile(expectedOutputFileClassPathResourcePath);
+        File expectedOutputFile = getResourceFile(expectedOutputFileResourcePath);
 
         try (Workbook expectedWorkbook = WorkbookFactory.create(expectedOutputFile, null, true);
             InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());

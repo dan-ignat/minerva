@@ -3,7 +3,7 @@ package name.ignat.minerva.model;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.Streams.zip;
 import static java.util.stream.Collectors.toList;
-import static name.ignat.commons.utils.ObjectUtils.equalsAny;
+import static name.ignat.commons.lang.Objects.equalsAny;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.ADDED;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.DUPLICATE;
 import static name.ignat.minerva.model.AuditLog.AddressEntry.Type.EXCLUDED;

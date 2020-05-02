@@ -1,7 +1,8 @@
 package name.ignat.minerva.model.address;
 
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
-import static name.ignat.commons.utils.IoUtils.getClassPathResource;
+import static java.nio.charset.Charset.defaultCharset;
+import static name.ignat.commons.io.Resources.getResource;
 import static org.apache.commons.io.IOUtils.readLines;
 import static org.apache.commons.lang3.StringUtils.substringAfterLast;
 
@@ -22,9 +23,9 @@ public final class TopLevelDomains
     {
         try
         {
-            InputStream tldFileIn = getClassPathResource("tlds-alpha-by-domain.txt");
+            InputStream tldFileIn = getResource("tlds-alpha-by-domain.txt");
 
-            tlds = readLines(tldFileIn)
+            tlds = readLines(tldFileIn, defaultCharset())
                 .stream()
                 .filter(line -> !line.strip().startsWith("#") && !line.isBlank())
                 .map(line -> line.strip().toLowerCase())

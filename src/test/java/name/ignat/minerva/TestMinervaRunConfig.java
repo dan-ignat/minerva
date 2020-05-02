@@ -1,6 +1,6 @@
 package name.ignat.minerva;
 
-import static name.ignat.commons.utils.IoUtils.getClassPathResource;
+import static name.ignat.commons.io.Resources.getResource;
 import static name.ignat.minerva.MainMessageFileConfig.Type.ADD_SENDERS;
 import static name.ignat.minerva.MinervaApp.CONFIG_SCHEMA_FILE_PATH;
 import static name.ignat.minerva.model.address.AddressMatcher.Type.ADDRESS;
@@ -254,8 +254,8 @@ public class TestMinervaRunConfig
     public void valid(String configFilePath, MinervaRunConfig expectedConfig) throws IOException
     {
         try (
-            InputStream configSchemaFileIn = getClassPathResource(CONFIG_SCHEMA_FILE_PATH);
-            InputStream configFileIn = getClassPathResource(configFilePath))
+            InputStream configSchemaFileIn = getResource(CONFIG_SCHEMA_FILE_PATH);
+            InputStream configFileIn = getResource(configFilePath))
         {
             MinervaRunConfig config = parseYaml(configFileIn, MinervaRunConfig.class, configSchemaFileIn);
 
@@ -277,8 +277,8 @@ public class TestMinervaRunConfig
     public void invalid(String configFilePath) throws IOException
     {
         try (
-            InputStream configSchemaFileIn = getClassPathResource(CONFIG_SCHEMA_FILE_PATH);
-            InputStream configFileIn = getClassPathResource(configFilePath))
+            InputStream configSchemaFileIn = getResource(CONFIG_SCHEMA_FILE_PATH);
+            InputStream configFileIn = getResource(configFilePath))
         {
             Executable executable = () -> parseYaml(configFileIn, MinervaRunConfig.class, configSchemaFileIn);
 

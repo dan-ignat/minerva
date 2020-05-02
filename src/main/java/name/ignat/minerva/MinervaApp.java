@@ -4,8 +4,8 @@ import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.joining;
-import static name.ignat.commons.utils.IoUtils.getClassPathResource;
-import static name.ignat.commons.utils.ObjectUtils.equalsAny;
+import static name.ignat.commons.io.Resources.getResource;
+import static name.ignat.commons.lang.Objects.equalsAny;
 import static name.ignat.minerva.MinervaProfiles.PROD;
 import static name.ignat.minerva.util.Files.openNewOutputFile;
 import static name.ignat.minerva.util.JacksonUtils.parseYaml;
@@ -107,7 +107,7 @@ public class MinervaApp
 
         try (
             InputStream configFileIn = new FileInputStream(configFilePath);
-            InputStream configSchemaFileIn = getClassPathResource(CONFIG_SCHEMA_FILE_PATH))
+            InputStream configSchemaFileIn = getResource(CONFIG_SCHEMA_FILE_PATH))
         {
             return parseYaml(configFileIn, MinervaRunConfig.class, configSchemaFileIn);
         }

@@ -1,6 +1,6 @@
 package name.ignat.minerva;
 
-import static name.ignat.commons.utils.IoUtils.getClassPathResource;
+import static name.ignat.commons.io.Resources.getResource;
 import static name.ignat.minerva.MinervaApp.CONFIG_SCHEMA_FILE_PATH;
 import static name.ignat.minerva.util.JacksonUtils.parseYaml;
 import static name.ignat.minerva.util.TestUtils.getNestedField;
@@ -65,8 +65,8 @@ public class TestMinervaReader
         List<String> expectedFlagAddressStrings) throws IOException
     {
         try (
-            InputStream configSchemaFileIn = getClassPathResource(CONFIG_SCHEMA_FILE_PATH);
-            InputStream configFileIn = getClassPathResource(configFilePath))
+            InputStream configSchemaFileIn = getResource(CONFIG_SCHEMA_FILE_PATH);
+            InputStream configFileIn = getResource(configFilePath))
         {
             MinervaRunConfig config = parseYaml(configFileIn, MinervaRunConfig.class, configSchemaFileIn);
 
