@@ -4,11 +4,19 @@ plugins
 
     id 'org.springframework.boot' version '2.2.4.RELEASE'
 
-    // Lombok plugin seems to be a bit behind the latest Lombok version (1.18.10 vs. 1.18.12), so I'll just use the
-    // dependencies below
-    //id 'io.freefair.lombok' version '5.0.0-rc2'
+    id 'io.freefair.lombok' version '5.2.1'
 
     id 'distribution'
+}
+
+lombok {
+    /*
+     * This is necessary so that Jackson can (de)serialize JSON to/from immutable Lombok @Value classes.  Jackson added
+     * support for this (via @ConstructorProperties) in 2.7.0:
+     * https://github.com/fasterxml/jackson-databind/issues/905
+     * https://stackoverflow.com/questions/49999492/immutable-lombok-annotated-class-with-jackson
+     */
+    config['lombok.anyConstructor.addConstructorProperties'] = 'true'
 }
 
 // This enables the preview features for JDK 13 that we use in Minerva, e.g. text blocks and switch expressions
@@ -19,11 +27,6 @@ tasks.withType(JavaCompile).each
 
 dependencies
 {
-    compileOnly             'org.projectlombok:lombok:1.18.12'
-    annotationProcessor     'org.projectlombok:lombok:1.18.12'
-    testCompileOnly         'org.projectlombok:lombok:1.18.12'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
-
     implementation          'org.springframework.boot:spring-boot-starter:2.2.4.RELEASE'
     implementation          'com.fasterxml.jackson.core:jackson-databind:2.10.2'
     implementation          'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.2'
